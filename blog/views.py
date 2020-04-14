@@ -16,13 +16,13 @@ from .models import Post
 #         'author': 'Jason Green',
 #         'title': 'Blog Post 1',
 #         'content': 'First Post Content',
-#         'date_posted': 'Some time, asshole'
+#         'date_posted': 'Some time'
 #     },
 #     {
 #         'author': 'Smack me',
 #         'title': 'Blog Post 2',
 #         'content': 'Second Post Content',
-#         'date_posted': 'Yesterday, asshole'
+#         'date_posted': 'Yesterday'
 #     }
 # ]
 
