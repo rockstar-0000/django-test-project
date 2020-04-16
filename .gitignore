@@ -4,6 +4,7 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff
+.idea
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/**/usage.statistics.xml
@@ -202,3 +203,48 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+.idea/.gitignore
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/youtube_blog.iml
+blog/migrations/0001_initial.py
+blog/migrations/__init__.py
+blog/static/blog/Chart.min.css
+blog/static/blog/ajax-loader.gif
+blog/static/blog/animate.css
+blog/static/blog/bootstrap.min.css
+blog/static/blog/developer.css
+blog/static/blog/dripicons.css
+blog/static/blog/flatpickr.min.css
+blog/static/blog/fontawesome.css
+blog/static/blog/ionicons.min.css
+blog/static/blog/line-awesome.min.css
+blog/static/blog/magnific-popup.css
+blog/static/blog/owl.carousel.min.css
+blog/static/blog/owl.video.play.png
+blog/static/blog/remixicon.css
+blog/static/blog/responsive.css
+blog/static/blog/select2.min.css
+blog/static/blog/slick-theme.css
+blog/static/blog/slick.css
+blog/static/blog/style.css
+blog/static/blog/typography.css
+blog/static/blog/variable.css
+media/TestingUser/
+media/jgreen44/
+users/migrations/0001_initial.py
+users/migrations/0002_auto_20200411_0818.py
+users/migrations/0003_auto_20200411_0824.py
+users/migrations/0004_auto_20200411_0837.py
+users/migrations/0005_auto_20200411_1150.py
+users/migrations/0006_auto_20200411_1207.py
+users/migrations/0007_auto_20200411_1230.py
+users/migrations/0008_auto_20200411_1233.py
+users/migrations/0009_profile_gender.py
+users/migrations/0010_remove_profile_gender.py
+users/migrations/0011_profile_gender.py
+users/migrations/0012_auto_20200415_1503.py
+users/migrations/__init__.py
+users/templates/users/static/
+youtube_blog/.idea/
