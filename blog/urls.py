@@ -11,7 +11,9 @@ from .views import (
 from . import views
 
 urlpatterns = [
-    path('', PostListview.as_view(), name='blog-home'),
+    # path('', PostListview.as_view(), name='blog-home'),
+    path('', views.redirectPage, name='home'),
+    path('home/', PostListview.as_view(), name='blog-home'),
     path('user/<str:username>/', UserPostListview.as_view(), name='user-posts'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('post/new/', PostCreateView.as_view(), name='post-create'),

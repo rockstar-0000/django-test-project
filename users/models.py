@@ -3,8 +3,6 @@ from django.contrib.auth.models import User
 from PIL import Image
 
 
-
-
 def get_upload_path(instance, filename):
     return '%s/%s' % (instance.user.username, filename)
 
@@ -38,3 +36,32 @@ class Profile(models.Model):
             img.thumbnail(output_size)
             img.save(self.image.path)
 
+
+class Friend(models.Model):
+    wait = "Wait"
+    accept = "Accept"
+    block = "Block"
+
+    STATE_CHOISES = {
+        (accept, "Accept"),
+        (wait, "Wait"),
+        (block, "Block")
+    }
+
+    sender_id = models.IntegerField()
+    recipient_id = models.IntegerField()
+    sender_firstName = models.CharField(max_length=35, default='')
+    sender_lastName = models.CharField(max_length=35, default='')
+    sender_image = models.ImageField(default='default.jpg', upload_to=get_upload_path)
+    recipient_firstName = models.CharField(max_length=35, default='')
+    recipient_lastName = models.CharField(max_length=35, default='')
+    recipient_image = models.ImageField(default='default.jpg', upload_to=get_upload_path)
+    state = models.CharField(max_length=35, choices=STATE_CHOISES, default=wait)
+
+    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    # def __str__(self):
+    #     return '%s %s' % (self.sender_id, self.recipient_id)
+
+    def save(self, *args, **kwargs):
+        super(Friend, self).save(*args, **kwargs)

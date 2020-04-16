@@ -10,6 +10,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'blog/toastr/toastr.min.css' %}">
 
     <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
     {% if title %}
@@ -22,25 +23,39 @@
 <header class="site-header">
     <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
+            {% if user.is_authenticated %}
             <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">Django Blog</a>
+            {% else %}
+            <a class="navbar-brand mr-4" href="">Django Blog</a>
+            {% endif %}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
                     aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarToggle">
                 <div class="navbar-nav mr-auto">
+                    {% if user.is_authenticated %}
                     <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
                     <a class="nav-item nav-link" href="{% url 'blog-about' %}">About</a>
+                    {% endif %}
                 </div>
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <a class="nav-item nav-link" href="#" role="button" data-toggle="dropdown"><span
+                                class="fa fa-user-plus"></span></a>
+                        <div id="friend_box" class="dropdown-menu" style="min-width: 400px; padding:10px 15px">
+                            No new requests
+                        </div>
+                    </div>
+
                     <a class="nav-item nav-link" href="{% url 'post-create' %}">New Post</a>
                     <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
                     <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                     {% else %}
-                        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                    <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                    <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
                     {% endif %}
                 </div>
             </div>
@@ -51,11 +66,11 @@
     <div class="row">
         <div class="col-md-8">
             {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
             {% endif %}
             {% block content %}{% endblock %}
         </div>
@@ -77,18 +92,156 @@
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
+<!--<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"-->
+<!--integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"-->
+<!--crossorigin="anonymous"></script>-->
+<script src="{% static 'blog/jquery.min.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+<script src="{% static 'blog/fontawesome/js/all.js' %}"></script>
+<script src="{% static 'blog/toastr/toastr.min.js' %}"></script>
 <script src="{% static 'blog/site.js' %}"></script>
+
+<script>
+    var token = '{{ csrf_token }}';
+    var userId = '{{ user.id }}';
+
+    $(document).ready(function () {
+        get_friend_request_list(userId);
+    });
+
+    function get_friend_request_list(userId) {
+        $.ajax({
+            headers: {"X-CSRFToken": token},
+            url: "/users/friend_request_list/",
+            type: "post",
+            data: {
+                'userId': userId
+            },
+            success: function (result) {
+                console.log(result);
+
+                var txt = '<h6>Friend Requests</h6><hr>';
+                var txt1 = '<h6>Your Friends</h6><hr>';
+
+                if (result.length !== 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        var requestId = result[i].pk;
+
+                        if (result[i].fields.state === 'Wait') {
+                            txt += "<div class='media' style='margin-bottom: 10px'><img class='rounded-circle' style='margin-right: 25px' width='75' height='75' src='" + result[i].fields.sender_image + "'>" +
+                                "<div class='media-body'><h4>" + result[i].fields.sender_firstName + " " + result[i].fields.sender_lastName + "</h4>" +
+                                "<div style='display: flex'><button class='btn btn-success' onclick='friend_accept(" + requestId + ")'>Accept</button>" +
+                                "&nbsp;&nbsp;<button class='btn btn-info' onclick='friend_reject(" + requestId + ")'>Reject</button>" + "&nbsp;&nbsp;" +
+                                "<button class='btn btn-danger' onclick='friend_block(" + requestId + ")'>Block</button>" + "</div>" +
+                                "</div></div>";
+                        } else if (result[i].fields.sender_id != userId) {
+                            txt1 += "<div class='media' style='margin-bottom: 10px'><img class='rounded-circle' style='margin-right: 25px' width='75' height='75' src='" + result[i].fields.sender_image + "'>" +
+                                "<div class='media-body'><h4>" + result[i].fields.sender_firstName + " " + result[i].fields.sender_lastName + "</h4></div></div>";
+                        } else {
+                            txt1 += "<div class='media' style='margin-bottom: 10px'><img class='rounded-circle' style='margin-right: 25px' width='75' height='75' src='" + result[i].fields.recipient_image + "'>" +
+                                "<div class='media-body'><h4>" + result[i].fields.recipient_firstName + " " + result[i].fields.recipient_lastName + "</h4></div></div>";
+                        }
+                    }
+
+                    $('#friend_box').empty();
+                    $('#friend_box').append(txt);
+                    if (txt === '<h6>Friend Requests</h6><hr>') {
+                        $('#friend_box').append("<div class='text-center' style='width: 100%'>No new requests</div>");
+                    }
+                    $('#friend_box').append(txt1);
+                    if (txt1 === '<h6>Your Friends</h6><hr>') {
+                        $('#friend_box').append("<div class='text-center' style='width: 100%'>No Friends</div>");
+                    }
+                } else {
+                    $('#friend_box').empty();
+                    $('#friend_box').append(txt);
+                    $('#friend_box').append("<div class='text-center' style='width: 100%'>No new requests</div>");
+                    $('#friend_box').append(txt1);
+                    $('#friend_box').append("<div class='text-center' style='width: 100%'>No Friends</div>");
+                }
+
+            }
+        })
+    }
+
+    function friend_request(recipient_id, re_firstName, re_lastName, re_image, sender_id, firstName, lastName, image) {
+
+        $.ajax({
+            headers: {"X-CSRFToken": token},
+            url: "/users/friend_request/",
+            type: "post",
+            data: {
+                'recipient_id': recipient_id,
+                'recipient_firstName': re_firstName,
+                'recipient_lastName': re_lastName,
+                'recipient_image': re_image,
+                'sender_id': sender_id,
+                'sender_firstName': firstName,
+                'sender_lastName': lastName,
+                'sender_image': image,
+            },
+            success: function (response) {
+                console.log(response);
+                if (response.success === 'already_sent') toastr.error("You have already sent the request to him.");
+                else if (response.success === 'already_received') toastr.error("You have already received his request.");
+                else if (response.success === 'block') toastr.error("You can not send request to him.");
+                else toastr.success("The request is  sent successfully.");
+                get_friend_request_list(userId);
+            }
+        })
+    }
+
+    function friend_accept(id) {
+        $.ajax({
+            headers: {"X-CSRFToken": token},
+            url: "/users/accept_friend_request/",
+            type: "post",
+            data: {
+                'id': id
+            },
+            success: function (response) {
+                if (response.success === 'success') toastr.success("Success");
+                get_friend_request_list(userId);
+            }
+        })
+    }
+
+    function friend_reject(id) {
+        $.ajax({
+            headers: {"X-CSRFToken": token},
+            url: "/users/reject_friend_request/",
+            type: "post",
+            data: {
+                'id': id
+            },
+            success: function (response) {
+                if (response.success === 'success') toastr.success("Success");
+                get_friend_request_list(userId);
+            }
+        })
+    }
+
+    function friend_block(id) {
+        $.ajax({
+            headers: {"X-CSRFToken": token},
+            url: "/users/block_friend_request/",
+            type: "post",
+            data: {
+                'id': id
+            },
+            success: function (response) {
+                if (response.success === 'success') toastr.success("Success");
+                get_friend_request_list(userId);
+            }
+        })
+    }
+</script>
 
 </body>
 </html>
-
 
