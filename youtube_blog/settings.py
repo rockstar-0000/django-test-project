@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Django Tutorials 3 of 17
+    # installation of the blog app
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
     'crispy_forms',

@@ -43,6 +43,10 @@ def profile(request):
     }
     return render(request, 'users/profile.html', context)
 
+@login_required()
+def profile_detail(request):
+    return render(request, 'users/profile-detail.html')
+
 
 # Different types of messages from import messages
 # messages.debug
