@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'youtube_blog.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'youtube_blog',
+        'NAME': 'postgres',
         'USER': os.environ.get('POSTGRES_USER'),
         'PASSWORD': os.environ.get('POSTGRES_PASS'),
         'HOST': 'localhost',
