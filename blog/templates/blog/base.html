@@ -1,3 +1,5 @@
+<!--# Django Tutorials 3 of 17-->
+
 {% load static %}
 
 <!DOCTYPE html>
@@ -13,6 +15,8 @@
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
+
+    <!--    # Django Tutorials 3 of 17-->
     {% if title %}
     <title>Django About - {{ title }}</title>
     {% else %}
@@ -40,8 +44,8 @@
                     <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
                     <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                     {% else %}
-                        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                    <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                    <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
                     {% endif %}
                 </div>
             </div>
@@ -50,14 +54,19 @@
 </header>
 <main role="main" class="container">
     <div class="row">
-            <div class="col-md-8">
+        <div class="col-md-8">
             {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
             {% endif %}
+            <!--                # Django Tutorials 3 of 17-->
+            <!--                # blocks are where child templates that have inherited-->
+            <!--                # from this parent template can insert themselves. You-->
+            <!--                # can call the block whatever you want. Here, we are calling-->
+            <!--                # it "content"-->
             {% block content %}{% endblock %}
         </div>
         <div class="col-md-4">

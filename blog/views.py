@@ -15,20 +15,20 @@ from .models import Post
 
 # Django Tutorials 3 of 17
 # dummy data
-posts = [
-    {
-        'author': 'Jason Green',
-        'title': 'Blog Post 1',
-        'content': 'First Post Content',
-        'date_posted': 'Some time'
-    },
-    {
-        'author': 'Smack me',
-        'title': 'Blog Post 2',
-        'content': 'Second Post Content',
-        'date_posted': 'Yesterday'
-    }
-]
+# posts = [
+#     {
+#         'author': 'Jason Green',
+#         'title': 'Blog Post 1',
+#         'content': 'First Post Content',
+#         'date_posted': 'Some time'
+#     },
+#     {
+#         'author': 'Smack me',
+#         'title': 'Blog Post 2',
+#         'content': 'Second Post Content',
+#         'date_posted': 'Yesterday'
+#     }
+# ]
 
 def home(request):
     # Django Tutorials 3 of 17
@@ -108,10 +108,12 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         else:
             return False
-# Django Tutorials 3 of 17
+
 # Django Tutorials 2 of 17
 # this function will send the user to 'blog/about.html' template
 # you need to make sure the urls.py has the views.about call in the
 # path() function
+# the "title" is a key that can then be used as a variable in the
+# blog/about.html template
 def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
