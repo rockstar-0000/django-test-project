@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'youtube_blog.urls'
+ROOT_URLCONF = 'django_site.urls'
 
 TEMPLATES = [
     {
