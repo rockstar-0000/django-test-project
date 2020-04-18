@@ -128,9 +128,15 @@ def block_friend_request(request):
         block = Friend.objects.get(pk=id)
         block.state = "Block"
         block.save()
-
         data_response['success'] = 'success'
         return JsonResponse(data_response)
+
+
+@login_required()
+def profile_detail(request):
+    return render(request, 'users/profile-detail.html')
+
+
 
 # Different types of messages from import messages
 # messages.debug
