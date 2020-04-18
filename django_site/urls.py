@@ -43,8 +43,9 @@ urlpatterns = [
     # Django Tutorials 2 of 17
     # because of the empty string, it redirects to blog/urls.py
     path('', include('blog.urls')),
-
+    path('users/', include('users.urls'))
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
