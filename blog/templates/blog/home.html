@@ -6,37 +6,35 @@
         <img class="rounded-circle article-img" src="{{ user.profile.image.url }}" alt="">
         <div class="media-body text-center my-auto">
             <div class="form-group">
-                <textarea class="btn btn-outline-primary form-control form-rounded" id="message" data-toggle="modal" data-target="#mymodal">Tell Us Something Good!</textarea>
+                <button class="btn btn-outline-primary form-control form-rounded" id="message" data-toggle="modal" data-target="#mymodal">Tell Us Something Good!</button>
             </div>
         </div>
     </article>
 
-
-
     <!-- MODAL -->
-<!--    <div id="mymodal" class="modal">-->
-<!--        <div class="modal-dialog ">-->
-<!--            <div class="modal-content">-->
-<!--                <div class="modal-header">-->
-<!--                    <h5 class="modal-title">Create Post</h5>-->
-<!--                    <button class="close" data-dismiss="modal">&times;</button>-->
-<!--                </div>-->
-<!--                <div class="modal-body">-->
-<!--                    {% load crispy_forms_tags %}-->
-<!--                        <form action="" method="POST">-->
-<!--                            {% csrf_token %}-->
-<!--                            <fieldset class="form-group">-->
-<!--                                {{ form|crispy }} #this needs to be worked on-->
-<!--                            </fieldset>-->
-<!--                        </form>-->
+    <div id="mymodal" class="modal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Post</h5>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    {% load crispy_forms_tags %}
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <fieldset class="form-group">
+                                {{ form|crispy }} #this needs to be worked on
+                            </fieldset>
+                        </form>
 
-<!--                </div>-->
-<!--                <div class="modal-footer">-->
-<!--                    <button class="btn btn-outline-info" type="submit">Post</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-info" type="submit">Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endif %}
 {% for post in posts %}
 <article class="media content-section">

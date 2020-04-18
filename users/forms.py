@@ -19,12 +19,11 @@ class UserRegisterForm(UserCreationForm):
     # email = forms.EmailField(max_length=200)
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
-
+    # gender = forms.CharField(max_length=6, choices=GENDER_CHOICES, default=single_male)
 
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
-
 
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
@@ -33,8 +32,7 @@ class UserUpdateForm(forms.ModelForm):
         model = User
         fields = ['username', 'email']
 
-
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image', 'gender', 'city', 'state', 'zip']
+        fields = ['image', 'gender']

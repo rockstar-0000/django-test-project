@@ -22,9 +22,6 @@ class Profile(models.Model):
     image = models.ImageField(default='default.jpg', upload_to=get_upload_path)
     # image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     gender = models.CharField(max_length=25, choices=GENDER_CHOICES, default=single_male)
-    city = models.CharField(max_length=50, default="")
-    state = models.CharField(max_length=3, default="")
-    zip = models.CharField(max_length=5, default="")
 
     def __str__(self):
         return f'{self.user.username} Profile'

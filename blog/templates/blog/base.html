@@ -1,5 +1,3 @@
-<!--# Django Tutorials 3 of 17-->
-
 {% load static %}
 
 <!DOCTYPE html>
@@ -9,15 +7,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'blog/toastr/toastr.min.css' %}">
 
     <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
-
-    <!--    # Django Tutorials 3 of 17-->
     {% if title %}
     <title>Django About - {{ title }}</title>
     {% else %}
@@ -77,26 +72,21 @@
             </div>
             {% endfor %}
             {% endif %}
-            <!--                # Django Tutorials 3 of 17-->
-            <!--                # blocks are where child templates that have inherited-->
-            <!--                # from this parent template can insert themselves. You-->
-            <!--                # can call the block whatever you want. Here, we are calling-->
-            <!--                # it "content"-->
             {% block content %}{% endblock %}
         </div>
-{#        <div class="col-md-4">#}
-{#            <div class="content-section">#}
-{#                <h3>Our Sidebar</h3>#}
-{#                <p class='text-muted'>You can put any information here you'd like.#}
-{#                <ul class="list-group">#}
-{#                    <li class="list-group-item list-group-item-light">Latest Posts</li>#}
-{#                    <li class="list-group-item list-group-item-light">Announcements</li>#}
-{#                    <li class="list-group-item list-group-item-light">Calendars</li>#}
-{#                    <li class="list-group-item list-group-item-light">etc</li>#}
-{#                </ul>#}
-{#                </p>#}
-{#            </div>#}
-{#        </div>#}
+        <div class="col-md-4">
+            <div class="content-section">
+                <h3>Our Sidebar</h3>
+                <p class='text-muted'>You can put any information here you'd like.
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-light">Latest Posts</li>
+                    <li class="list-group-item list-group-item-light">Announcements</li>
+                    <li class="list-group-item list-group-item-light">Calendars</li>
+                    <li class="list-group-item list-group-item-light">etc</li>
+                </ul>
+                </p>
+            </div>
+        </div>
     </div>
 </main>
 

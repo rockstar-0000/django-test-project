@@ -1,6 +1,3 @@
-# Django Tutorials 3 of 17
-# django created a shortcut for HTTP rendering
-# called render
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LoginView as DefaultLoginView
@@ -22,8 +19,7 @@ from users.models import Profile
 
 # from ..users import views as user_views
 
-# Django Tutorials 3 of 17
-# dummy data
+
 # posts = [
 #     {
 #         'author': 'Jason Green',
@@ -40,20 +36,9 @@ from users.models import Profile
 # ]
 
 def home(request):
-    # Django Tutorials 3 of 17
-    # dictionary called "context" with a key called "posts" and
-    # the second "posts" is the dictionary above
     context = {
-        # Django Tutorials 3 of 17
-        # 'posts': posts
         'posts': Post.objects.all()
     }
-    # Django Tutorials 3 of 17
-    # return() takes "request" object as first argument, then the template
-    # name and referenced by subdirectory in app directory (called blog)
-    # "context" is an optional argument. It allows us to pass information
-    # into our template.
-    # VIEWS need to either return an HTTP Response, or an Exception
     return render(request, 'blog/home.html', context)
 
 
@@ -122,12 +107,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         else:
             return False
 
-# Django Tutorials 2 of 17
-# this function will send the user to 'blog/about.html' template
-# you need to make sure the urls.py has the views.about call in the
-# path() function
-# the "title" is a key that can then be used as a variable in the
-# blog/about.html template
+
 def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
 
@@ -137,4 +117,3 @@ def redirectPage(request):
     else:
         response = PostListview.as_view
         return redirect('/home')
-
