@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>FTP - Responsive Bootstrap 4 Admin Dashboard Template</title>
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{% static 'users/images/favicon.ico' %}" />
+    <link rel="shortcut icon" href="{% static 'users/images/favicon.ico' %}"/>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{% static 'users/css/bootstrap.min.css' %}">
     <!-- Typography CSS -->
@@ -29,9 +29,9 @@
     <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
             {% if user.is_authenticated %}
-            <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">Django Blog</a>
+                <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">Django Blog</a>
             {% else %}
-            <a class="navbar-brand mr-4" href="">Django Blog</a>
+                <a class="navbar-brand mr-4" href="">Django Blog</a>
             {% endif %}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
                     aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,27 +40,27 @@
             <div class="collapse navbar-collapse" id="navbarToggle">
                 <div class="navbar-nav mr-auto">
                     {% if user.is_authenticated %}
-                    <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
-                    <a class="nav-item nav-link" href="{% url 'blog-about' %}">About</a>
+                        <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
+                        <a class="nav-item nav-link" href="{% url 'blog-about' %}">About</a>
                     {% endif %}
                 </div>
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
-                    <div class="dropdown">
-                        <a class="nav-item nav-link" href="#" role="button" data-toggle="dropdown"><span
-                                class="fa fa-user-plus"></span></a>
-                        <div id="friend_box" class="dropdown-menu" style="min-width: 400px; padding:10px 15px">
-                            No new requests
+                        <div class="dropdown">
+                            <a class="nav-item nav-link" href="#" role="button" data-toggle="dropdown"><span
+                                    class="fa fa-user-plus"></span></a>
+                            <div id="friend_box" class="dropdown-menu" style="min-width: 400px; padding:10px 15px">
+                                No new requests
+                            </div>
                         </div>
-                    </div>
 
-                    <a class="nav-item nav-link" href="{% url 'post-create' %}">New Post</a>
-                    <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
-                    <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+                        <a class="nav-item nav-link" href="{% url 'post-create' %}">New Post</a>
+                        <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+                        <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                     {% else %}
-                    <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                    <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
                     {% endif %}
                 </div>
             </div>
@@ -170,6 +170,7 @@
 <script src="{% static 'blog/site.js' %}"></script>
 
 <script>
+    var notify_num = 0;
     var token = '{{ csrf_token }}';
     var userId = '{{ user.id }}';
 
@@ -178,6 +179,7 @@
     });
 
     function get_friend_request_list(userId) {
+        notify_num++;
         $.ajax({
             headers: {"X-CSRFToken": token},
             url: "/users/friend_request_list/",
@@ -202,9 +204,16 @@
                                 "&nbsp;&nbsp;<button class='btn btn-info' onclick='friend_reject(" + requestId + ")'>Reject</button>" + "&nbsp;&nbsp;" +
                                 "<button class='btn btn-danger' onclick='friend_block(" + requestId + ")'>Block</button>" + "</div>" +
                                 "</div></div>";
+                            if (notify_num === 1)
+                                toastr.info("New Friend Request from " + "<h3 style='color: red'>" + result[i].fields.sender_firstName + " " + result[i].fields.sender_lastName + "<h3>");
+
                         } else if (result[i].fields.sender_id != userId) {
                             txt1 += "<div class='media' style='margin-bottom: 10px'><img class='rounded-circle' style='margin-right: 25px' width='75' height='75' src='" + result[i].fields.sender_image + "'>" +
                                 "<div class='media-body'><h4>" + result[i].fields.sender_firstName + " " + result[i].fields.sender_lastName + "</h4></div></div>";
+                        } else if (result[i].fields.sender_id == userId && result[i].fields.state == 'New_Accept') {
+                            txt1 += "<div class='media' style='margin-bottom: 10px'><img class='rounded-circle' style='margin-right: 25px' width='75' height='75' src='" + result[i].fields.recipient_image + "'>" +
+                                "<div class='media-body'><h4>" + result[i].fields.recipient_firstName + " " + result[i].fields.recipient_lastName + "</h4><span class='badge badge-danger'>New</span></div></div>";
+                            toastr.info(result[i].fields.recipient_firstName + " " + result[i].fields.recipient_lastName + " accepted your friend request");
                         } else {
                             txt1 += "<div class='media' style='margin-bottom: 10px'><img class='rounded-circle' style='margin-right: 25px' width='75' height='75' src='" + result[i].fields.recipient_image + "'>" +
                                 "<div class='media-body'><h4>" + result[i].fields.recipient_firstName + " " + result[i].fields.recipient_lastName + "</h4></div></div>";
@@ -233,6 +242,7 @@
     }
 
     function friend_request(recipient_id, re_firstName, re_lastName, re_image, sender_id, firstName, lastName, image) {
+        $('#btn_friend_req').text("Request Sent");
 
         $.ajax({
             headers: {"X-CSRFToken": token},
@@ -253,7 +263,9 @@
                 if (response.success === 'already_sent') toastr.error("You have already sent the request to him.");
                 else if (response.success === 'already_received') toastr.error("You have already received his request.");
                 else if (response.success === 'block') toastr.error("You can not send request to him.");
-                else toastr.success("The request is  sent successfully.");
+                else {
+                    toastr.success("The request is  sent successfully.");
+                }
                 get_friend_request_list(userId);
             }
         })
@@ -303,6 +315,24 @@
             }
         })
     }
+
+    function checkBlock(recipientId, recipientName) {
+        {#alert('sdfsf');#}
+        $.ajax({
+            headers: {"X-CSRFToken": token},
+            url: "/users/check_block/",
+            type: "post",
+            data: {
+                recipientId: recipientId
+            },
+            success: function (result) {
+                if (result.response === 'yes') toastr.error("You can not see the person's profile");
+                else window.location.href = '/users/profile/' + recipientName;
+            }
+        })
+    }
+
+
 </script>
 
 </body>

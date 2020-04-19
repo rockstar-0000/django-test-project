@@ -13,6 +13,8 @@ from .models import Friend
 data_response = {}
 
 
+# class
+
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -67,7 +69,7 @@ def friend_request(request):
 
         already_list1 = Friend.objects.filter(recipient_id=recipient_id, sender_id=sender_id)
         already_list2 = Friend.objects.filter(recipient_id=sender_id, sender_id=recipient_id)
-        print(len(already_list1))
+
         if len(already_list1) != 0:
             check_block = Friend.objects.filter(recipient_id=recipient_id, sender_id=sender_id, state='Block')
             if len(check_block) != 0:
@@ -80,8 +82,10 @@ def friend_request(request):
             return JsonResponse(data_response)
         else:
             data_response['success'] = 'success'
-            friend = Friend(sender_id=sender_id, recipient_id=recipient_id, sender_firstName=sender_firstName, sender_lastName=sender_lastName, sender_image=sender_image,
-                            recipient_firstName=recipient_firstName, recipient_lastName=recipient_lastName, recipient_image=recipient_image)
+            friend = Friend(sender_id=sender_id, recipient_id=recipient_id, sender_firstName=sender_firstName,
+                            sender_lastName=sender_lastName, sender_image=sender_image,
+                            recipient_firstName=recipient_firstName, recipient_lastName=recipient_lastName,
+                            recipient_image=recipient_image)
             Friend.save(friend)
             return JsonResponse(data_response)
 
@@ -90,10 +94,13 @@ def get_friend_request_list(request):
     if request.method == 'POST':
         userId = request.POST.get('userId')
 
-        friend_request_object = Friend.objects.filter(Q(recipient_id=userId, state="Wait") | Q(recipient_id=userId, state="Accept") | Q(sender_id=userId, state='Accept'))
-        # print(friend_request_list)
+        friend_request_object = Friend.objects.filter(
+            Q(recipient_id=userId, state="Wait") | Q(recipient_id=userId, state="Accept") | Q(recipient_id=userId, state="New_Accept") | Q(sender_id=userId,
+                                                                                              state='Accept') | Q(sender_id=userId, state="New_Accept"))
 
         friend_request_list = serializers.serialize('json', friend_request_object)
+
+        Friend.objects.filter(sender_id=userId, state="New_Accept").update(state="Accept")
 
         return HttpResponse(friend_request_list, content_type="text/json-command-filtered")
 
@@ -103,7 +110,7 @@ def accept_friend_request(request):
         id = request.POST.get('id')
 
         modify = Friend.objects.get(pk=id)
-        modify.state = "Accept"
+        modify.state = "New_Accept"
         modify.save()
 
         data_response['success'] = 'success'
@@ -132,8 +139,56 @@ def block_friend_request(request):
         data_response['success'] = 'success'
         return JsonResponse(data_response)
 
+
 def profile_detail_2(request):
+    # print(request)
     return render(request, 'users/profile_detail2.html')
+
+
+def check_block(request):
+    if request.method == 'POST':
+        recipientId = request.POST.get('recipientId')
+        senderId = request.POST.get('senderId')
+        already_block = Friend.objects.filter(
+            Q(sender_id=request.user.id, recipient_id=recipientId, state="Block") | Q(sender_id=recipientId,
+                                                                                     recipient_id=request.user.id,
+                                                                                     state="Block"))
+        if len(already_block) != 0:
+            data_response['response'] = 'yes'
+            return JsonResponse(data_response)
+        else:
+            data_response['response'] = 'no'
+            return JsonResponse(data_response)
+
+
+def profile_detail(request, username):
+    selectedId = User.objects.filter(username=username).first().id
+    already = ""
+    friend = {}
+    already_sent = Friend.objects.filter(sender_id=request.user.id, recipient_id=selectedId, state="Wait").first()
+    already_received = Friend.objects.filter(sender_id=selectedId, recipient_id=request.user.id, state="Wait").first()
+    already_friend = Friend.objects.filter(
+        Q(sender_id=request.user.id, recipient_id=selectedId, state="Accept") | Q(sender_id=selectedId,
+                                                                                  recipient_id=request.user.id,
+                                                                                  state="Accept")).first()
+    already_block = Friend.objects.filter(
+        Q(sender_id=request.user.id, recipient_id=selectedId, state="Block") | Q(sender_id=selectedId,
+                                                                                  recipient_id=request.user.id,
+                                                                                  state="Block")).first()
+    if already_sent is not None:
+        already = "sent"
+    elif already_received is not None:
+        already = "received"
+        friend = already_received
+    elif already_friend is not None:
+        already = "friend"
+
+    context = {
+        'selectedUser': User.objects.filter(username=username).first(),
+        'friend': friend,
+        'already': already
+    }
+    return render(request, 'users/profile_detail2.html', context)
 
 # Different types of messages from import messages
 # messages.debug
