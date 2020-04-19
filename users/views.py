@@ -132,6 +132,9 @@ def block_friend_request(request):
         data_response['success'] = 'success'
         return JsonResponse(data_response)
 
+def profile_detail_2(request):
+    return render(request, 'users/profile_detail2.html')
+
 # Different types of messages from import messages
 # messages.debug
 # messages.info
