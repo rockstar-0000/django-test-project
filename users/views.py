@@ -95,8 +95,10 @@ def get_friend_request_list(request):
         userId = request.POST.get('userId')
 
         friend_request_object = Friend.objects.filter(
-            Q(recipient_id=userId, state="Wait") | Q(recipient_id=userId, state="Accept") | Q(recipient_id=userId, state="New_Accept") | Q(sender_id=userId,
-                                                                                              state='Accept') | Q(sender_id=userId, state="New_Accept"))
+            Q(recipient_id=userId, state="Wait") | Q(recipient_id=userId, state="Accept") | Q(recipient_id=userId,
+                                                                                              state="New_Accept") | Q(
+                sender_id=userId,
+                state='Accept') | Q(sender_id=userId, state="New_Accept"))
 
         friend_request_list = serializers.serialize('json', friend_request_object)
 
@@ -151,8 +153,8 @@ def check_block(request):
         senderId = request.POST.get('senderId')
         already_block = Friend.objects.filter(
             Q(sender_id=request.user.id, recipient_id=recipientId, state="Block") | Q(sender_id=recipientId,
-                                                                                     recipient_id=request.user.id,
-                                                                                     state="Block"))
+                                                                                      recipient_id=request.user.id,
+                                                                                      state="Block"))
         if len(already_block) != 0:
             data_response['response'] = 'yes'
             return JsonResponse(data_response)
@@ -170,11 +172,11 @@ def profile_detail(request, username):
     already_friend = Friend.objects.filter(
         Q(sender_id=request.user.id, recipient_id=selectedId, state="Accept") | Q(sender_id=selectedId,
                                                                                   recipient_id=request.user.id,
-                                                                                  state="Accept")).first()
-    already_block = Friend.objects.filter(
-        Q(sender_id=request.user.id, recipient_id=selectedId, state="Block") | Q(sender_id=selectedId,
-                                                                                  recipient_id=request.user.id,
-                                                                                  state="Block")).first()
+                                                                                  state="Accept") | Q(
+            sender_id=request.user.id, recipient_id=selectedId, state="New_Accept") | Q(sender_id=selectedId,
+                                                                                    recipient_id=request.user.id,
+                                                                                    state="New_Accept")).first()
+
     if already_sent is not None:
         already = "sent"
     elif already_received is not None:
