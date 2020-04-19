@@ -2,22 +2,23 @@
 
 <!DOCTYPE html>
 <html lang="en">
+<!doctype html>
+<html lang="en">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <title>FTP - Responsive Bootstrap 4 Admin Dashboard Template</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'users/images/favicon.ico' %}" />
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'blog/toastr/toastr.min.css' %}">
-
-    <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
-    {% if title %}
-    <title>Django About - {{ title }}</title>
-    {% else %}
-    <title>Django Blog</title>
-    {% endif %}
+    <link rel="stylesheet" href="{% static 'users/css/bootstrap.min.css' %}">
+    <!-- Typography CSS -->
+    <link rel="stylesheet" href="{% static 'users/css/typography.css' %}">
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="{% static 'users/css/responsive.css' %}">
 </head>
 <body>
 <header class="site-header">
@@ -62,49 +63,107 @@
         </div>
     </nav>
 </header>
-<main role="main" class="container">
-    <div class="row">
-        <div class="col-md-8">
-            {% if messages %}
-            {% for message in messages %}
+{#<main role="main" class="container">#}
+{#    <div class="row">#}
+{#        <div class="col">#}
+{#            {% if messages %}#}
+{#            {% for message in messages %}#}
+{#            <div class="alert alert-{{ message.tags }}">#}
+{#                {{ message }}#}
+{#            </div>#}
+{#            {% endfor %}#}
+{#            {% endif %}#}
+{#            {% block content %}{% endblock %}#}
+{#        </div>#}
+{#    </div>#}
+{#</main>#}
+<div class="col">
+    {% if messages %}
+        {% for message in messages %}
             <div class="alert alert-{{ message.tags }}">
                 {{ message }}
             </div>
-            {% endfor %}
-            {% endif %}
-            {% block content %}{% endblock %}
-        </div>
-        <div class="col-md-4">
-            <div class="content-section">
-                <h3>Our Sidebar</h3>
-                <p class='text-muted'>You can put any information here you'd like.
-                <ul class="list-group">
-                    <li class="list-group-item list-group-item-light">Latest Posts</li>
-                    <li class="list-group-item list-group-item-light">Announcements</li>
-                    <li class="list-group-item list-group-item-light">Calendars</li>
-                    <li class="list-group-item list-group-item-light">etc</li>
+        {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+</div>
+
+<!-- Footer -->
+<footer class="bg-white iq-footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item"><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li class="list-inline-item"><a href="terms-of-service.html">Terms of Use</a></li>
                 </ul>
-                </p>
+            </div>
+            <div class="col-lg-6 text-right">
+                Copyright 2020 <a href="#">FTP</a> All Rights Reserved.
             </div>
         </div>
     </div>
-</main>
+</footer>
+<!-- Footer END -->
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="{% static 'users/js/jquery.min.js' %}"></script>
+<script src="{% static 'users/js/popper.min.js' %}"></script>
+{#<script src="{% static 'users/js/bootstrap.min.js' %}"></script>#}
+<!-- Appear JavaScript -->
+<script src="{% static 'users/js/jquery.appear.js' %}"></script>
+<!-- Countdown JavaScript -->
+<script src="{% static 'users/js/countdown.min.js' %}"></script>
+<!-- Counterup JavaScript -->
+<script src="{% static 'users/js/waypoints.min.js' %}"></script>
+<script src="{% static 'users/js/jquery.counterup.min.js' %}"></script>
+<!-- Wow JavaScript -->
+<script src="{% static 'users/js/wow.min.js' %}"></script>
+<!-- Apexcharts JavaScript -->
+<script src="{% static 'users/js/apexcharts.js' %}"></script>
+<!-- Slick JavaScript -->
+<script src="{% static 'users/js/slick.min.js' %}"></script>
+<!-- Select2 JavaScript -->
+<script src="{% static 'users/js/select2.min.js' %}"></script>
+<!-- Owl Carousel JavaScript -->
+<script src="{% static 'users/js/owl.carousel.min.js' %}"></script>
+<!-- Magnific Popup JavaScript -->
+<script src="{% static 'users/js/jquery.magnific-popup.min.js' %}"></script>
+<!-- Smooth Scrollbar JavaScript -->
+<script src="{% static 'users/js/smooth-scrollbar.js' %}"></script>
+<!-- lottie JavaScript -->
+<script src="{% static 'users/js/lottie.js' %}"></script>
+<!-- am core JavaScript -->
+<script src="{% static 'users/js/core.js' %}"></script>
+<!-- am charts JavaScript -->
+<script src="{% static 'users/js/charts.js' %}"></script>
+<!-- am animated JavaScript -->
+<script src="{% static 'users/js/animated.js' %}"></script>
+<!-- am kelly JavaScript -->
+<script src="{% static 'users/js/kelly.js' %}"></script>
+<!-- am maps JavaScript -->
+<script src="{% static 'users/js/maps.js' %}"></script>
+<!-- am worldLow JavaScript -->
+<script src="{% static 'users/js/worldLow.js' %}"></script>
+<!-- Chart Custom JavaScript -->
+<script src="{% static 'users/js/chart-custom.js' %}"></script>
+<!-- Custom JavaScript -->
+<script src="{% static 'users/js/custom.js' %}"></script>
+
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<!--<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"-->
-<!--integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"-->
-<!--crossorigin="anonymous"></script>-->
-<script src="{% static 'blog/jquery.min.js' %}"></script>
+{#<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>#}
+{#<script src="{% static 'blog/jquery.min.js' %}"></script>#}
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-<script src="{% static 'blog/fontawesome/js/all.js' %}"></script>
-<script src="{% static 'blog/toastr/toastr.min.js' %}"></script>
-<script src="{% static 'blog/site.js' %}"></script>
+{#<script src="{% static 'blog/fontawesome/js/all.js' %}"></script>#}
+{#<script src="{% static 'blog/toastr/toastr.min.js' %}"></script>#}
+{#<script src="{% static 'blog/site.js' %}"></script>#}
 
 <script>
     var token = '{{ csrf_token }}';
