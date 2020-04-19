@@ -1,7 +1,6 @@
 from django.urls import path
 
 
-
 from . import views
 
 urlpatterns = [
@@ -13,5 +12,7 @@ urlpatterns = [
 
     # new paths for new site
 
-    path('profile/detail_2', views.profile_detail_2, name='profile-detail2')
+    path('profile/detail_2/', views.profile_detail_2, name='profile-detail2'),
+    path('profile/<str:username>/', views.profile_detail, name='profile-detail'),
+    path('check_block/', views.check_block, name='check_block')
 ]
