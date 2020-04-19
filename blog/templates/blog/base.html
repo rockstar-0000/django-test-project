@@ -19,6 +19,10 @@
     <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
     <!-- Responsive CSS -->
     <link rel="stylesheet" href="{% static 'users/css/responsive.css' %}">
+
+    <link rel="stylesheet" href="{% static 'blog/toastr/toastr.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
 </head>
 <body>
 <header class="site-header">
@@ -161,9 +165,9 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-{#<script src="{% static 'blog/fontawesome/js/all.js' %}"></script>#}
-{#<script src="{% static 'blog/toastr/toastr.min.js' %}"></script>#}
-{#<script src="{% static 'blog/site.js' %}"></script>#}
+<script src="{% static 'blog/fontawesome/js/all.js' %}"></script>
+<script src="{% static 'blog/toastr/toastr.min.js' %}"></script>
+<script src="{% static 'blog/site.js' %}"></script>
 
 <script>
     var token = '{{ csrf_token }}';
