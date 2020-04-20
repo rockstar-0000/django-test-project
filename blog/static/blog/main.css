@@ -87,9 +87,12 @@ a.article-title:hover {
     font-size: 2.5rem;
 }
 
-
-
 .friend-request-image {
     margin-right: 20px;
     margin-bottom: 16px;
+}
+
+.input_file_hidden {
+    width: 0.1px;
+    height: 0.1px;
 }

@@ -1,6 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LoginView as DefaultLoginView
+from django.conf import settings
+from django.http import JsonResponse, HttpResponse
+from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AnonymousUser
@@ -35,6 +38,8 @@ from users.models import Profile
 #     }
 # ]
 
+data_response = {}
+
 def home(request):
     context = {
         'posts': Post.objects.all()
@@ -56,6 +61,7 @@ class UserPostListview(ListView):
     # template_name = 'blog/user_posts.html'
     template_name = 'users/profile-detail.html'
     context_object_name = 'selectedUser'
+
     # ordering = ['-date_posted']
     # paginate_by = 10
 
@@ -111,9 +117,24 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
 
+
 def redirectPage(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     else:
         response = PostListview.as_view
         return redirect('/home')
+
+
+def upload_post_images(request):
+    upload_files = request.FILES.getlist('post_images')
+    fs = FileSystemStorage()
+    username = str(request.user)
+
+    for file in upload_files:
+        destination = "/" + username + "/post/" + file.name
+        path = settings.MEDIA_ROOT + destination
+        fs.save(path, file)
+
+    data_response['success'] = "success"
+    return JsonResponse(data_response)

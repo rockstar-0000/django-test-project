@@ -174,7 +174,6 @@
     {#localStorage.setItem('notify_num', parseInt(notify_num) + 1);#}
     var token = '{{ csrf_token }}';
     var userId = '{{ user.id }}';
-    console.log(window.location.pathname);
 
     if (window.location.pathname === '/logout/') {
         localStorage.removeItem('userId');
@@ -343,6 +342,32 @@
                 else window.location.href = '/users/profile/' + recipientName;
             }
         })
+    }
+
+    function add_multiple_post_image() {
+        var data = new FormData();
+        $.each($('#input_post_image')[0].files, function (i, file) {
+            data.append("post_images", file);
+            console.log(file);
+        });
+        data.append("csrfmiddlewaretoken", token);
+
+        {#console.log(data);#}
+
+        $.ajax({
+            headers: {"X-CSRFToken": token},
+            url: '/blog/upload_post_images/',
+            type: "post",
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+
+            success: function (result) {
+                alert('fdsfd');
+            }
+        })
+
     }
 
 
