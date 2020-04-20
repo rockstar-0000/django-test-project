@@ -256,10 +256,10 @@
                                 <button class="btn btn-outline-primary">Request Pending</button>
                             {% endif %}
                             {% if already == 'received' %}
-                                <button class="btn btn-success" onclick="friend_accept({{ friend.id }})"> Accept
+                                <button class="btn btn-success" id="btn_accept" onclick="friend_accept({{ friend.id }})"> Accept
                                 </button>
-                                <button class="btn btn-info" onclick="friend_reject({{ friend.id }})"> Delete</button>
-                                <button class="btn btn-danger" onclick="friend_block({{ friend.id }})"> Block</button>
+                                <button class="btn btn-info" id="btn_decline" onclick="friend_reject({{ friend.id }})"> Decline </button>
+                                <button class="btn btn-danger" id="btn_block" onclick="friend_block({{ friend.id }})"> Block </button>
                             {% endif %}
                             {% if already == 'friend' %}
                                 <button class="btn btn-outline-primary">Friend</button>

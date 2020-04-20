@@ -170,16 +170,23 @@
 <script src="{% static 'blog/site.js' %}"></script>
 
 <script>
-    var notify_num = 0;
+    {#var notify_num = localStorage.getItem('notify_num');#}
+    {#localStorage.setItem('notify_num', parseInt(notify_num) + 1);#}
     var token = '{{ csrf_token }}';
     var userId = '{{ user.id }}';
+    console.log(window.location.pathname);
+
+    if (window.location.pathname === '/logout/') {
+        localStorage.removeItem('userId');
+    }
 
     $(document).ready(function () {
-        get_friend_request_list(userId);
+        if (userId !== "None") {
+            get_friend_request_list(userId);
+        }
     });
 
     function get_friend_request_list(userId) {
-        notify_num++;
         $.ajax({
             headers: {"X-CSRFToken": token},
             url: "/users/friend_request_list/",
@@ -204,8 +211,9 @@
                                 "&nbsp;&nbsp;<button class='btn btn-info' onclick='friend_reject(" + requestId + ")'>Reject</button>" + "&nbsp;&nbsp;" +
                                 "<button class='btn btn-danger' onclick='friend_block(" + requestId + ")'>Block</button>" + "</div>" +
                                 "</div></div>";
-                            if (notify_num === 1)
+                            if (userId != localStorage.getItem('userId')) {
                                 toastr.info("New Friend Request from " + "<h3 style='color: red'>" + result[i].fields.sender_firstName + " " + result[i].fields.sender_lastName + "<h3>");
+                            }
 
                         } else if (result[i].fields.sender_id != userId) {
                             txt1 += "<div class='media' style='margin-bottom: 10px'><img class='rounded-circle' style='margin-right: 25px' width='75' height='75' src='" + result[i].fields.sender_image + "'>" +
@@ -213,12 +221,16 @@
                         } else if (result[i].fields.sender_id == userId && result[i].fields.state == 'New_Accept') {
                             txt1 += "<div class='media' style='margin-bottom: 10px'><img class='rounded-circle' style='margin-right: 25px' width='75' height='75' src='" + result[i].fields.recipient_image + "'>" +
                                 "<div class='media-body'><h4>" + result[i].fields.recipient_firstName + " " + result[i].fields.recipient_lastName + "</h4><span class='badge badge-danger'>New</span></div></div>";
+
                             toastr.info(result[i].fields.recipient_firstName + " " + result[i].fields.recipient_lastName + " accepted your friend request");
+
                         } else {
                             txt1 += "<div class='media' style='margin-bottom: 10px'><img class='rounded-circle' style='margin-right: 25px' width='75' height='75' src='" + result[i].fields.recipient_image + "'>" +
                                 "<div class='media-body'><h4>" + result[i].fields.recipient_firstName + " " + result[i].fields.recipient_lastName + "</h4></div></div>";
                         }
                     }
+
+                    localStorage.setItem('userId', userId);
 
                     $('#friend_box').empty();
                     $('#friend_box').append(txt);
@@ -281,6 +293,8 @@
             },
             success: function (response) {
                 if (response.success === 'success') toastr.success("Success");
+                $('#btn_accept').remove();
+                $('#btn_decline').remove();
                 get_friend_request_list(userId);
             }
         })
@@ -317,7 +331,6 @@
     }
 
     function checkBlock(recipientId, recipientName) {
-        {#alert('sdfsf');#}
         $.ajax({
             headers: {"X-CSRFToken": token},
             url: "/users/check_block/",
