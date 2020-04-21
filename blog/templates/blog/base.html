@@ -344,32 +344,39 @@
         })
     }
 
-    function add_multiple_post_image() {
-        var data = new FormData();
-        $.each($('#input_post_image')[0].files, function (i, file) {
-            data.append("post_images", file);
-            console.log(file);
-        });
+    var data = new FormData();
+
+    function submit_new_post() {
+        {#$.each($('#input_post_image')[0].files, function (i, file) {#}
+        var post_content = $('#input_post_content').val();
+        data.append("post_content", post_content);
+
         data.append("csrfmiddlewaretoken", token);
 
-        {#console.log(data);#}
+        console.log(data);
 
         $.ajax({
             headers: {"X-CSRFToken": token},
-            url: '/blog/upload_post_images/',
+            url: '/blog/add_new_post/',
             type: "post",
             data: data,
             cache: false,
             contentType: false,
             processData: false,
-
             success: function (result) {
-                alert('fdsfd');
+                window.location.reload();
+                toastr.success("New Post was successfully created");
             }
         })
-
     }
 
+    function preview_post_image() {
+        var num_images = document.getElementById('input_post_image').files.length;
+        for (var i = 0; i < num_images; i++) {
+            $('#div_preview_post_image').append("<div style='margin-right: 10px; margin-bottom: 10px;width: 50px;'><img src='" + URL.createObjectURL(event.target.files[i]) + "' width='50' height='50'></div>");
+            data.append("post_images", document.getElementById('input_post_image').files[i]);
+        }
+    }
 
 </script>
 

@@ -22,6 +22,6 @@ urlpatterns = [
     # path('', views.home, name='blog-home'),
     path('about/', views.about, name='blog-about'),
 
-    path('upload_post_images/', views.upload_post_images, name='upload_post_images')
+    path('add_new_post/', views.add_new_post, name='add_new_post')
 
 ]

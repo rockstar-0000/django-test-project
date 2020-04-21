@@ -22,22 +22,6 @@ from users.models import Profile
 
 # from ..users import views as user_views
 
-
-# posts = [
-#     {
-#         'author': 'Jason Green',
-#         'title': 'Blog Post 1',
-#         'content': 'First Post Content',
-#         'date_posted': 'Some time'
-#     },
-#     {
-#         'author': 'Smack me',
-#         'title': 'Blog Post 2',
-#         'content': 'Second Post Content',
-#         'date_posted': 'Yesterday'
-#     }
-# ]
-
 data_response = {}
 
 def home(request):
@@ -126,15 +110,23 @@ def redirectPage(request):
         return redirect('/home')
 
 
-def upload_post_images(request):
+def add_new_post(request):
+    post_content = request.POST.get('post_content')
+
     upload_files = request.FILES.getlist('post_images')
     fs = FileSystemStorage()
     username = str(request.user)
+
+    images = []
 
     for file in upload_files:
         destination = "/" + username + "/post/" + file.name
         path = settings.MEDIA_ROOT + destination
         fs.save(path, file)
+        images.append(destination)
+
+    post = Post(content=post_content, author_id=request.user.id, images=images)
+    Post.save(post)
 
     data_response['success'] = "success"
     return JsonResponse(data_response)

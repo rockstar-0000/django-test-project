@@ -60,7 +60,7 @@
                             <form class="post-text ml-3 w-100"
                                   action="javascript:void(0);">
                                 <input type="text" class="form-control rounded"
-                                       placeholder="Write something here..."
+                                       placeholder="Write something here..." id="input_post_content"
                                        style="border:none;">
                             </form>
                         </div>
@@ -68,91 +68,23 @@
                         <ul class="d-flex flex-wrap align-items-center list-inline m-0 p-0">
                             <li class="col-md-6 mb-3">
                                 <div class="iq-bg-primary rounded p-2 pointer mr-3">
-                                    <input type="file" class="input_file_hidden" id="input_post_image" onchange="add_multiple_post_image()" multiple>
+                                    <input type="file" class="input_file_hidden" id="input_post_image"
+                                           onchange="preview_post_image()" multiple>
                                     <label for="input_post_image"><img
-                                        src="{% static 'users/images/small/07.png' %}"
-                                        alt="icon" class="img-fluid">
+                                            src="{% static 'users/images/small/07.png' %}"
+                                            alt="icon" class="img-fluid">
                                         Photo/Video</label>
                                 </div>
-
+                            </li>
                         </ul>
-                        <hr>
-                        <div class="other-option">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <div class="user-img mr-3">
-                                        <img src="{{ user.profile.image.url }}"
-                                             alt="userimg"
-                                             class="avatar-60 rounded-circle img-fluid">
-                                    </div>
-                                    <h6>Your Story</h6>
-                                </div>
-                                <div class="iq-card-post-toolbar">
-                                    <div class="dropdown">
-                                        <span class="dropdown-toggle" id="postdata-1"
-                                              data-toggle="dropdown" aria-haspopup="true"
-                                              aria-expanded="false" role="button">
-                                            <span class="btn btn-primary">Friend</span>
-                                        </span>
-                                        <div class="dropdown-menu m-0 p-0"
-                                             aria-labelledby="postdata-1"
-                                             style="">
-                                            <a class="dropdown-item p-3"
-                                               href="#">
-                                                <div class="d-flex align-items-top">
-                                                    <div class="icon font-size-20">
-                                                        <i class="ri-save-line"></i>
-                                                    </div>
-                                                    <div class="data ml-2">
-                                                        <h6>Public</h6>
-                                                        <p class="mb-0">Anyone on or off Facebook</p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a class="dropdown-item p-3"
-                                               href="#">
-                                                <div class="d-flex align-items-top">
-                                                    <div class="icon font-size-20">
-                                                        <i class="ri-close-circle-line"></i>
-                                                    </div>
-                                                    <div class="data ml-2">
-                                                        <h6>Friends</h6>
-                                                        <p class="mb-0">Your Friend on facebook</p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a class="dropdown-item p-3"
-                                               href="#">
-                                                <div class="d-flex align-items-top">
-                                                    <div class="icon font-size-20">
-                                                        <i class="ri-user-unfollow-line"></i>
-                                                    </div>
-                                                    <div class="data ml-2">
-                                                        <h6>Friends except</h6>
-                                                        <p class="mb-0">Don't show to some friends</p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a class="dropdown-item p-3"
-                                               href="#">
-                                                <div class="d-flex align-items-top">
-                                                    <div class="icon font-size-20">
-                                                        <i class="ri-notification-line"></i>
-                                                    </div>
-                                                    <div class="data ml-2">
-                                                        <h6>Only Me</h6>
-                                                        <p class="mb-0">Only
-                                                            me</p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
+                        <div id="div_preview_post_image" class="row">
+
                         </div>
-                        <button type="submit"
-                                class="btn btn-primary d-block w-100 mt-3">Post
+
+                        <hr>
+                        <button type="button" class="btn btn-primary d-block w-100 mt-3" onclick="submit_new_post()">
+                            Post
                         </button>
                     </div>
                 </div>
@@ -171,6 +103,15 @@
                 </div>
                 <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
                 <p class="article-content">{{ post.content }}</p>
+
+                <div class="div_post_images row">
+                    {% for image in post.images %}
+                        <div class="col-3" style="width: 100%;">
+                            <img src="/media/{{ image }}" class="img_post" alt="image" style="width: 98%; height: 100%">
+                        </div>
+                    {% endfor %}
+                </div>
+
             </div>
         </article>
     {% endfor %}
