@@ -15,29 +15,6 @@
         </article>
 
         <!-- MODAL -->
-        {#        <div id="mymodal" class="modal">#}
-        {#            <div class="modal-dialog ">#}
-        {#                <div class="modal-content">#}
-        {#                    <div class="modal-header">#}
-        {#                        <h5 class="modal-title">Create Post</h5>#}
-        {#                        <button class="close" data-dismiss="modal">&times;</button>#}
-        {#                    </div>#}
-        {#                    <div class="modal-body">#}
-        {#                        {% load crispy_forms_tags %}#}
-        {#                        <form action="" method="POST">#}
-        {#                            {% csrf_token %}#}
-        {#                            <fieldset class="form-group">#}
-        {#                                {{ form|crispy }} #this needs to be worked on#}
-        {#                            </fieldset>#}
-        {#                        </form>#}
-        {##}
-        {#                    </div>#}
-        {#                    <div class="modal-footer">#}
-        {#                        <button class="btn btn-outline-info" type="submit">Post</button>#}
-        {#                    </div>#}
-        {#                </div>#}
-        {#            </div>#}
-        {#        </div>#}
         <div class="modal fade" id="mymodal" tabindex="-1" role="dialog"
              aria-labelledby="post-modalLabel" aria-hidden="true"
              style="display: none;">
@@ -50,7 +27,16 @@
                                 data-dismiss="modal"><i
                                 class="ri-close-fill"></i></button>
                     </div>
+
+                    <div class="div_select_public_private">
+                        <select name="public_private" id="select_public">
+                            <option value="public">Public</option>
+                            <option value="private">Private</option>
+                        </select>
+                    </div>
+
                     <div class="modal-body">
+
                         <div class="d-flex align-items-center">
                             <div class="user-img">
                                 <img src="{{ user.profile.image.url }}"

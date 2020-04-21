@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LoginView as DefaultLoginView
 from django.conf import settings
+from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -18,7 +19,7 @@ from django.views.generic import (
 )
 from .models import Post
 from users.models import Profile
-
+from users.models import Friend
 
 # from ..users import views as user_views
 
@@ -35,8 +36,24 @@ class PostListview(ListView):
     model = Post
     template_name = 'blog/home.html'
     context_object_name = 'posts'
-    ordering = ['-date_posted']
+    # ordering = ['id']
     paginate_by = 10
+
+    def get_queryset(self):
+        userId = self.request.user.id
+        friends_list = Friend.objects.filter((Q(state="Accept") | Q(state="New_Accept")) & (Q(sender_id=userId) | Q(recipient_id=userId)))
+
+        query = Q(state="public") | Q(author_id=int(userId))
+
+        for friend in friends_list:
+            if friend.sender_id == userId:
+                print(friend.recipient_id)
+                query = query | Q(state="private", author_id=int(friend.recipient_id))
+            elif friend.recipient_id == userId:
+                print(friend.sender_id)
+                query = query | Q(state="private", author_id=int(friend.sender_id))
+
+        return Post.objects.filter(query).order_by("-id")
 
 
 class UserPostListview(ListView):
@@ -112,6 +129,7 @@ def redirectPage(request):
 
 def add_new_post(request):
     post_content = request.POST.get('post_content')
+    public_private = request.POST.get('public_private')
 
     upload_files = request.FILES.getlist('post_images')
     fs = FileSystemStorage()
@@ -125,7 +143,7 @@ def add_new_post(request):
         fs.save(path, file)
         images.append(destination)
 
-    post = Post(content=post_content, author_id=request.user.id, images=images)
+    post = Post(content=post_content, author_id=request.user.id, images=images, state=public_private)
     Post.save(post)
 
     data_response['success'] = "success"

@@ -351,6 +351,9 @@
         var post_content = $('#input_post_content').val();
         data.append("post_content", post_content);
 
+        var public_private = $('#select_public').val();
+        data.append("public_private", public_private)
+
         data.append("csrfmiddlewaretoken", token);
 
         console.log(data);
