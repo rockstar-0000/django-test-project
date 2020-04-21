@@ -324,7 +324,8 @@
             },
             success: function (response) {
                 if (response.success === 'success') toastr.success("Success");
-                get_friend_request_list(userId);
+                {#get_friend_request_list(userId);#}
+                window.location.href = '/home/';
             }
         })
     }
@@ -380,6 +381,7 @@
             data.append("post_images", document.getElementById('input_post_image').files[i]);
         }
     }
+
 
 </script>
 
