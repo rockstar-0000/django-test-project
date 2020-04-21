@@ -22,4 +22,6 @@ urlpatterns = [
     # path('', views.home, name='blog-home'),
     path('about/', views.about, name='blog-about'),
 
+    path('add_new_post/', views.add_new_post, name='add_new_post')
+
 ]

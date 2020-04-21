@@ -165,17 +165,26 @@ def check_block(request):
 
 def profile_detail(request, username):
     selectedId = User.objects.filter(username=username).first().id
+    userId = request.user.id
     already = ""
     friend = {}
-    already_sent = Friend.objects.filter(sender_id=request.user.id, recipient_id=selectedId, state="Wait").first()
-    already_received = Friend.objects.filter(sender_id=selectedId, recipient_id=request.user.id, state="Wait").first()
+
+    already_block = Friend.objects.filter(
+        Q(state="Block", sender_id=selectedId, recipient_id=userId) | Q(state="Block", sender_id=userId,
+                                                                            recipient_id=selectedId)).first()
+    if already_block is not None:
+        context = {'block': 'true'}
+        return redirect('/home', context)
+
+    already_sent = Friend.objects.filter(sender_id=userId, recipient_id=selectedId, state="Wait").first()
+    already_received = Friend.objects.filter(sender_id=selectedId, recipient_id=userId, state="Wait").first()
     already_friend = Friend.objects.filter(
-        Q(sender_id=request.user.id, recipient_id=selectedId, state="Accept") | Q(sender_id=selectedId,
-                                                                                  recipient_id=request.user.id,
-                                                                                  state="Accept") | Q(
-            sender_id=request.user.id, recipient_id=selectedId, state="New_Accept") | Q(sender_id=selectedId,
-                                                                                    recipient_id=request.user.id,
-                                                                                    state="New_Accept")).first()
+        Q(sender_id=userId, recipient_id=selectedId, state="Accept") | Q(sender_id=selectedId,
+                                                                         recipient_id=userId,
+                                                                         state="Accept") | Q(
+            sender_id=userId, recipient_id=selectedId, state="New_Accept") | Q(sender_id=selectedId,
+                                                                               recipient_id=userId,
+                                                                               state="New_Accept")).first()
 
     if already_sent is not None:
         already = "sent"

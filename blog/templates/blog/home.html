@@ -1,6 +1,7 @@
 {% extends 'blog/base.html' %}
 <!--{% load crispy_forms_tags %}-->
 {% block content %}
+    {% load static %}
     {% if user.is_authenticated %}
         <article class="media content-section">
             <img class="rounded-circle article-img" src="{{ user.profile.image.url }}" alt="">
@@ -14,25 +15,63 @@
         </article>
 
         <!-- MODAL -->
-        <div id="mymodal" class="modal">
-            <div class="modal-dialog ">
+        <div class="modal fade" id="mymodal" tabindex="-1" role="dialog"
+             aria-labelledby="post-modalLabel" aria-hidden="true"
+             style="display: none;">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Create Post</h5>
-                        <button class="close" data-dismiss="modal">&times;</button>
+                        <h5 class="modal-title" id="post-modalLabel">Create
+                            Post</h5>
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal"><i
+                                class="ri-close-fill"></i></button>
                     </div>
-                    <div class="modal-body">
-                        {% load crispy_forms_tags %}
-                        <form action="" method="POST">
-                            {% csrf_token %}
-                            <fieldset class="form-group">
-                                {{ form|crispy }} #this needs to be worked on
-                            </fieldset>
-                        </form>
 
+                    <div class="div_select_public_private">
+                        <select name="public_private" id="select_public">
+                            <option value="public">Public</option>
+                            <option value="private">Private</option>
+                        </select>
                     </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-outline-info" type="submit">Post</button>
+
+                    <div class="modal-body">
+
+                        <div class="d-flex align-items-center">
+                            <div class="user-img">
+                                <img src="{{ user.profile.image.url }}"
+                                     alt="userimg"
+                                     class="avatar-60 rounded-circle img-fluid">
+                            </div>
+                            <form class="post-text ml-3 w-100"
+                                  action="javascript:void(0);">
+                                <input type="text" class="form-control rounded"
+                                       placeholder="Write something here..." id="input_post_content"
+                                       style="border:none;">
+                            </form>
+                        </div>
+                        <hr>
+                        <ul class="d-flex flex-wrap align-items-center list-inline m-0 p-0">
+                            <li class="col-md-6 mb-3">
+                                <div class="iq-bg-primary rounded p-2 pointer mr-3">
+                                    <input type="file" class="input_file_hidden" id="input_post_image"
+                                           onchange="preview_post_image()" multiple>
+                                    <label for="input_post_image"><img
+                                            src="{% static 'users/images/small/07.png' %}"
+                                            alt="icon" class="img-fluid">
+                                        Photo/Video</label>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <div id="div_preview_post_image" class="row">
+
+                        </div>
+
+                        <hr>
+                        <button type="button" class="btn btn-primary d-block w-100 mt-3" onclick="submit_new_post()">
+                            Post
+                        </button>
                     </div>
                 </div>
             </div>
@@ -50,6 +89,15 @@
                 </div>
                 <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
                 <p class="article-content">{{ post.content }}</p>
+
+                <div class="div_post_images row">
+                    {% for image in post.images %}
+                        <div class="col-3" style="width: 100%;">
+                            <img src="/media/{{ image }}" class="img_post" alt="image" style="width: 98%; height: 100%">
+                        </div>
+                    {% endfor %}
+                </div>
+
             </div>
         </article>
     {% endfor %}
