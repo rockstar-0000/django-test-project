@@ -32,7 +32,7 @@ ul {
     font-weight: 500;
 }
 
-.content-section {
+.post_box {
     background: #ffffff;
     padding: 10px 20px;
     border: 1px solid #dddddd;
@@ -96,3 +96,5 @@ a.article-title:hover {
     width: 0.1px;
     height: 0.1px;
 }
+
+

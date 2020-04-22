@@ -402,7 +402,6 @@
                 var image = document.getElementById(input_file_elem_id).files[0];
                 comment_data.append("comment_image", image);
                 comment_data.append("postId", postId);
-                console.log(comment_data);
                 $.ajax({
                     headers: {"X-CSRFToken": token},
                     url: '/post/add_new_comment/',
@@ -417,13 +416,14 @@
                         var new_comment_elem = "<li class='mb-2'><div class='d-flex flex-wrap'><div class='user-img'>" +
                             "<img class='avatar-35 rounded-circle img-fluid' src='{{ user.profile.image.url }}'></div>" +
                             "<div class='comment-data-block ml-3'><h6>{{ user.first_name }} {{ user.last_name }}</h6>" +
-                            "<p class='mb-0'>" + result[0].fields.content + "</p>" +
+                            "<p class='mb-0'>" + result[0].fields.content + "</p>" + "<img src='/media/"+ result[0].fields.image +"' style='width: 80%; margin: auto; margin-left: 10%'>" +
                             "<div class='d-flex flex-wrap align-items-center comment-activity'><a href='javascript:void();'>like</a>" +
                             "<a href='javascript:void();'>reply</a>" + "<a href='javascript:void();'>translate</a><span> 5 min </span>" + "</div></div></div></li>";
                         $('#post_comments_' + postId).append(new_comment_elem);
                         $(elem).val('');
+                        $('.div_preview_comment_image').empty();
 
-                        var num_comments = parseInt($('#num_comment_' + postId).text()) +1;
+                        var num_comments = parseInt($('#num_comment_' + postId).text()) + 1;
                         $('#num_comment_' + postId).text(num_comments.toString());
                     }
                 })
@@ -431,30 +431,39 @@
         }
     });
 
-    function upvote(postId, userId) {
-        $.ajax({
-            headers: {"X-CSRFToken": token},
-            url: '/post/upvote/',
-            async: true,
-            type: 'post',
-            data: {
-                'postId': postId,
-                'userId': userId
-            },
-            success: function (result) {
-                if (result.success === 'success' || result.success === 'minus_downvote') {
-                    $('#upvote_' + postId).text(result.num_upvotes);
-                } else if (result.success === 'failed') {
-                    toastr.error('you have already upvoted the post');
+    function upvote(postId, selectedUserId) {
+        if (selectedUserId == userId) {
+            toastr.info("You can not vote your post");
+            return false;
+        } else {
+            $.ajax({
+                headers: {"X-CSRFToken": token},
+                url: '/post/upvote/',
+                async: true,
+                type: 'post',
+                data: {
+                    'postId': postId,
+                    'selectedUserId': selectedUserId
+                },
+                success: function (result) {
+                    if (result.success === 'success' || result.success === 'minus_downvote') {
+                        $('#upvote_' + postId).text(result.num_upvotes);
+                    } else if (result.success === 'failed') {
+                        toastr.error('you have already upvoted the post');
+                    }
+                    if (result.success === 'minus_downvote') {
+                        $('#downvote_' + postId).text(result.num_downvotes);
+                    }
                 }
-                if (result.success === 'minus_downvote') {
-                    $('#downvote_' + postId).text(result.num_downvotes);
-                }
-            }
-        })
+            })
+        }
     }
 
-    function downvote(postId, userId) {
+    function downvote(postId, selectedUserId) {
+        if (selectedUserId == userId) {
+            toastr.info("You can not vote your post");
+            return false;
+        }
         $.ajax({
             headers: {"X-CSRFToken": token},
             url: '/post/downvote/',
@@ -462,7 +471,7 @@
             type: 'post',
             data: {
                 'postId': postId,
-                'userId': userId
+                'selectedUserId': selectedUserId
             },
             success: function (result) {
                 if (result.success === 'success' || result.success === 'minus_upvote') {

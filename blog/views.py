@@ -183,7 +183,8 @@ def get_comments(request):
 def upvote(request):
     if request.method == 'POST':
         postId = request.POST.get('postId')
-        userId = request.POST.get('userId')
+        userId = request.POST.get('selectedUserId')
+        print(userId)
         post = Post.objects.get(pk=postId)
         if post.like is not None:
             for like in post.like:
@@ -207,7 +208,7 @@ def upvote(request):
                 if dislike == int(userId):
                     post.dislike.remove(dislike)
                     data_response['success'] = 'minus_downvote'
-            data_response['num_downvotes'] = len(post.dislike)
+            data_response['num_downvotes'] = -(len(post.dislike))
 
         post.save()
         return JsonResponse(data_response)
@@ -215,7 +216,7 @@ def upvote(request):
 def downvote(request):
     if request.method == 'POST':
         postId = request.POST.get('postId')
-        userId = request.POST.get('userId')
+        userId = request.POST.get('selectedUserId')
         post = Post.objects.get(pk=postId)
         if post.dislike is not None:
             for dislike in post.dislike:
@@ -224,14 +225,14 @@ def downvote(request):
                     return JsonResponse(data_response)
 
             post.dislike += [int(userId)]
-            data_response['num_downvotes'] = len(post.dislike)
+            data_response['num_downvotes'] = -(len(post.dislike))
 
         else:
             new_list = list()
             new_item = new_list + [int(userId)]
             post.dislike = new_item
             data_response['num_upvotes'] = 0
-            data_response['num_downvotes'] = 1
+            data_response['num_downvotes'] = -1
             data_response['success'] = 'success'
 
         if post.like is not None:
@@ -242,6 +243,4 @@ def downvote(request):
             data_response['num_upvotes'] = len(post.like)
 
         post.save()
-        data_response['num_upvotes'] = len(post.like)
-        data_response['num_downvotes'] = len(post.dislike)
         return JsonResponse(data_response)

@@ -315,7 +315,7 @@
                                                 </li>
                                                 <li class="text-center pr-5">
                                                     <h6>Posts</h6>
-                                                    <p class="text-muted">0</p>
+                                                    <p class="text-muted">{{ posts|length }}</p>
                                                 </li>
                                             </ul>
                                         </div>
@@ -350,7 +350,7 @@
                                 <div class="iq-card-body p-0">
                                     <div class="row">
                                         <div class="col-lg-8">
-                                            {% if selectedUser.id == user.id %}
+                                            {% if selectedUser.profile.id == user.id %}
                                                 <div id="post-modal-data" class="iq-card">
                                                     <div class="iq-card-header d-flex justify-content-between">
                                                         <div class="iq-header-title">
@@ -512,133 +512,269 @@
                                                 <div class="iq-card-body">
 
                                                     {% for post in posts %}
-                                                        <div class="post-item">
-                                                            <div class="user-post-data p-3">
-                                                                <div class="d-flex flex-wrap">
-                                                                    <div class="media-support-user-img mr-3">
-                                                                        <img class="rounded-circle img-fluid"
-                                                                             src="{{ selectedUser.profile.image.url }}"
-                                                                             alt="">
-                                                                    </div>
-                                                                    <div class="media-support-info mt-2">
-                                                                        <h5 class="mb-0 d-inline-block"><a href="#"
-                                                                                                           class="">{{ selectedUser.first_name }} {{ selectedUser.last_name }}</a>
-                                                                        </h5>
-                                                                        <p class="ml-1 mb-0 d-inline-block">Add New
-                                                                            Post</p>
-                                                                        <p class="mb-0">3 hour ago</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="user-post">
-
-                                                                <div class="post-text">
-
-                                                                    {{ post.content }} {{ post.id }}
-
-                                                                </div>
-
-                                                                <div class="post-images row">
-
-                                                                    {% for image in post.images %}
-                                                                        <div class="col-3" style="width: 100%;">
-                                                                            <a href="javascript:void();">
-                                                                                <img src="/media/{{ image }}"
-                                                                                     class="img_post" alt="image"
-                                                                                     style="width: 98%; height: 100%">
-                                                                            </a>
+                                                        {% if post.state == 'private' %}
+                                                            {% if already == 'friend' %}
+                                                                <div class="post-item">
+                                                                    <div class="user-post-data p-3">
+                                                                        <div class="d-flex flex-wrap">
+                                                                            <div class="media-support-user-img mr-3">
+                                                                                <img class="rounded-circle img-fluid"
+                                                                                     src="{{ selectedUser.profile.image.url }}"
+                                                                                     alt="">
+                                                                            </div>
+                                                                            <div class="media-support-info mt-2">
+                                                                                <h5 class="mb-0 d-inline-block"><a
+                                                                                        href="#"
+                                                                                        class="">{{ selectedUser.first_name }} {{ selectedUser.last_name }}</a>
+                                                                                </h5>
+                                                                                <p class="ml-1 mb-0 d-inline-block">{{ post.state }}</p>
+                                                                                <p class="mb-0">3 hour ago</p>
+                                                                            </div>
                                                                         </div>
-                                                                    {% endfor %}
+                                                                    </div>
+                                                                    <div class="user-post">
 
-                                                                </div>
+                                                                        <div class="post-text">
 
-                                                            </div>
-                                                            <div class="comment-area mt-3">
-                                                                <div class="d-flex justify-content-between align-items-center">
-                                                                    <div class="like-block position-relative d-flex align-items-center">
-                                                                        <div class="total-comment-block">
-                                                                            <div class="dropdown">
+                                                                            {{ post.content }}
+
+                                                                        </div>
+
+                                                                        <div class="post-images row">
+
+                                                                            {% for image in post.images %}
+                                                                                <div class="col-3" style="width: 100%;">
+                                                                                    <a href="javascript:void();">
+                                                                                        <img src="/media/{{ image }}"
+                                                                                             class="img_post"
+                                                                                             alt="image"
+                                                                                             style="width: 98%; height: 100%">
+                                                                                    </a>
+                                                                                </div>
+                                                                            {% endfor %}
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="comment-area mt-3">
+                                                                        <div class="d-flex justify-content-between align-items-center">
+                                                                            <div class="like-block position-relative d-flex align-items-center">
+                                                                                <div class="total-comment-block">
+                                                                                    <div class="dropdown">
                                                                             <span class="dropdown-toggle"
                                                                                   data-toggle="dropdown"
                                                                                   aria-haspopup="true"
                                                                                   aria-expanded="false" role="button">
                                                                                      <span id="num_comment_{{ post.id }}">{{ post.comments.all|length }}</span> Comments
                                                                             </span>
-                                                                                <div class="dropdown-menu">
-                                                                                    <a class="dropdown-item" href="#">Max
-                                                                                        Emum</a>
+                                                                                        <div class="dropdown-menu">
+                                                                                            <a class="dropdown-item"
+                                                                                               href="#">Max
+                                                                                                Emum</a>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="share-block  text-right feather-icon mr-2">
+                                                                            <div class="share-block  text-right feather-icon mr-2">
                                                                     <span role="button">
                                                                         <img src="{% static 'users/images/icon/01.png' %}"
                                                                              class="img-fluid" alt="">
                                                                     </span>
-                                                                        <a href="javascript:void(0);"><i
-                                                                                class="ssri-share-line"></i>
-                                                                            <span class="ml-1"
-                                                                                  onclick="upvote({{ post.id }}, {{ user.id }})"><span
-                                                                                    id="upvote_{{ post.id }}">{{ post.like|length }}</span> Upvotes</span></a>&nbsp;&nbsp;
-                                                                        <a href="javascript:void(0);"><span
-                                                                                class="fa fa-thumbs-down"></span><span
-                                                                                class="ml-1"
-                                                                                onclick="downvote({{ post.id }}, {{ user.id }})"> <span
-                                                                                id="downvote_{{ post.id }}">{{ post.dislike|length }}</span> Downvotes</span></a>
+                                                                                <a href="javascript:void(0);"><i
+                                                                                        class="ssri-share-line"></i>
+                                                                                    <span class="ml-1"
+                                                                                          onclick="upvote({{ post.id }}, {{ user.id }})"><span
+                                                                                            id="upvote_{{ post.id }}">{{ post.like|length }}</span> Upvotes</span></a>&nbsp;&nbsp;
+                                                                                <a href="javascript:void(0);"><span
+                                                                                        class="fa fa-thumbs-down"></span><span
+                                                                                        class="ml-1"
+                                                                                        onclick="downvote({{ post.id }}, {{ user.id }})"> <span
+                                                                                        id="downvote_{{ post.id }}">{{ post.dislike|length }}</span> Downvotes</span></a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <hr>
+                                                                        <ul class="post-comments p-0 m-0"
+                                                                            id="post_comments_{{ post.id }}"
+                                                                            data-id="{{ post.id }}">
+
+                                                                            {% for comment in post.comments.all %}
+                                                                                <li class="mb-2">
+                                                                                    <div class="d-flex flex-wrap">
+                                                                                        <div class="user-img">
+                                                                                            <img src="/media/{{ comment.author.profile.image }}"
+                                                                                                 alt="userimg"
+                                                                                                 class="avatar-35 rounded-circle img-fluid">
+                                                                                        </div>
+                                                                                        <div class="comment-data-block ml-3">
+                                                                                            <h6>{{ comment.author.first_name }} {{ comment.author.last_name }}</h6>
+                                                                                            <p class="mb-0"> {{ comment.content }} </p>
+                                                                                            <div class="d-flex flex-wrap align-items-center comment-activity">
+                                                                                                <a href="javascript:void();">like</a>
+                                                                                                <a href="javascript:void();">reply</a>
+                                                                                                <a href="javascript:void();">translate</a>
+                                                                                                <span> 5 min </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                            {% endfor %}
+
+
+                                                                        </ul>
+
+                                                                        <div class="div_preview_comment_image row">
+
+                                                                        </div>
+
+                                                                        <form class="comment-text d-flex align-items-center mt-3"
+                                                                              action="javascript:void(0);">
+                                                                            <input type="text"
+                                                                                   class="form-control rounded input_comment">
+                                                                            <div class="comment-attagement d-flex">
+                                                                                <input type="file"
+                                                                                       style="padding-right: 0px"
+                                                                                       data-id="{{ post.id }}"
+                                                                                       class="input_file_hidden input_comment_image"
+                                                                                       id="input_comment_image{{ post.id }}"
+                                                                                       onchange="preview_comment_image()"
+                                                                                >
+                                                                                <label for="input_comment_image{{ post.id }}"><i
+                                                                                        class="ri-camera-line mr-3"></i></label>
+                                                                            </div>
+                                                                        </form>
                                                                     </div>
                                                                 </div>
-                                                                <hr>
-                                                                <ul class="post-comments p-0 m-0"
-                                                                    id="post_comments_{{ post.id }}"
-                                                                    data-id="{{ post.id }}">
+                                                            {% endif %}
+                                                        {% else %}
+                                                            <div class="post-item">
+                                                                <div class="user-post-data p-3">
+                                                                    <div class="d-flex flex-wrap">
+                                                                        <div class="media-support-user-img mr-3">
+                                                                            <img class="rounded-circle img-fluid"
+                                                                                 src="{{ selectedUser.profile.image.url }}"
+                                                                                 alt="">
+                                                                        </div>
+                                                                        <div class="media-support-info mt-2">
+                                                                            <h5 class="mb-0 d-inline-block"><a href="#"
+                                                                                                               class="">{{ selectedUser.first_name }} {{ selectedUser.last_name }}</a>
+                                                                            </h5>
+                                                                            <p class="ml-1 mb-0 d-inline-block">{{ post.state }}</p>
+                                                                            <p class="mb-0">3 hour ago</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="user-post">
 
-                                                                    {% for comment in post.comments.all %}
-                                                                        <li class="mb-2">
-                                                                            <div class="d-flex flex-wrap">
-                                                                                <div class="user-img">
-                                                                                    <img src="/media/{{ comment.author.profile.image }}"
-                                                                                         alt="userimg"
-                                                                                         class="avatar-35 rounded-circle img-fluid">
-                                                                                </div>
-                                                                                <div class="comment-data-block ml-3">
-                                                                                    <h6>{{ comment.author.first_name }} {{ comment.author.last_name }}</h6>
-                                                                                    <p class="mb-0"> {{ comment.content }} </p>
-                                                                                    <div class="d-flex flex-wrap align-items-center comment-activity">
-                                                                                        <a href="javascript:void();">like</a>
-                                                                                        <a href="javascript:void();">reply</a>
-                                                                                        <a href="javascript:void();">translate</a>
-                                                                                        <span> 5 min </span>
+                                                                    <div class="post-text">
+
+                                                                        {{ post.content }}
+
+                                                                    </div>
+
+                                                                    <div class="post-images row">
+
+                                                                        {% for image in post.images %}
+                                                                            <div class="col-3" style="width: 100%;">
+                                                                                <a href="javascript:void();">
+                                                                                    <img src="/media/{{ image }}"
+                                                                                         class="img_post" alt="image"
+                                                                                         style="width: 98%; height: 100%">
+                                                                                </a>
+                                                                            </div>
+                                                                        {% endfor %}
+
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="comment-area mt-3">
+                                                                    <div class="d-flex justify-content-between align-items-center">
+                                                                        <div class="like-block position-relative d-flex align-items-center">
+                                                                            <div class="total-comment-block">
+                                                                                <div class="dropdown">
+                                                                            <span class="dropdown-toggle"
+                                                                                  data-toggle="dropdown"
+                                                                                  aria-haspopup="true"
+                                                                                  aria-expanded="false" role="button">
+                                                                                     <span id="num_comment_{{ post.id }}">{{ post.comments.all|length }}</span> Comments
+                                                                            </span>
+                                                                                    <div class="dropdown-menu">
+                                                                                        <a class="dropdown-item"
+                                                                                           href="#">Max
+                                                                                            Emum</a>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </li>
-                                                                    {% endfor %}
-
-
-                                                                </ul>
-
-                                                                <div class="div_preview_comment_image row">
-
-                                                                </div>
-
-                                                                <form class="comment-text d-flex align-items-center mt-3"
-                                                                      action="javascript:void(0);">
-                                                                    <input type="text"
-                                                                           class="form-control rounded input_comment">
-                                                                    <div class="comment-attagement d-flex">
-                                                                        <input type="file" style="padding-right: 0px"
-                                                                               data-id="{{ post.id }}"
-                                                                               class="input_file_hidden input_comment_image"
-                                                                               id="input_comment_image{{ post.id }}"
-                                                                               onchange="preview_comment_image()"
-                                                                        >
-                                                                        <label for="input_comment_image{{ post.id }}"><i
-                                                                                class="ri-camera-line mr-3"></i></label>
+                                                                        </div>
+                                                                        <div class="share-block  text-right feather-icon mr-2">
+                                                                    <span role="button">
+                                                                        <img src="{% static 'users/images/icon/01.png' %}"
+                                                                             class="img-fluid" alt="">
+                                                                    </span>
+                                                                            <a href="javascript:void(0);"><i
+                                                                                    class="ssri-share-line"></i>
+                                                                                <span class="ml-1"
+                                                                                      onclick="upvote({{ post.id }}, {{ user.id }})"><span
+                                                                                        id="upvote_{{ post.id }}">{{ post.like|length }}</span> Upvotes</span></a>&nbsp;&nbsp;
+                                                                            <a href="javascript:void(0);"><span
+                                                                                    class="fa fa-thumbs-down"></span><span
+                                                                                    class="ml-1"
+                                                                                    onclick="downvote({{ post.id }}, {{ user.id }})"> <span
+                                                                                    id="downvote_{{ post.id }}">{{ post.dislike|length }}</span> Downvotes</span></a>
+                                                                        </div>
                                                                     </div>
-                                                                </form>
+                                                                    <hr>
+                                                                    <ul class="post-comments p-0 m-0"
+                                                                        id="post_comments_{{ post.id }}"
+                                                                        data-id="{{ post.id }}">
+
+                                                                        {% for comment in post.comments.all %}
+                                                                            <li class="mb-2">
+                                                                                <div class="d-flex flex-wrap">
+                                                                                    <div class="user-img">
+                                                                                        <img src="/media/{{ comment.author.profile.image }}"
+                                                                                             alt="userimg"
+                                                                                             class="avatar-35 rounded-circle img-fluid">
+                                                                                    </div>
+                                                                                    <div class="comment-data-block ml-3">
+                                                                                        <h6>{{ comment.author.first_name }} {{ comment.author.last_name }}</h6>
+                                                                                        <p class="mb-0"> {{ comment.content }} </p>
+                                                                                        <div class="d-flex flex-wrap align-items-center comment-activity">
+                                                                                            <a href="javascript:void();">like</a>
+                                                                                            <a href="javascript:void();">reply</a>
+                                                                                            <a href="javascript:void();">translate</a>
+                                                                                            <span> 5 min </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        {% endfor %}
+
+
+                                                                    </ul>
+
+                                                                    <div class="div_preview_comment_image row">
+
+                                                                    </div>
+
+                                                                    <form class="comment-text d-flex align-items-center mt-3"
+                                                                          action="javascript:void(0);">
+                                                                        <input type="text"
+                                                                               class="form-control rounded input_comment">
+                                                                        <div class="comment-attagement d-flex">
+                                                                            <input type="file"
+                                                                                   style="padding-right: 0px"
+                                                                                   data-id="{{ post.id }}"
+                                                                                   class="input_file_hidden input_comment_image"
+                                                                                   id="input_comment_image{{ post.id }}"
+                                                                                   onchange="preview_comment_image()"
+                                                                            >
+                                                                            <label for="input_comment_image{{ post.id }}"><i
+                                                                                    class="ri-camera-line mr-3"></i></label>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        {% endif %}
                                                     {% endfor %}
 
                                                 </div>
