@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from pprint import pprint
 from .models import Friend
+from blog.models import Post
+from blog.models import Comment
 
 data_response = {}
 
@@ -193,13 +195,15 @@ def profile_detail(request, username):
         friend = already_received
     elif already_friend is not None:
         already = "friend"
+        friend = already_friend
 
     context = {
         'selectedUser': User.objects.filter(username=username).first(),
         'friend': friend,
+        'posts': Post.objects.filter(author_id=selectedId),
         'already': already
     }
-    return render(request, 'users/profile_detail2.html', context)
+    return render(request, 'users/profile-detail.html', context)
 
 # Different types of messages from import messages
 # messages.debug

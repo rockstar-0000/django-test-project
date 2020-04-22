@@ -256,10 +256,15 @@
                                 <button class="btn btn-outline-primary">Request Pending</button>
                             {% endif %}
                             {% if already == 'received' %}
-                                <button class="btn btn-success" id="btn_accept" onclick="friend_accept({{ friend.id }})"> Accept
+                                <button class="btn btn-success" id="btn_accept"
+                                        onclick="friend_accept({{ friend.id }})"> Accept
                                 </button>
-                                <button class="btn btn-info" id="btn_decline" onclick="friend_reject({{ friend.id }})"> Decline </button>
-                                <button class="btn btn-danger" id="btn_block" onclick="friend_block({{ friend.id }})"> Block </button>
+                                <button class="btn btn-info" id="btn_decline" onclick="friend_reject({{ friend.id }})">
+                                    Decline
+                                </button>
+                                <button class="btn btn-danger" id="btn_block" onclick="friend_block({{ friend.id }})">
+                                    Block
+                                </button>
                             {% endif %}
                             {% if already == 'friend' %}
                                 <button class="btn btn-outline-primary">Friend</button>
@@ -355,7 +360,7 @@
                                                                  alt="userimg"
                                                                  class="avatar-60 rounded-circle img-fluid">
                                                         </div>
-                                                        <form class="post-text ml-3 w-100" action="javascript:void();">
+                                                        <form class="post-text ml-3 w-100" action="javascript:void(0);">
                                                             <input type="text" class="form-control rounded"
                                                                    placeholder="Write something here..."
                                                                    style="border:none;">
@@ -588,124 +593,30 @@
                                                         <div class="comment-area mt-3">
                                                             <div class="d-flex justify-content-between align-items-center">
                                                                 <div class="like-block position-relative d-flex align-items-center">
-                                                                    <div class="d-flex align-items-center">
-                                                                        <div class="like-data">
-                                                                            <div class="dropdown">
-                                                               <span class="dropdown-toggle" data-toggle="dropdown"
-                                                                     aria-haspopup="true" aria-expanded="false"
-                                                                     role="button">
-                                                               <img src="{% static 'users/images/icon/01.png' %}"
-                                                                    class="img-fluid" alt="">
-                                                               </span>
-                                                                                <div class="dropdown-menu">
-                                                                                    <a class="ml-2 mr-2" href="#"
-                                                                                       data-toggle="tooltip"
-                                                                                       data-placement="top" title=""
-                                                                                       data-original-title="Like"><img
-                                                                                            src="{% static 'users/images/icon/01.png' %}"
-                                                                                            class="img-fluid"
-                                                                                            alt=""></a>
-                                                                                    <a class="mr-2" href="#"
-                                                                                       data-toggle="tooltip"
-                                                                                       data-placement="top" title=""
-                                                                                       data-original-title="Love"><img
-                                                                                            src="{% static 'users/images/icon/02.png' %}"
-                                                                                            class="img-fluid"
-                                                                                            alt=""></a>
-                                                                                    <a class="mr-2" href="#"
-                                                                                       data-toggle="tooltip"
-                                                                                       data-placement="top" title=""
-                                                                                       data-original-title="Happy"><img
-                                                                                            src="{% static 'users/images/icon/03.png' %}"
-                                                                                            class="img-fluid"
-                                                                                            alt=""></a>
-                                                                                    <a class="mr-2" href="#"
-                                                                                       data-toggle="tooltip"
-                                                                                       data-placement="top" title=""
-                                                                                       data-original-title="HaHa"><img
-                                                                                            src="{% static 'users/images/icon/04.png' %}"
-                                                                                            class="img-fluid"
-                                                                                            alt=""></a>
-                                                                                    <a class="mr-2" href="#"
-                                                                                       data-toggle="tooltip"
-                                                                                       data-placement="top" title=""
-                                                                                       data-original-title="Think"><img
-                                                                                            src="{% static 'users/images/icon/05.png' %}"
-                                                                                            class="img-fluid"
-                                                                                            alt=""></a>
-                                                                                    <a class="mr-2" href="#"
-                                                                                       data-toggle="tooltip"
-                                                                                       data-placement="top" title=""
-                                                                                       data-original-title="Sade"><img
-                                                                                            src="{% static 'users/images/icon/06.png' %}"
-                                                                                            class="img-fluid"
-                                                                                            alt=""></a>
-                                                                                    <a class="mr-2" href="#"
-                                                                                       data-toggle="tooltip"
-                                                                                       data-placement="top" title=""
-                                                                                       data-original-title="Lovely"><img
-                                                                                            src="{% static 'users/images/icon/07.png' %}"
-                                                                                            class="img-fluid"
-                                                                                            alt=""></a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="total-like-block ml-2 mr-3">
-                                                                            <div class="dropdown">
-                                                               <span class="dropdown-toggle" data-toggle="dropdown"
-                                                                     aria-haspopup="true" aria-expanded="false"
-                                                                     role="button">
-                                                               140 Likes
-                                                               </span>
-                                                                                <div class="dropdown-menu">
-                                                                                    <a class="dropdown-item" href="#">Max
-                                                                                        Emum</a>
-                                                                                    <a class="dropdown-item" href="#">Bill
-                                                                                        Yerds</a>
-                                                                                    <a class="dropdown-item" href="#">Hap
-                                                                                        E. Birthday</a>
-                                                                                    <a class="dropdown-item" href="#">Tara
-                                                                                        Misu</a>
-                                                                                    <a class="dropdown-item" href="#">Midge
-                                                                                        Itz</a>
-                                                                                    <a class="dropdown-item" href="#">Sal
-                                                                                        Vidge</a>
-                                                                                    <a class="dropdown-item" href="#">Other</a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
                                                                     <div class="total-comment-block">
                                                                         <div class="dropdown">
-                                                            <span class="dropdown-toggle" data-toggle="dropdown"
-                                                                  aria-haspopup="true" aria-expanded="false"
-                                                                  role="button">
-                                                            20 Comment
-                                                            </span>
+                                                                            <span class="dropdown-toggle"
+                                                                                  data-toggle="dropdown"
+                                                                                  aria-haspopup="true"
+                                                                                  aria-expanded="false" role="button">
+                                                                                     20 Comments
+                                                                            </span>
                                                                             <div class="dropdown-menu">
-                                                                                <a class="dropdown-item" href="#">Max
-                                                                                    Emum</a>
-                                                                                <a class="dropdown-item" href="#">Bill
-                                                                                    Yerds</a>
-                                                                                <a class="dropdown-item" href="#">Hap E.
-                                                                                    Birthday</a>
-                                                                                <a class="dropdown-item" href="#">Tara
-                                                                                    Misu</a>
-                                                                                <a class="dropdown-item" href="#">Midge
-                                                                                    Itz</a>
-                                                                                <a class="dropdown-item" href="#">Sal
-                                                                                    Vidge</a>
-                                                                                <a class="dropdown-item"
-                                                                                   href="#">Other</a>
+                                                                                {#                                                                                <a class="dropdown-item" href="#">Max#}
+                                                                                {#                                                                                    Emum</a>#}
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="share-block  text-right feather-icon mr-2">
+                                                                    <span role="button">
+                                                                        <img src="{% static 'users/images/icon/01.png' %}"
+                                                                             class="img-fluid" alt="">
+                                                                    </span>
                                                                     <a href="javascript:void();"><i
                                                                             class="ssri-share-line"></i>
-                                                                        <span class="ml-1">99 Upvotes</span></a>
-                                                                    <span class="ml-1">3 Downvotes</span></a>
+                                                                        <span class="ml-1">99 Upvotes</span></a>&nbsp;&nbsp;
+                                                                    <a><span class="fa fa-thumbs-down"></span><span class="ml-1">3 Downvotes</span></a>
                                                                 </div>
                                                             </div>
                                                             <hr>

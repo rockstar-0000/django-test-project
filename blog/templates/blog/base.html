@@ -292,9 +292,10 @@
             },
             success: function (response) {
                 if (response.success === 'success') toastr.success("Success");
-                $('#btn_accept').remove();
-                $('#btn_decline').remove();
-                get_friend_request_list(userId);
+                {#$('#btn_accept').remove();#}
+                {#$('#btn_decline').remove();#}
+                {#get_friend_request_list(userId);#}
+                window.location.reload();
             }
         })
     }
@@ -310,6 +311,7 @@
             success: function (response) {
                 if (response.success === 'success') toastr.success("Success");
                 get_friend_request_list(userId);
+                window.location.reload();
             }
         })
     }
@@ -324,7 +326,6 @@
             },
             success: function (response) {
                 if (response.success === 'success') toastr.success("Success");
-                {#get_friend_request_list(userId);#}
                 window.location.href = '/home/';
             }
         })
@@ -348,12 +349,11 @@
     var data = new FormData();
 
     function submit_new_post() {
-        {#$.each($('#input_post_image')[0].files, function (i, file) {#}
         var post_content = $('#input_post_content').val();
         data.append("post_content", post_content);
 
         var public_private = $('#select_public').val();
-        data.append("public_private", public_private)
+        data.append("public_private", public_private);
 
         data.append("csrfmiddlewaretoken", token);
 
@@ -382,9 +382,103 @@
         }
     }
 
+    var comment_data = new FormData();
+
+    $('.input_comment_image').change(function () {
+        var privew_elem = $(this).parent().parent().parent().find('.div_preview_comment_image');
+        $(privew_elem).empty();
+        $(privew_elem).append("<img width='70' height='70' src='" + URL.createObjectURL(event.target.files[0]) + "'>");
+    });
+
+    $('.input_comment').keypress(function (event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            var comment_text = $(this).val();
+            var elem = $(this);
+            if (comment_text !== '') {
+                comment_data.append("comment_text", comment_text);
+                var input_file_elem_id = $(this).parent().find('.input_comment_image').attr('id');
+                var postId = $(this).parent().find('.input_comment_image').attr('data-id');
+                var image = document.getElementById(input_file_elem_id).files[0];
+                comment_data.append("comment_image", image);
+                comment_data.append("postId", postId);
+                console.log(comment_data);
+                $.ajax({
+                    headers: {"X-CSRFToken": token},
+                    url: '/post/add_new_comment/',
+                    async: true,
+                    type: 'post',
+                    data: comment_data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        console.log(result);
+                        var new_comment_elem = "<li class='mb-2'><div class='d-flex flex-wrap'><div class='user-img'>" +
+                            "<img class='avatar-35 rounded-circle img-fluid' src='{{ user.profile.image.url }}'></div>" +
+                            "<div class='comment-data-block ml-3'><h6>{{ user.first_name }} {{ user.last_name }}</h6>" +
+                            "<p class='mb-0'>" + result[0].fields.content + "</p>" +
+                            "<div class='d-flex flex-wrap align-items-center comment-activity'><a href='javascript:void();'>like</a>" +
+                            "<a href='javascript:void();'>reply</a>" + "<a href='javascript:void();'>translate</a><span> 5 min </span>" + "</div></div></div></li>";
+                        $('#post_comments_' + postId).append(new_comment_elem);
+                        $(elem).val('');
+
+                        var num_comments = parseInt($('#num_comment_' + postId).text()) +1;
+                        $('#num_comment_' + postId).text(num_comments.toString());
+                    }
+                })
+            }
+        }
+    });
+
+    function upvote(postId, userId) {
+        $.ajax({
+            headers: {"X-CSRFToken": token},
+            url: '/post/upvote/',
+            async: true,
+            type: 'post',
+            data: {
+                'postId': postId,
+                'userId': userId
+            },
+            success: function (result) {
+                if (result.success === 'success' || result.success === 'minus_downvote') {
+                    $('#upvote_' + postId).text(result.num_upvotes);
+                } else if (result.success === 'failed') {
+                    toastr.error('you have already upvoted the post');
+                }
+                if (result.success === 'minus_downvote') {
+                    $('#downvote_' + postId).text(result.num_downvotes);
+                }
+            }
+        })
+    }
+
+    function downvote(postId, userId) {
+        $.ajax({
+            headers: {"X-CSRFToken": token},
+            url: '/post/downvote/',
+            async: true,
+            type: 'post',
+            data: {
+                'postId': postId,
+                'userId': userId
+            },
+            success: function (result) {
+                if (result.success === 'success' || result.success === 'minus_upvote') {
+                    $('#downvote_' + postId).text(result.num_downvotes);
+                } else if (result.success === 'failed') {
+                    toastr.error('you have already downvoted the post');
+                }
+                if (result.success === 'minus_upvote') {
+                    $('#upvote_' + postId).text(result.num_upvotes);
+                }
+            }
+        })
+    }
+
 
 </script>
-
 </body>
 </html>
 

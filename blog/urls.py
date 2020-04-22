@@ -22,6 +22,10 @@ urlpatterns = [
     # path('', views.home, name='blog-home'),
     path('about/', views.about, name='blog-about'),
 
-    path('add_new_post/', views.add_new_post, name='add_new_post')
+    path('add_new_post/', views.add_new_post, name='add_new_post'),
+    path('post/add_new_comment/', views.add_new_comment, name='add_new_comment'),
+    path('post/get_comments/', views.get_comments, name='get_comments'),
+    path('post/upvote/', views.upvote, name='upvote'),
+    path('post/downvote/', views.downvote, name='downvote')
 
 ]
