@@ -113,8 +113,8 @@
                                           data-toggle="dropdown"
                                           aria-haspopup="true"
                                           aria-expanded="false" role="button">
-                                                                                     <span id="num_comment_{{ post.id }}">{{ post.comments.all|length }}</span> Comments
-                                                                            </span>
+                                        <span id="num_comment_{{ post.id }}">{{ post.comments.all|length }}</span> Comments
+                                    </span>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="#">Max
                                             Emum</a>
@@ -124,9 +124,9 @@
                         </div>
                         <div class="share-block  text-right feather-icon mr-2">
                             <span role="button">
-                                                                        <img src="{% static 'users/images/icon/01.png' %}"
-                                                                             class="img-fluid" alt="">
-                                                                    </span>
+                                <img src="{% static 'users/images/icon/01.png' %}"
+                                     class="img-fluid" alt="">
+                            </span>
                             <a href="javascript:void(0);"><i
                                     class="ssri-share-line"></i>
                                 <span class="ml-1"
@@ -159,7 +159,7 @@
                                              class="avatar-35 rounded-circle img-fluid">
                                     </div>
                                     <div class="comment-data-block ml-3">
-                                        <h6>{{ comment.author.first_name }} {{ comment.author.last_name }}</h6>
+                                        <a class="mr-2" href="javascript:void(0);" onclick="checkBlock({{ comment.author.id }}, '{{ comment.author.username }}')">{{ comment.author.first_name }} {{ comment.author.last_name }}</a>
                                         <p class="mb-0"> {{ comment.content }} </p>
                                         {% if comment.image != '' %}
                                             <img src="/media/{{ comment.image }}" alt="" style="width: 80%; margin: auto; margin-left: 10%">

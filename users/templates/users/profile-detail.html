@@ -267,7 +267,9 @@
                                 </button>
                             {% endif %}
                             {% if already == 'friend' %}
-                                <button class="btn btn-outline-primary">Friend</button>
+                                <button class="btn btn-danger" id="btn_block" onclick="friend_block({{ friend.id }})">
+                                    Block
+                                </button>
                                 <button class="btn btn-info" id="btn_unblock" onclick="friend_reject({{ friend.id }})">
                                     Unfriend
                                 </button>
@@ -748,7 +750,7 @@
                                                                                              class="avatar-35 rounded-circle img-fluid">
                                                                                     </div>
                                                                                     <div class="comment-data-block ml-3">
-                                                                                        <h6>{{ comment.author.first_name }} {{ comment.author.last_name }}</h6>
+                                                                                        <a href="javascript:void();" onclick="checkBlock({{ comment.author.id }}, '{{ comment.author.username }}')">{{ comment.author.first_name }} {{ comment.author.last_name }}</a>
                                                                                         <p class="mb-0"> {{ comment.content }} </p>
                                                                                         <div class="d-flex flex-wrap align-items-center comment-activity">
                                                                                             <a href="javascript:void();">like</a>

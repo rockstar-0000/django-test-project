@@ -413,12 +413,22 @@
                     processData: false,
                     success: function (result) {
                         console.log(result);
-                        var new_comment_elem = "<li class='mb-2'><div class='d-flex flex-wrap'><div class='user-img'>" +
+                        if (result[0].fields.image !== '') {
+                            var new_comment_elem = "<li class='mb-2'><div class='d-flex flex-wrap'><div class='user-img'>" +
                             "<img class='avatar-35 rounded-circle img-fluid' src='{{ user.profile.image.url }}'></div>" +
-                            "<div class='comment-data-block ml-3'><h6>{{ user.first_name }} {{ user.last_name }}</h6>" +
+                            "<div class='comment-data-block ml-3'><h6 onclick='checkBlock({{ user.id }}, " + '"{{ user.username }}"' + ")'>{{ user.first_name }} {{ user.last_name }}</h6>" +
                             "<p class='mb-0'>" + result[0].fields.content + "</p>" + "<img src='/media/"+ result[0].fields.image +"' style='width: 80%; margin: auto; margin-left: 10%'>" +
                             "<div class='d-flex flex-wrap align-items-center comment-activity'><a href='javascript:void();'>like</a>" +
                             "<a href='javascript:void();'>reply</a>" + "<a href='javascript:void();'>translate</a><span> 5 min </span>" + "</div></div></div></li>";
+                        } else {
+                            var new_comment_elem = "<li class='mb-2'><div class='d-flex flex-wrap'><div class='user-img'>" +
+                            "<img class='avatar-35 rounded-circle img-fluid' src='{{ user.profile.image.url }}'></div>" +
+                            "<div class='comment-data-block ml-3'><h6 onclick='checkBlock({{ user.id }}, " + '"{{ user.username }}"' + ")'>{{ user.first_name }} {{ user.last_name }}</h6>" +
+                            "<p class='mb-0'>" + result[0].fields.content + "</p>" +
+                            "<div class='d-flex flex-wrap align-items-center comment-activity'><a href='javascript:void();'>like</a>" +
+                            "<a href='javascript:void();'>reply</a>" + "<a href='javascript:void();'>translate</a><span> 5 min </span>" + "</div></div></div></li>";
+                        }
+
                         $('#post_comments_' + postId).append(new_comment_elem);
                         $(elem).val('');
                         $('.div_preview_comment_image').empty();
