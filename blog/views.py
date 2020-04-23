@@ -182,9 +182,9 @@ def get_comments(request):
 
 def upvote(request):
     if request.method == 'POST':
+        userId = request.user.id
         postId = request.POST.get('postId')
-        userId = request.POST.get('selectedUserId')
-        print(userId)
+        selectedUserId = request.POST.get('selectedUserId')
         post = Post.objects.get(pk=postId)
         if post.like is not None:
             for like in post.like:
@@ -215,8 +215,9 @@ def upvote(request):
 
 def downvote(request):
     if request.method == 'POST':
+        userId = request.user.id
         postId = request.POST.get('postId')
-        userId = request.POST.get('selectedUserId')
+        selectedUserId = request.POST.get('selectedUserId')
         post = Post.objects.get(pk=postId)
         if post.dislike is not None:
             for dislike in post.dislike:

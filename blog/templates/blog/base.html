@@ -474,6 +474,7 @@
                 'selectedUserId': selectedUserId
             },
             success: function (result) {
+                console.log(result);
                 if (result.success === 'success' || result.success === 'minus_upvote') {
                     $('#downvote_' + postId).text(result.num_downvotes);
                 } else if (result.success === 'failed') {
