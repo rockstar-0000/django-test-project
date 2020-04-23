@@ -513,7 +513,7 @@
 
                                                     {% for post in posts %}
                                                         {% if post.state == 'private' %}
-                                                            {% if already == 'friend' %}
+                                                            {% if already == 'friend' or selectedUser.id == user.id %}
                                                                 <div class="post-item">
                                                                     <div class="user-post-data p-3">
                                                                         <div class="d-flex flex-wrap">
