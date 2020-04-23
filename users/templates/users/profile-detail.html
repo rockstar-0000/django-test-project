@@ -583,13 +583,19 @@
                                                                                 <a href="javascript:void(0);"><i
                                                                                         class="ssri-share-line"></i>
                                                                                     <span class="ml-1"
-                                                                                          onclick="upvote({{ post.id }}, {{ user.id }})"><span
+                                                                                          onclick="upvote({{ post.id }}, {{ selectedUser.id }})"><span
                                                                                             id="upvote_{{ post.id }}">{{ post.like|length }}</span> Upvotes</span></a>&nbsp;&nbsp;
                                                                                 <a href="javascript:void(0);"><span
                                                                                         class="fa fa-thumbs-down"></span><span
                                                                                         class="ml-1"
-                                                                                        onclick="downvote({{ post.id }}, {{ user.id }})"> <span
-                                                                                        id="downvote_{{ post.id }}">{{ post.dislike|length }}</span> Downvotes</span></a>
+                                                                                        onclick="downvote({{ post.id }}, {{ selectedUser.id }})">
+                                                                                    <span id="downvote_{{ post.id }}">
+                                                                                        {% if post.dislike|length == 0 %}
+                                                                                            0
+                                                                                        {% else %}
+                                                                                            -{{ post.dislike|length }}
+                                                                                        {% endif %}
+                                                                                </span> Downvotes</span></a>
                                                                             </div>
                                                                         </div>
                                                                         <hr>
@@ -713,13 +719,19 @@
                                                                             <a href="javascript:void(0);"><i
                                                                                     class="ssri-share-line"></i>
                                                                                 <span class="ml-1"
-                                                                                      onclick="upvote({{ post.id }}, {{ user.id }})"><span
+                                                                                      onclick="upvote({{ post.id }}, {{ selectedUser.id }})"><span
                                                                                         id="upvote_{{ post.id }}">{{ post.like|length }}</span> Upvotes</span></a>&nbsp;&nbsp;
                                                                             <a href="javascript:void(0);"><span
                                                                                     class="fa fa-thumbs-down"></span><span
                                                                                     class="ml-1"
-                                                                                    onclick="downvote({{ post.id }}, {{ user.id }})"> <span
-                                                                                    id="downvote_{{ post.id }}">{{ post.dislike|length }}</span> Downvotes</span></a>
+                                                                                    onclick="downvote({{ post.id }}, {{ selectedUser.id }})">
+                                                                                <span id="downvote_{{ post.id }}">
+                                                                                    {% if post.dislike|length == 0 %}
+                                                                                        0
+                                                                                    {% else %}
+                                                                                        -{{ post.dislike|length }}
+                                                                                    {% endif %}
+                                                                                </span> Downvotes</span></a>
                                                                         </div>
                                                                     </div>
                                                                     <hr>
