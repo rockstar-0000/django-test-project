@@ -614,7 +614,8 @@
                                                                                                  class="avatar-35 rounded-circle img-fluid">
                                                                                         </div>
                                                                                         <div class="comment-data-block ml-3">
-                                                                                            <h6>{{ comment.author.first_name }} {{ comment.author.last_name }}</h6>
+                                                                                            <a href="javascript:void();"
+                                                                                           onclick="checkBlock({{ comment.author.id }}, '{{ comment.author.username }}')">{{ comment.author.first_name }} {{ comment.author.last_name }}</a>
                                                                                             <p class="mb-0"> {{ comment.content }} </p>
                                                                                             {% if comment.image != '' %}
                                                                                                 <img src="/media/{{ comment.image }}" alt="" style="width: 80%; margin: auto; margin-left: 10%">
