@@ -200,7 +200,7 @@ def profile_detail(request, username):
     context = {
         'selectedUser': User.objects.filter(username=username).first(),
         'friend': friend,
-        'posts': Post.objects.filter(author_id=selectedId),
+        'posts': Post.objects.filter(author_id=selectedId).order_by('-date_posted'),
         'already': already
     }
     return render(request, 'users/profile-detail.html', context)

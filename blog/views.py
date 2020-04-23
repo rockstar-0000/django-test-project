@@ -43,17 +43,23 @@ class PostListview(ListView):
 
     def get_queryset(self):
         userId = self.request.user.id
-        friends_list = Friend.objects.filter((Q(state="Accept") | Q(state="New_Accept")) & (Q(sender_id=userId) | Q(recipient_id=userId)))
+        friends_list = Friend.objects.filter(Q(sender_id=userId) | Q(recipient_id=userId))
 
         query = Q(state="public") | Q(author_id=userId)
 
         for friend in friends_list:
             if friend.sender_id == userId:
-                print(friend.recipient_id)
-                query = query | Q(state="private", author_id=int(friend.recipient_id))
+                if friend.state == "Block":
+                    print(int(friend.recipient_id))
+                    query = query & ~Q(author_id=int(friend.recipient_id))
+                else:
+                    query = query | Q(state="private", author_id=int(friend.recipient_id))
             elif friend.recipient_id == userId:
-                print(friend.sender_id)
-                query = query | Q(state="private", author_id=int(friend.sender_id))
+                if friend.state == "Block":
+                    print(int(friend.sender_id))
+                    query = query & ~Q(author_id=int(friend.sender_id))
+                else:
+                    query = query | Q(state="private", author_id=int(friend.sender_id))
 
         return Post.objects.filter(query).order_by("-id")
 
