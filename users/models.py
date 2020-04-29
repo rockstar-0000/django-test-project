@@ -22,9 +22,6 @@ class Profile(models.Model):
     image = models.ImageField(default='default.jpg', upload_to=get_upload_path)
     # image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     gender = models.CharField(max_length=25, choices=GENDER_CHOICES, default=single_male)
-    city = models.CharField(max_length=50, default="")
-    state = models.CharField(max_length=3, default="")
-    zip = models.CharField(max_length=5, default="")
 
     def __str__(self):
         return f'{self.user.username} Profile'
@@ -44,11 +41,13 @@ class Friend(models.Model):
     wait = "Wait"
     accept = "Accept"
     block = "Block"
+    new_accept = "New_Accept"
 
-    STATE_CHOISES = {
+    STATE_CHOICES = {
         (accept, "Accept"),
         (wait, "Wait"),
-        (block, "Block")
+        (block, "Block"),
+        (new_accept, "New_Accept")
     }
 
     sender_id = models.IntegerField()
@@ -59,7 +58,7 @@ class Friend(models.Model):
     recipient_firstName = models.CharField(max_length=35, default='')
     recipient_lastName = models.CharField(max_length=35, default='')
     recipient_image = models.ImageField(default='default.jpg', upload_to=get_upload_path)
-    state = models.CharField(max_length=35, choices=STATE_CHOISES, default=wait)
+    state = models.CharField(max_length=35, choices=STATE_CHOICES, default=wait)
 
     # user = models.OneToOneField(User, on_delete=models.CASCADE)
 

@@ -1,6 +1,6 @@
 body {
     background: #fafafa;
-    color: #333333;
+    /*color: #333333;*/
     margin-top: 5rem;
 }
 
@@ -32,7 +32,7 @@ ul {
     font-weight: 500;
 }
 
-.content-section {
+.post_box {
     background: #ffffff;
     padding: 10px 20px;
     border: 1px solid #dddddd;
@@ -87,9 +87,14 @@ a.article-title:hover {
     font-size: 2.5rem;
 }
 
-
-
 .friend-request-image {
     margin-right: 20px;
     margin-bottom: 16px;
 }
+
+.input_file_hidden {
+    width: 0.1px;
+    height: 0.1px;
+}
+
+

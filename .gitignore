@@ -4,10 +4,14 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*.pyc
 *$py.class
-blog/__pycache__
-django_site/__pycache__
+blog/__pycache__/
+django_site/__pycache__/
 users/__pycache__
+
+# Media files
+media
 
 # C extensions
 *.so
@@ -211,3 +215,4 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 .idea/
 
+!/django_site/__pycache__/
