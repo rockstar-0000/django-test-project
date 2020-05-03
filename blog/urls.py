@@ -29,5 +29,6 @@ urlpatterns = [
     path('post/upvoteComment/', views.upvoteComment, name='upvoteComment'),
     path('post/downvote/', views.downvote, name='downvote'),
     path('post/downvotecomment/', views.downvotecomment, name='downvotecomment'),
-    path('post/addUsername/', views.addUsername, name='addUsername'),
+    path('post/checkComment/', views.checkComment, name='checkComment'),
+    path('post/getLastComment/', views.getLastComment, name='getLastComment'),
 ]

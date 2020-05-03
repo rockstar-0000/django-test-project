@@ -24,7 +24,7 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
 </head>
-<body>
+<body onload="checkIfComment()">
 <header class="site-header">
     <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
@@ -174,7 +174,8 @@
     {#localStorage.setItem('notify_num', parseInt(notify_num) + 1);#}
     var token = '{{ csrf_token }}';
     var userId = '{{ user.id }}';
-    var user_name = '{{ user }}'
+    var user_name = '{{ user }}';
+    localStorage.setItem("CommentCount", 0)
     if (window.location.pathname === '/logout/') {
         localStorage.removeItem('userId');
     }
@@ -550,25 +551,50 @@
         })
     }
 
-    function onReply(id, username1){
-        var username = "@" + user_name;
-        if (username1 == user_name) {
-            toastr.info("You can not reply to your comment");
-            return false;
+    function onReply(id, username1, username2, commentId){
+        if(commentId == userId){
+            toastr.error('you can not reply to your comment');
+            return;
         }
-        $.ajax({
-            headers: {"X-CSRFToken": token},
-            url: '/post/addUsername/',
-            async: true,
-            type: 'post',
-            data: {
-                'commentId': id,
-                'username': username
-            },
-            success: function (result) {
-                $("#content_"+id).append("@"+user_name);
-            }
-        })
+        $("#"+id).val(username1 + " " + username2 + " ");    
+    }
+    function checkIfComment(){
+        
+        
+        setInterval(function(){
+            $.ajax({
+                headers: {"X-CSRFToken": token},
+                url: '/post/checkComment/',
+                async: true,
+                type: 'POST',
+                data:{
+                    'userId': userId,
+                },
+                success: function(result){
+                    var total = localStorage.getItem("CommentCount");
+                    if(total == "0"){
+                        localStorage.setItem("CommentCount", result);
+                    }else{
+                        if(result > total){
+                            $.ajax({
+                                headers: {"X-CSRFToken": token},
+                                url: '/post/getLastComment/',
+                                async: true,
+                                type: 'POST',
+                                data:{
+                                    'userId': userId,
+                                },
+                                success: function(result){
+                                    toastr.success("You received a new comment:\n"+"\""+result.content+"\"");
+                                    localStorage.setItem("CommentCount", result);
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+            // toastr.success("The request is  sent successfully.");
+        }, 1000);
     }
 </script>
 </body>

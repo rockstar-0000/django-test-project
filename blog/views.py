@@ -318,16 +318,29 @@ def downvotecomment(request):
         comment.save()
         return JsonResponse(data_response)
 
-def addUsername(request):
+
+def checkComment(request):
+    count = 0
     if request.method == 'POST':
         userId = request.user.id
-        commentId = request.POST.get('commentId')
-        addusername = request.POST.get('username')
-        comment = Comment.objects.get(pk=commentId)
-        
-        comment.content = comment.content + addusername
-        data_response['success'] = 'minus_upvote'
+        post = Post.objects.filter(author_id=userId)
+        for posts in post:
+            comment = Comment.objects.filter(post_id=posts.id)
+            for comments in comment:
+                count = count + 1
+    return HttpResponse(count, content_type="text/json-command-filtered")
 
-        comment.save()
-        return JsonResponse(data_response)
-
+def getLastComment(request):
+    maxId = 0
+    if request.method == 'POST':
+        userId = request.user.id
+        post = Post.objects.filter(author_id=userId)
+        for posts in post:
+            comment = Comment.objects.filter(post_id=posts.id).latest('id')
+            commentId = comment.id
+            if(maxId < commentId):
+                maxId = commentId
+        latestComment = Comment.objects.filter(id=maxId)
+        for latestComments in latestComment:
+            data_response['content'] = latestComments.content
+            return JsonResponse(data_response)

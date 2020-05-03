@@ -181,7 +181,7 @@
                                                     -{{ comment.devote|length }}
                                                 {% endif %}
                                             </span> Devote</span></a>
-                                            <a href="javascript:void();" onclick="onReply({{ comment.id }},'{{ comment.author.username }}')">Reply</a>
+                                            <a href="javascript:void();" onclick="onReply({{ post.id }},'{{ user.first_name }}', '{{ user.last_name }}','{{ comment.author.id }}')">Reply</a>
                                             <span> 5 min </span>
                                         </div>
                                     </div>
@@ -197,8 +197,8 @@
 
                     <form class="comment-text d-flex align-items-center mt-3"
                           action="javascript:void(0);">
-                        <input type="text"
-                               class="form-control rounded input_comment">
+                        <textarea type="text"
+                               class="form-control rounded input_comment" id="{{ post.id }}" name="{{ post.author.id }}"></textarea>
                         <div class="comment-attagement d-flex">
                             <input type="file" style="padding-right: 0px"
                                    data-id="{{ post.id }}"
