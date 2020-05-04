@@ -559,9 +559,10 @@
         $("#"+id).val(username1 + " " + username2 + " ");    
     }
     function checkIfComment(){
-        
+            
         
         setInterval(function(){
+
             $.ajax({
                 headers: {"X-CSRFToken": token},
                 url: '/post/checkComment/',
@@ -593,7 +594,6 @@
                     }
                 }
             });
-            // toastr.success("The request is  sent successfully.");
         }, 1000);
     }
 </script>

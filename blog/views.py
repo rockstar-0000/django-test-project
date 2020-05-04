@@ -338,9 +338,11 @@ def getLastComment(request):
         for posts in post:
             comment = Comment.objects.filter(post_id=posts.id).latest('id')
             commentId = comment.id
+
             if(maxId < commentId):
                 maxId = commentId
         latestComment = Comment.objects.filter(id=maxId)
         for latestComments in latestComment:
             data_response['content'] = latestComments.content
+            print(data_response)
             return JsonResponse(data_response)
