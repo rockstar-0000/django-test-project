@@ -205,6 +205,24 @@ def profile_detail(request, username):
 def notifications(request):
     return render(request, 'users/notification.html')
 
+def profile_videos(request):
+    return render(request, 'users/profile-video.html')
+
+def profile_friend_list(request):
+    return render(request, 'users/friend-list.html')
+
+def profile_images(request):
+    return render(request, 'users/profile-images.html')
+
+def profile_friend_review(request):
+    return render(request, 'users/friend-review.html')
+
+def profile_create_review(request):
+    return render(request, 'users/friend-create-review.html')
+
+def profile_edit(request):
+    return render(request, 'users/profile-edit.html')
+
 # Different types of messages from import messages
 # messages.debug
 # messages.info
