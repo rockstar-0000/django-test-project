@@ -41,30 +41,58 @@
       <!-- loader END -->
       <!-- Wrapper Start -->
       <div class="wrapper">
-         <!-- Sidebar  -->
-         <div class="iq-sidebar">
-            <div id="sidebar-scrollbar">
-               <nav class="iq-sidebar-menu">
-                  <ul id="iq-sidebar-toggle" class="iq-menu">
-                     <li class="active">
-   
-                        <a href="{% url 'blog-home' %}" class="iq-waves-effect"><i
-                              class="las la-newspaper"></i><span>Home</span></a>
-                     </li>
-                     <li>
-                        <a href="{% url 'blog-about' %}" class="iq-waves-effect"><i class="las la-bell"></i><span>About</span></a>
-                     </li>
-                     <li>
-                        <a href="{% url 'post-create' %}" class="iq-waves-effect"><i class="las la-anchor"></i><span>New Post</span></a>
-                     </li>
-                     <li>
-                        <a href="{% url 'profile' %}" class="iq-waves-effect"><i class="las la-user"></i><span>My Profile</span></a>
-                     </li>
-                  </ul>
-               </nav>
-               <div class="p-3"></div>
-            </div>
-         </div>
+          <!-- Sidebar  -->
+          <div class="iq-sidebar">
+              <div id="sidebar-scrollbar">
+                  <nav class="iq-sidebar-menu">
+                      <ul id="iq-sidebar-toggle" class="iq-menu">
+                          <li class="active">
+
+                              <a href="{% url 'blog-home' %}" class="iq-waves-effect"><i
+                                      class="las la-newspaper"></i><span>Home</span></a>
+                          </li>
+                          <li>
+                              <a href="{% url 'notifications' %}" class="iq-waves-effect"><i class="las la-bell"></i><span>Your
+                              Notifications</span></a>
+                          </li>
+                          <li>
+                              <a href="{% url 'friend_request_notifications' %}" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend
+                              Requests</span></a>
+                          </li>
+                          <li>
+                              <a href="{% url 'profile-detail' user.username %}" class="iq-waves-effect"><i class="las la-user"></i><span>Profile</span></a>
+                          </li>
+                          <li>
+                              <a href="friend-list.html" class="iq-waves-effect"><i class="las la-user-friends"></i><span>Friend
+                              Lists</span></a>
+                          </li>
+
+                          <li>
+                              <a href="profile-images.html" class="iq-waves-effect"><i class="las la-image"></i><span>Your
+                              Images</span></a>
+                          </li>
+                          <li>
+                              <a href="profile-video.html" class="iq-waves-effect"><i class="las la-video"></i><span>Your
+                              Videos</span></a>
+                          </li>
+
+{#                          <li>#}
+{#                              <a href="chat.html" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Chat</span></a>#}
+{#                          </li>#}
+                          <li>
+                              <a href="#mailbox" class="iq-waves-effect collapsed" data-toggle="collapse"
+                                 aria-expanded="false"><i class="ri-mail-line"></i><span>Messages</span><i
+                                      class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                              <ul id="mailbox" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                                  <li><a href="app/index.html"><i class="ri-inbox-line"></i>Inbox</a></li>
+                                  <li><a href="app/email-compose.html"><i class="ri-edit-line"></i>Compose</a></li>
+                              </ul>
+                          </li>
+                      </ul>
+                  </nav>
+                  <div class="p-3"></div>
+              </div>
+          </div>
          <!-- TOP Nav Bar -->
          <div class="iq-top-navbar">
             <div class="iq-navbar-custom">
@@ -330,7 +358,7 @@
                               <div class="iq-card shadow-none m-0">
                                  <div class="iq-card-body p-0 ">
                                     <div class="bg-primary p-3 line-height">
-                                       <h5 class="mb-0 text-white line-height">Hello Bni Cyst</h5>
+                                       <h5 class="mb-0 text-white line-height">Hello {{ user.first_name }} {{ user.last_name }}</h5>
                                        <span class="text-white font-size-12">Available</span>
                                     </div>
                                     <a href="profile.html" class="iq-sub-card iq-bg-primary-hover">
@@ -357,7 +385,7 @@
                                     </a>
                                     
                                     <div class="d-inline-block w-100 text-center p-3">
-                                       <a class="bg-primary iq-sign-btn" href="sign-in.html" role="button">Sign out<i class="ri-login-box-line ml-2"></i></a>
+                                       <a class="bg-primary iq-sign-btn" href="{% url 'logout' %}" role="button">Sign out<i class="ri-login-box-line ml-2"></i></a>
                                     </div>
                                  </div>
                               </div>

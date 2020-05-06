@@ -127,6 +127,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
+
 # Directory where uploaded files will be saved
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -134,8 +136,9 @@ MEDIA_URL = '/media/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # After logging in, this is where the user goes
-LOGIN_REDIRECT_URL = 'profile'
+LOGIN_REDIRECT_URL = 'blog-home'
 LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = 'login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

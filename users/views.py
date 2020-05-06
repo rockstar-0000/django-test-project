@@ -91,6 +91,9 @@ def friend_request(request):
             Friend.save(friend)
             return JsonResponse(data_response)
 
+def friend_request_notifications(request):
+    return render(request, 'users/friend-request.html')
+
 
 def get_friend_request_list(request):
     if request.method == 'POST':
@@ -142,12 +145,6 @@ def block_friend_request(request):
 
         data_response['success'] = 'success'
         return JsonResponse(data_response)
-
-
-def profile_detail_2(request):
-    # print(request)
-    return render(request, 'users/profile_detail2.html')
-
 
 def check_block(request):
     if request.method == 'POST':
@@ -204,6 +201,9 @@ def profile_detail(request, username):
         'already': already
     }
     return render(request, 'users/profile-detail.html', context)
+
+def notifications(request):
+    return render(request, 'users/notification.html')
 
 # Different types of messages from import messages
 # messages.debug
