@@ -80,8 +80,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'NAME': 'postgres',
-        'USER': 'postgres',
+        'NAME': 'postgre',
+        'USER': 'postgre',
         'PASSWORD': 'superuser',
         'HOST': 'localhost',
         'PORT': '5432'

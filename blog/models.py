@@ -38,6 +38,7 @@ class Comment(models.Model):
     image = models.CharField(max_length=250, blank=True)
     post = models.ForeignKey('blog.Post', on_delete=models.CASCADE, null=True, related_name='comments')
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-
+    vote = ArrayField(models.IntegerField(), null=True)
+    devote = ArrayField(models.IntegerField(), null=True)
     def __str__(self):
         return self.content

@@ -60,7 +60,7 @@ class PostListview(ListView):
                     query = query & ~Q(author_id=int(friend.sender_id))
                 else:
                     query = query | Q(state="private", author_id=int(friend.sender_id))
-
+        print(Post.objects.filter(query).order_by("-id"))
         return Post.objects.filter(query).order_by("-id")
 
 
@@ -219,6 +219,39 @@ def upvote(request):
         post.save()
         return JsonResponse(data_response)
 
+def upvoteComment(request):
+    if request.method == 'POST':
+        userId = request.user.id
+        commentId = request.POST.get('commentId')
+        selectedUserId = request.POST.get('selectedUserId')
+        comment = Comment.objects.get(pk=commentId)
+        if comment.vote is not None:
+            for like in comment.vote:
+                if like == int(userId):
+                    data_response['success'] = 'failed'
+                    return JsonResponse(data_response)
+
+            comment.vote += [int(userId)]
+            data_response['num_upvotes'] = len(comment.vote)
+
+        else:
+            new_list = list()
+            new_item = new_list + [int(userId)]
+            comment.vote = new_item
+            data_response['num_upvotes'] = 1
+            data_response['num_downvotes'] = 0
+            data_response['success'] = 'success'
+
+        if comment.devote is not None:
+            for dislike in comment.devote:
+                if dislike == int(userId):
+                    comment.devote.remove(dislike)
+                    data_response['success'] = 'minus_downvote'
+            data_response['num_downvotes'] = -(len(comment.devote))
+
+        comment.save()
+        return JsonResponse(data_response)
+
 def downvote(request):
     if request.method == 'POST':
         userId = request.user.id
@@ -251,3 +284,65 @@ def downvote(request):
 
         post.save()
         return JsonResponse(data_response)
+
+def downvotecomment(request):
+    if request.method == 'POST':
+        userId = request.user.id
+        commentId = request.POST.get('commentId')
+        selectedUserId = request.POST.get('selectedUserId')
+        comment = Comment.objects.get(pk=commentId)
+        if comment.devote is not None:
+            for dislike in comment.devote:
+                if dislike == int(userId):
+                    data_response['success'] = 'failed'
+                    return JsonResponse(data_response)
+
+            comment.devote += [int(userId)]
+            data_response['num_downvotes'] = -(len(comment.devote))
+
+        else:
+            new_list = list()
+            new_item = new_list + [int(userId)]
+            comment.devote = new_item
+            data_response['num_upvotes'] = 0
+            data_response['num_downvotes'] = -1
+            data_response['success'] = 'success'
+
+        if comment.vote is not None:
+            for like in comment.vote:
+                if like == int(userId):
+                    comment.vote.remove(like)
+                    data_response['success'] = 'minus_upvote'
+            data_response['num_upvotes'] = len(comment.vote)
+
+        comment.save()
+        return JsonResponse(data_response)
+
+
+def checkComment(request):
+    count = 0
+    if request.method == 'POST':
+        userId = request.user.id
+        post = Post.objects.filter(author_id=userId)
+        for posts in post:
+            comment = Comment.objects.filter(post_id=posts.id)
+            for comments in comment:
+                count = count + 1
+    return HttpResponse(count, content_type="text/json-command-filtered")
+
+def getLastComment(request):
+    maxId = 0
+    if request.method == 'POST':
+        userId = request.user.id
+        post = Post.objects.filter(author_id=userId)
+        for posts in post:
+            comment = Comment.objects.filter(post_id=posts.id).latest('id')
+            commentId = comment.id
+
+            if(maxId < commentId):
+                maxId = commentId
+        latestComment = Comment.objects.filter(id=maxId)
+        for latestComments in latestComment:
+            data_response['content'] = latestComments.content
+            print(data_response)
+            return JsonResponse(data_response)
