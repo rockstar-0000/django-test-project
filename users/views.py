@@ -25,9 +25,9 @@ def register(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
-            # login(request, user)
-            # messages.success(request, f'Your account has been created! You are now able to log in!')
-            return redirect('sign_up_post')
+            login(request, user)
+            messages.success(request, f'Your account has been created! You are now able to log in!')
+            return redirect('phone_verification_step1')
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
@@ -40,6 +40,7 @@ def verification_step1(request):
             user = request.user
             user.phone = form.phone
             user.save()
+            code = VerificationCode.objects.select_related().create()
             # SEND SMS HERE, MAY BE ASYNC
             return redirect('phone_verification_step2')
     return render(request, 'users/sign-up-phone-verify.html', {'form': form})
@@ -51,9 +52,11 @@ def verification_step2(request):
         if form.is_valid():
             user = request.user
             code = form.code
-            if code is None: # HERE SHOULD BE CHECKED
+            verifications = VerificationCode.objects.select_related().latest()
+            if code == verifications.code:
                 user.phone_verified = True
-                return redirect('home')
+                user.save()
+                return redirect('sign_up_post')
             else:
                 messages.error(request, "Is not correct")
     return render(request, 'users/sign-up-phone-verify_step2.html', {'form': form})
