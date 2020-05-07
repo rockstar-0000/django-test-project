@@ -74,8 +74,8 @@ class Friend(models.Model):
 
 
 class VerificationCode(models.Model):
-    user_id = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    content = models.TextField(default=randint(10000, 99999)) # Generates the random code
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    code = models.TextField(default=randint(10000, 99999)) # Generates the random code
     created_at = models.IntegerField(default=time.time())
     valid_until = models.IntegerField(default=time.time() + 1 * 60 * 60) # Valid for 1 hour
 

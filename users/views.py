@@ -4,11 +4,11 @@ from django.core import serializers
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Q
 from django.contrib.auth import login, authenticate
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, VerificationStep1Form, VerificationStep2Form
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from pprint import pprint
-from .models import Friend
+from .models import Friend, VerificationCode
 from blog.models import Post
 from blog.models import Comment
 
@@ -31,6 +31,32 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
+
+@login_required()
+def verification_step1(request):
+    form = VerificationStep1Form(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            user = request.user
+            user.phone = form.phone
+            user.save()
+            # SEND SMS HERE, MAY BE ASYNC
+            return redirect('phone_verification_step2')
+    return render(request, 'users/sign-up-phone-verify.html', {'form': form})
+
+@login_required()
+def verification_step2(request):
+    form = VerificationStep2Form(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            user = request.user
+            code = form.code
+            if code is None: # HERE SHOULD BE CHECKED
+                user.phone_verified = True
+                return redirect('home')
+            else:
+                messages.error(request, "Is not correct")
+    return render(request, 'users/sign-up-phone-verify_step2.html', {'form': form})
 
 def sign_up_post(request):
     return render(request, 'users/sign-up-post.html')
