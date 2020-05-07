@@ -21,17 +21,14 @@
                                         <div class="user-img">
                                             <img src="{{ user.profile.image.url }}" alt="userimg" class="avatar-60 rounded-circle img-fluid">
                                         </div>
-                                        <form class="post-text ml-3 w-100" action="javascript:void(0);">
-                                            <input type="text" class="form-control rounded" placeholder="Tell Us Something Good!">
-                                        </form>
+
+                                            <input type="text" class="form-control rounded ml-3" placeholder="Tell Us Something Good!">
+
                                     </div>
                                     <hr>
-                                    <ul class="post-opt-block d-flex align-items-center list-inline m-0 p-0">
-                                        <li class="iq-bg-primary rounded p-2 pointer mr-3"><a href="#"></a><img src="{% static 'users/images/small/07.png' %}" alt="icon" class="img-fluid"> Photo/Video</li>
 
-                                    </ul>
                                 </div>
-                                <div class="modal fade" id="post-modal" tabindex="-1" role="dialog" aria-labelledby="post-modalLabel" aria-hidden="true" style="display: none;">
+                                <div class="modal fade" id="post-modal" tabindex="-1" role="dialog" aria-labelledby="post-modalLabel" aria-hidden="true" >
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -44,29 +41,40 @@
                                                         <img src="{{ user.profile.image.url }}" alt="userimg" class="avatar-60 rounded-circle img-fluid">
                                                     </div>
                                                     <form class="post-text ml-3 w-100" action="javascript:void(0);">
-                                                        <input type="text" class="form-control rounded" placeholder="Tell Us Something Good!">
+                                                        <input type="text" class="form-control rounded" placeholder="Tell Us Something Good!" id="input_post_content">
                                                     </form>
                                                 </div>
                                                 <hr>
                                                 <ul class="d-flex flex-wrap align-items-center list-inline m-0 p-0">
                                                     <li class="col-md-6 mb-3">
-                                                        <div class="iq-bg-primary rounded p-2 pointer mr-3"><a href="#"></a><img src="{% static 'users/images/small/07.png' %}" alt="icon" class="img-fluid"> Photo/Video</div>
+                                                        <div class="iq-bg-primary rounded p-2 pointer mr-3">
+                                                            <input type="file" class="input_file_hidden" id="input_post_image"
+                                                                   onchange="preview_post_image()" multiple>
+                                                            <label for="input_post_image"><img
+                                                                    src="{% static 'users/images/small/07.png' %}"
+                                                                    alt="icon" class="img-fluid">
+                                                                Photo/Video</label>
+                                                        </div>
                                                     </li>
-
                                                 </ul>
                                                 <hr>
                                                 <div class="other-option">
                                                     <div class="d-flex align-items-center justify-content-between">
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="user-img mr-3">
-                                                                <img src="{{ user.profile.image.url }}" alt="userimg" class="avatar-60 rounded-circle img-fluid">
-                                                            </div>
-                                                            <h6>Your Story</h6>
-                                                        </div>
+
                                                         <div class="iq-card-post-toolbar">
+
+                                                            <div class="div_select_public_private">
+                                                                <select name="public_private" id="select_public">
+                                                                    <option value="public">Public</option>
+                                                                    <option value="private">Private</option>
+                                                                </select>
+                                                            </div>
+
+
+
                                                             <div class="dropdown">
                                                        <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                                       <span class="btn btn-primary">Friend</span>
+                                                       <span class="btn btn-outline-primary">Friend</span>
                                                        </span>
                                                                 <div class="dropdown-menu m-0 p-0">
                                                                     <a class="dropdown-item p-3" href="#">
