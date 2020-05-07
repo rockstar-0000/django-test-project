@@ -4,13 +4,13 @@ from django.dispatch import receiver
 from .models import Profile
 
 
-@receiver(pre_save, sender=User)
-def set_new_user_inactive(sender, instance, **kwargs):
-    if instance._state.adding is True:
-        print("Creating Inactive User")
-        instance.is_active = False
-    else:
-        print("Updating User Record")
+# @receiver(pre_save, sender=User)
+# def set_new_user_inactive(sender, instance, **kwargs):
+#     if instance._state.adding is True:
+#         print("Creating Inactive User")
+#         instance.is_active = False
+#     else:
+#         print("Updating User Record")
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
