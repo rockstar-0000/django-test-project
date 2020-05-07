@@ -75,8 +75,9 @@
                                     <div class="col-sm-2 p-0 mr-4">
                                         {% if already == '' and selectedUser.id != user.id %}
                                             <button class="btn btn-outline-primary btn-block" id="btn_friend_req"
-                                                    onclick="friend_request({{ selectedUser.id }}, '{{ selectedUser.first_name }}', '{{ selectedUser.last_name }}', '{{ selectedUser.profile.image.url }}',{{ user.id }}, '{{ user.first_name }}', '{{ user.last_name }}', '{{ user.profile.image.url }}')"
-                                                    Friend Request</button>
+                                                    onclick="friend_request({{ selectedUser.id }}, '{{ selectedUser.first_name }}', '{{ selectedUser.last_name }}', '{{ selectedUser.profile.image.url }}',{{ user.id }}, '{{ user.first_name }}', '{{ user.last_name }}', '{{ user.profile.image.url }}')">
+                                                    Friend Request
+                                            </button>
                                         {% endif %}
                                         {% if already == 'sent' %}
                                             <button class="btn btn-outline-success btn-block">Request Pending</button>
@@ -132,117 +133,93 @@
                                                     <div class="iq-header-title">
                                                         <h4 class="card-title">Create Post</h4>
                                                     </div>
+
                                                 </div>
                                                 <div class="iq-card-body" data-toggle="modal" data-target="#post-modal">
                                                     <div class="d-flex align-items-center">
                                                         <div class="user-img">
-                                                            <img src="{{ selectedUser.profile.image.url }}"
-                                                                 alt="userimg"
-                                                                 class="avatar-60 rounded-circle img-fluid">
+                                                            <img src="{{ user.profile.image.url }}" alt="userimg" class="avatar-60 rounded-circle img-fluid">
                                                         </div>
-                                                        <form class="post-text ml-3 w-100" action="javascript:void(0);">
-                                                            <input type="text" class="form-control rounded"
-                                                                   placeholder="Write something here..."
-                                                                   style="border:none;">
-                                                        </form>
+
+                                                        <input type="text" class="form-control rounded ml-3" placeholder="Tell Us Something Good!">
+
                                                     </div>
                                                     <hr>
+
                                                 </div>
-                                                <div class="modal fade" id="post-modal" tabindex="-1" role="dialog"
-                                                     aria-labelledby="post-modalLabel" aria-hidden="true"
-                                                     style="display: none;">
+                                                <div class="modal fade" id="post-modal" tabindex="-1" role="dialog" aria-labelledby="post-modalLabel" aria-hidden="true" >
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="post-modalLabel">Create
-                                                                    Post</h5>
-                                                                <button type="button" class="btn btn-secondary"
-                                                                        data-dismiss="modal"><i
-                                                                        class="ri-close-fill"></i></button>
+                                                                <h5 class="modal-title" id="post-modalLabel">Create Post</h5>
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="ri-close-fill"></i></button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="d-flex align-items-center">
                                                                     <div class="user-img">
-                                                                        <img src="{{ selectedUser.profile.image.url }}"
-                                                                             alt="userimg"
-                                                                             class="avatar-60 rounded-circle img-fluid">
+                                                                        <img src="{{ user.profile.image.url }}" alt="userimg" class="avatar-60 rounded-circle img-fluid">
                                                                     </div>
-                                                                    <form class="post-text ml-3 w-100"
-                                                                          action="javascript:void(0);">
-                                                                        <input type="text"
-                                                                               class="form-control rounded"
-                                                                               placeholder="Write something here..."
-                                                                               style="border:none;">
+                                                                    <form class="post-text ml-3 w-100" action="javascript:void(0);">
+                                                                        <input type="text" class="form-control rounded" placeholder="Tell Us Something Good!" id="input_post_content">
                                                                     </form>
                                                                 </div>
                                                                 <hr>
-                                                                <ul class="d-flex flex-wrap align-items-center list-inline m-0 p-0">
-                                                                    <li class="col-md-6 mb-3">
+                                                                <div class="row">
+                                                                    <div class="col-6">
                                                                         <div class="iq-bg-primary rounded p-2 pointer mr-3">
-                                                                            <a href="#"><img
-                                                                                src="{% static 'users/images/small/07.png' %}"
-                                                                                alt="icon" class="img-fluid">Photo/Video
-                                                                            </a>
+                                                                            <input type="file" class="input_file_hidden" id="input_post_image"
+                                                                                   onchange="preview_post_image()" multiple>
+                                                                            <label for="input_post_image"><img
+                                                                                    src="{% static 'users/images/small/07.png' %}"
+                                                                                    alt="icon" class="img-fluid">
+                                                                                Photo/Video</label>
                                                                         </div>
-                                                                </ul>
-                                                                <hr>
-                                                                <div class="other-option">
-                                                                    <div class="d-flex align-items-center justify-content-between">
-                                                                        <div class="d-flex align-items-center">
-                                                                            <div class="user-img mr-3">
-                                                                                <img src="{{ selectedUser.profile.image.url }}"
-                                                                                     alt="userimg"
-                                                                                     class="avatar-60 rounded-circle img-fluid">
-                                                                            </div>
-                                                                            <h6>Your Story</h6>
-                                                                        </div>
-                                                                        <div class="iq-card-post-toolbar">
-                                                                            <div class="dropdown">
-                                                                                <span class="dropdown-toggle"
-                                                                                      id="postdata-1"
-                                                                                      data-toggle="dropdown"
-                                                                                      aria-haspopup="true"
-                                                                                      aria-expanded="false"
-                                                                                      role="button">
-                                                                                    <span class="btn btn-primary">Friend</span>
-                                                                                </span>
-                                                                                <div class="dropdown-menu m-0 p-0"
-                                                                                     aria-labelledby="postdata-1"
-                                                                                     style="">
-                                                                                    <a class="dropdown-item p-3"
-                                                                                       href="#">
-                                                                                        <div class="d-flex align-items-top">
-                                                                                            <div class="icon font-size-20">
-                                                                                                <i class="ri-save-line"></i>
-                                                                                            </div>
-                                                                                            <div class="data ml-2">
-                                                                                                <h6>Public</h6>
-                                                                                                <p class="mb-0">
-                                                                                                    Public</p>
-                                                                                            </div>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="dropdown">
+                                                                           <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                                                           <span class="btn btn-outline-primary">Friend</span>
+                                                                           </span>
+                                                                            <div class="dropdown-menu m-0 p-0">
+                                                                                <a class="dropdown-item p-3" href="#">
+                                                                                    <div class="d-flex align-items-top">
+
+                                                                                        <div class="icon font-size-20"><i class="ri-save-line"></i></div>
+                                                                                        <div class="data ml-2">
+                                                                                            <h6>Public</h6>
+                                                                                            <p class="mb-0">Everyone</p>
                                                                                         </div>
-                                                                                    </a>
-                                                                                    <a class="dropdown-item p-3"
-                                                                                       href="#">
-                                                                                        <div class="d-flex align-items-top">
-                                                                                            <div class="icon font-size-20">
-                                                                                                <i class="ri-close-circle-line"></i>
-                                                                                            </div>
-                                                                                            <div class="data ml-2">
-                                                                                                <h6>Friends</h6>
-                                                                                                <p class="mb-0">Your
-                                                                                                    Friends</p>
-                                                                                            </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                                <a class="dropdown-item p-3" href="#">
+                                                                                    <div class="d-flex align-items-top">
+                                                                                        <div class="icon font-size-20"><i class="ri-close-circle-line"></i></div>
+                                                                                        <div class="data ml-2">
+                                                                                            <h6>Friends</h6>
+                                                                                            <p class="mb-0">Your Friends</p>
                                                                                         </div>
-                                                                                    </a>
-                                                                                </div>
+                                                                                    </div>
+                                                                                </a>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <button type="submit"
-                                                                        class="btn btn-primary d-block w-100 mt-3">Post
-                                                                </button>
+                                                                <hr>
+                                                                <div class="other-option">
+                                                                    <div class="d-flex align-items-center justify-content-between">
+
+                                                                        <div class="iq-card-post-toolbar">
+
+                                                                            <div class="div_select_public_private">
+                                                                                <select name="public_private" id="select_public">
+                                                                                    <option value="public">Public</option>
+                                                                                    <option value="private">Private</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <button type="submit" class="btn btn-primary d-block w-100 mt-3" onclick="submit_new_post()">Post</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -322,7 +299,7 @@
                                                                             </svg>
                                                                             <span class="ml-1"
                                                                                   onclick="upvote({{ post.id }}, {{ post.author.id }})"><span
-                                                                                    id="upvote_{{ post.id }}">{{ post.like|length }}</span> Upvotes</span>
+                                                                                    id="upvote_{{ post.id }}">{{ post.like|length }}</span> Upvote</span>
                                                                         </a>&nbsp;&nbsp;
                                                                         <a href="javascript:void(0);">
                                                                             <svg class="bi bi-arrow-90deg-down"
@@ -345,7 +322,7 @@
                                                                                         -{{ post.dislike|length }}
                                                                                     {% endif %}
                                                                                 </span>
-                                                                                Downvotes
+                                                                                Downvote
                                                                             </span>
                                                                         </a>
                                                                     </div>

@@ -45,8 +45,8 @@
                                                     </form>
                                                 </div>
                                                 <hr>
-                                                <ul class="d-flex flex-wrap align-items-center list-inline m-0 p-0">
-                                                    <li class="col-md-6 mb-3">
+                                                <div class="row">
+                                                    <div class="col-6">
                                                         <div class="iq-bg-primary rounded p-2 pointer mr-3">
                                                             <input type="file" class="input_file_hidden" id="input_post_image"
                                                                    onchange="preview_post_image()" multiple>
@@ -55,8 +55,36 @@
                                                                     alt="icon" class="img-fluid">
                                                                 Photo/Video</label>
                                                         </div>
-                                                    </li>
-                                                </ul>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="dropdown">
+                                                               <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                                               <span class="btn btn-outline-primary">Friend</span>
+                                                               </span>
+                                                            <div class="dropdown-menu m-0 p-0">
+                                                                <a class="dropdown-item p-3" href="#">
+                                                                    <div class="d-flex align-items-top">
+
+                                                                        <div class="icon font-size-20"><i class="ri-save-line"></i></div>
+                                                                        <div class="data ml-2">
+                                                                            <h6>Public</h6>
+                                                                            <p class="mb-0">Everyone</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </a>
+                                                                <a class="dropdown-item p-3" href="#">
+                                                                    <div class="d-flex align-items-top">
+                                                                        <div class="icon font-size-20"><i class="ri-close-circle-line"></i></div>
+                                                                        <div class="data ml-2">
+                                                                            <h6>Friends</h6>
+                                                                            <p class="mb-0">Your Friends</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <hr>
                                                 <div class="other-option">
                                                     <div class="d-flex align-items-center justify-content-between">
@@ -68,35 +96,6 @@
                                                                     <option value="public">Public</option>
                                                                     <option value="private">Private</option>
                                                                 </select>
-                                                            </div>
-
-
-
-                                                            <div class="dropdown">
-                                                       <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                                       <span class="btn btn-outline-primary">Friend</span>
-                                                       </span>
-                                                                <div class="dropdown-menu m-0 p-0">
-                                                                    <a class="dropdown-item p-3" href="#">
-                                                                        <div class="d-flex align-items-top">
-
-                                                                            <div class="icon font-size-20"><i class="ri-save-line"></i></div>
-                                                                            <div class="data ml-2">
-                                                                                <h6>Public</h6>
-                                                                                <p class="mb-0">Everyone</p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </a>
-                                                                    <a class="dropdown-item p-3" href="#">
-                                                                        <div class="d-flex align-items-top">
-                                                                            <div class="icon font-size-20"><i class="ri-close-circle-line"></i></div>
-                                                                            <div class="data ml-2">
-                                                                                <h6>Friends</h6>
-                                                                                <p class="mb-0">Your Friends</p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </a>
-                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -119,7 +118,7 @@
                                             <img class="rounded-circle img-fluid" src="{{ post.author.profile.image.url }}" alt="">
                                         </div>
                                         <div class="media-support-info mt-2">
-                                            <h5 class="mb-0 d-inline-block"><a href="javascript:void(0)" nclick="checkBlock({{ post.author.id }}, '{{ post.author.username }}')">{{ post.author.profile.user.first_name }} {{ post.author.profile.user.last_name }}</a></h5>
+                                            <h5 class="mb-0 d-inline-block"><a href="javascript:void(0)" onclick="checkBlock({{ post.author.id }}, '{{ post.author.username }}')">{{ post.author.profile.user.first_name }} {{ post.author.profile.user.last_name }}</a></h5>
 
                                             <p class="mb-0 text-muted">{{ post.date_posted|date:"F d, Y" }}</p>
                                         </div>
