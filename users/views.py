@@ -27,10 +27,17 @@ def register(request):
             user = authenticate(username=username, password=password)
             # login(request, user)
             # messages.success(request, f'Your account has been created! You are now able to log in!')
-            return redirect('login')
+            return redirect('sign_up_post')
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
+
+def sign_up_post(request):
+    return render(request, 'users/sign-up-post.html')
+
+def sign_in_photo_verify(request):
+    return render(request, 'users/sign-in-photo-verify.html')
+
 
 
 @login_required()

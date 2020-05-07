@@ -10,6 +10,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls')),
     path('register/', user_views.register, name='register'),
+    path('register/sign_up_post/', user_views.sign_up_post, name='sign_up_post'),
+    path('register/photo_verify/', user_views.sign_in_photo_verify, name='sign_in_photo_verify'),
     path('profile/', user_views.profile, name='profile'),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login', template_name='users/logout.html'), name='logout'),
