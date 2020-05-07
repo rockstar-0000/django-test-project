@@ -68,3 +68,15 @@ class Friend(models.Model):
 
     def save(self, *args, **kwargs):
         super(Friend, self).save(*args, **kwargs)
+
+
+class VerificationCode(models.Model):
+    user_id = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    content = models.TextField(default=randint(10000, 99999))
+    created_at = models.IntegerField(default=time.time())
+    valid_until = models.IntegerField(default=time.time() + 1 * 60 * 60) # Valid for 1 hour
+
+    class Meta:
+        db_table = 'verification_code'
+        verbose_name = 'Verification Code'
+        verbose_name_plural = 'Verification Codes'
