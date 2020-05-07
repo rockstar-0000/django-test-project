@@ -23,6 +23,7 @@ class Profile(models.Model):
     # image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     gender = models.CharField(max_length=25, choices=GENDER_CHOICES, default=single_male)
 
+
     def __str__(self):
         return f'{self.user.username} Profile'
 
