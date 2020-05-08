@@ -50,7 +50,10 @@
                             
 
                             
-                            <form class="mt-4">
+                            <form action="" method="POST" class="mt-4">
+                                {% csrf_token %}
+{#                                {{ u_form|crispy }}#}
+                                {{ p_form|crispy }}
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Upload a Profile Pic</label>
                                         <div class="custom-file">

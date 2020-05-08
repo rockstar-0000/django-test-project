@@ -50,14 +50,18 @@ class PostListview(ListView):
         for friend in friends_list:
             if friend.sender_id == userId:
                 if friend.state == "Block":
-                    print(int(friend.recipient_id))
+                    # print(int(friend.recipient_id))
                     query = query & ~Q(author_id=int(friend.recipient_id))
-                else:
+                # else:
+                #     query = query | Q(state="private", author_id=int(friend.recipient_id))
+                elif friend.state != "Wait":
                     query = query | Q(state="private", author_id=int(friend.recipient_id))
             elif friend.recipient_id == userId:
                 if friend.state == "Block":
-                    print(int(friend.sender_id))
+                    # print(int(friend.sender_id))
                     query = query & ~Q(author_id=int(friend.sender_id))
+                elif friend.state != "Wait":
+                    query = query | Q(state="private", author_id=int(friend.sender_id))
                 else:
                     query = query | Q(state="private", author_id=int(friend.sender_id))
         print(Post.objects.filter(query).order_by("-id"))

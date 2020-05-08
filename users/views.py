@@ -72,7 +72,22 @@ def verification_step2(request):
 
 
 def sign_up_post(request):
-    return render(request, 'users/sign-up-post.html')
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            return redirect('sign_in_photo_verify')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
+    return render(request, 'users/sign-up-post.html', context)
 
 
 def sign_in_photo_verify(request):
