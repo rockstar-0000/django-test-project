@@ -26,7 +26,6 @@ class Profile(models.Model):
     # image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     gender = models.CharField(max_length=25, choices=GENDER_CHOICES, default=single_male)
 
-
     def __str__(self):
         return f'{self.user.username} Profile'
 
@@ -75,11 +74,14 @@ class Friend(models.Model):
 
 class VerificationCode(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    code = models.TextField(default=randint(10000, 99999)) # Generates the random code
+    code = models.TextField(default=randint(10000, 99999))  # Generates the random code
     created_at = models.IntegerField(default=time.time())
-    valid_until = models.IntegerField(default=time.time() + 1 * 60 * 60) # Valid for 1 hour
+    valid_until = models.IntegerField(default=time.time() + 1 * 60 * 60)  # Valid for 1 hour
+    phone = models.TextField(blank=True)
+    phone_verified = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'verification_code'
         verbose_name = 'Verification Code'
         verbose_name_plural = 'Verification Codes'
+        get_latest_by = "created_at"

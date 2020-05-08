@@ -40,9 +40,8 @@ def verification_step1(request):
     if request.method == 'POST':
         if form.is_valid():
             user = request.user
-            user.phone = form.phone
-            user.save()
-            code = VerificationCode.objects.select_related().create()
+            phone = form.cleaned_data.get('phone')
+            code = VerificationCode.objects.create(user_id=user, phone=phone)
             # SEND SMS HERE, MAY BE ASYNC
             return redirect('phone_verification_step2')
     return render(request, 'users/sign-up-phone-verify.html', {'form': form})
@@ -53,11 +52,11 @@ def verification_step2(request):
     if request.method == 'POST':
         if form.is_valid():
             user = request.user
-            code = form.code
-            verifications = VerificationCode.objects.select_related().latest()
-            if code == verifications.code:
-                user.phone_verified = True
-                user.save()
+            code = form.cleaned_data.get('code')
+            verification = VerificationCode.objects.select_related().latest()
+            if code == verification.code:
+                verification.phone_verified = True
+                verification.save()
                 return redirect('sign_up_post')
             else:
                 messages.error(request, "Is not correct")
