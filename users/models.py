@@ -56,7 +56,7 @@ class Profile(models.Model):
     def verification_image_tag(self):
         from django.utils.html import escape
         from django.utils.html import mark_safe
-        return mark_safe('<img src="/media/uploads/%s" />' % escape(self.verification_image.name))
+        return mark_safe('<img src="/media/%s" />' % escape(self.verification_image.name))
     verification_image_tag.short_description = 'Verification Image'
     verification_image_tag.allow_tags = True
 

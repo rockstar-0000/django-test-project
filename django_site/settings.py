@@ -24,7 +24,7 @@ SECRET_KEY = 'x19ka3n8=nd+*vc(0$m(juezayjznvfnzuql-#ujd!z_qs@*57'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -147,5 +147,5 @@ TWILIO_CREDS = {
 
 AUTH_USER_MODEL = 'users.User'
 
-UPLOAD_DIR = os.path.join(MEDIA_ROOT, 'uploads')
+UPLOAD_DIR = os.path.join(MEDIA_ROOT)
 

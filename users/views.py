@@ -100,7 +100,7 @@ def sign_in_photo_verify(request):
             profile = Profile.objects.get(user=request.user)
             profile.verification_image = form.files['verification_image']
             profile.save()
-            return render(request, 'users/sign-in-photo-verify-wait.html')
+            return render(request, 'users/sign-in-photo-verify-confirmation.html')
     return render(request, 'users/sign-in-photo-verify.html', {'form': form})
 
 
@@ -304,7 +304,7 @@ def profile_edit(request):
     return render(request, 'users/profile-edit.html')
 
 def photo_verify_success(request):
-    return render(request, 'users/sign-up-phone-confirmation.html')
+    return render(request, 'users/sign-in-photo-verify-confirmation.html')
 
 # Different types of messages from import messages
 # messages.debug
