@@ -40,6 +40,8 @@ class ProfileUpdateForm(forms.ModelForm):
                   'gender']
 
 
+
+
 class VerificationStep1Form(forms.Form):
     phone = forms.CharField(label='Phone Number',
                             widget=forms.TextInput(attrs={'placeholder': '555-555-555'}))
