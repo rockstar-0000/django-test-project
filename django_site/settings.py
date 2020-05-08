@@ -150,4 +150,5 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
 TWILIO_CREDS = {
     'SID': os.getenv('twilio_sid'),
     'TOKEN': os.getenv('twilio_token'),
+    'FROM': os.getenv('twilio_from'),
 }

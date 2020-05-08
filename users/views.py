@@ -4,6 +4,8 @@ from django.core import serializers
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Q
 from django.contrib.auth import login, authenticate
+
+from django_site.settings import TWILIO_CREDS
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, VerificationStep1Form, VerificationStep2Form
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -44,7 +46,7 @@ def verification_step1(request):
             user = request.user
             phone = form.cleaned_data.get('phone')
             code = VerificationCode.objects.create(user_id=user, phone=phone)
-            twilio_rest_client.messages.create(phone, body=f'Your Code is : {code.code}')
+            twilio_rest_client.messages.create(phone, from_=TWILIO_CREDS['FROM'], body=f'Your Code is : {code.code}')
             return redirect('phone_verification_step2')
     return render(request, 'users/sign-up-phone-verify.html', {'form': form})
 
