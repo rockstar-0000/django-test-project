@@ -74,7 +74,7 @@
                     </div>
 
 
-                    <form action="" method="POST" class="mt-4">
+                    <form action="" method="POST" enctype="multipart/form-data" class="mt-4">
                         {% csrf_token %}
                         {{ form|crispy }}
                         <button type="submit" class="btn btn-primary float-right">Continue</button>

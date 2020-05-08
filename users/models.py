@@ -1,57 +1,39 @@
-from enum import Enum
-
-from PIL import Image
 from django.contrib.auth.models import AbstractUser
+from django.core.files.storage import FileSystemStorage
 from django.db import models
 
-
-def get_upload_path(instance, filename):
-    return '%s/%s' % (instance.user.username, filename)
-
+from django_site.settings import UPLOAD_DIR
 
 class User(AbstractUser):
     approved = models.BooleanField(default=False)
 
     def is_approved(self):
         return self.approved
-    pass
-
-
-class ProfileGenderEnum(Enum):
-    MALE = 'M'
-    FEMALE = 'F'
-    COUPLE = 'C'
-
-    @staticmethod
-    def choices():
-        return [(member.value, name) for name, member in ProfileGenderEnum.__members__.items()]
 
 
 class Profile(models.Model):
+    class Gender(models.TextChoices):
+        MALE = 'M'
+        FEMALE = 'F'
+        COUPLE = 'C'
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='default.jpg', upload_to=get_upload_path)
-    his_age = models.CharField(max_length=2)
-    her_age = models.CharField(max_length=2)
-    bio = models.TextField(blank=True)
-    city = models.CharField(max_length=30)
-    state = models.CharField(max_length=2)
-    zip = models.CharField(max_length=5)
-    interests = models.TextField()
-    kik = models.CharField(max_length=30)
-    gender = models.CharField(max_length=2, choices=ProfileGenderEnum.choices(), default=ProfileGenderEnum.MALE)
+    image = models.ImageField(verbose_name='Profile Image', max_length=255, storage=FileSystemStorage(location=UPLOAD_DIR))
+    his_age = models.CharField(max_length=2, null=True)
+    her_age = models.CharField(max_length=2, null=True)
+    bio = models.TextField(blank=True, null=True)
+    city = models.CharField(max_length=30, null=True)
+    state = models.CharField(max_length=2, null=True)
+    zip = models.CharField(max_length=5, null=True)
+    interests = models.TextField(null=True)
+    kik = models.CharField(max_length=30, null=True)
+    gender = models.CharField(max_length=2, choices=Gender.choices, default=Gender.MALE)
 
     def __str__(self):
         return f'{self.user.username} Profile'
 
     def save(self, *args, **kwargs):
-        super(Profile, self).save(*args, **kwargs)
-
-        img = Image.open(self.image.path)
-
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
+        return super(Profile, self).save(*args, **kwargs)
 
 
 class Friend(models.Model):
@@ -71,10 +53,10 @@ class Friend(models.Model):
     recipient_id = models.IntegerField()
     sender_firstName = models.CharField(max_length=35, default='')
     sender_lastName = models.CharField(max_length=35, default='')
-    sender_image = models.ImageField(default='default.jpg', upload_to=get_upload_path)
+    sender_image = models.ImageField(default='default.jpg')
     recipient_firstName = models.CharField(max_length=35, default='')
     recipient_lastName = models.CharField(max_length=35, default='')
-    recipient_image = models.ImageField(default='default.jpg', upload_to=get_upload_path)
+    recipient_image = models.ImageField(default='default.jpg')
     state = models.CharField(max_length=35, choices=STATE_CHOICES, default=wait)
 
     # user = models.OneToOneField(User, on_delete=models.CASCADE)

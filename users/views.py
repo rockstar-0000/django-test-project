@@ -93,10 +93,12 @@ def sign_up_post(request):
 
 @login_required()
 def sign_in_photo_verify(request):
-    form = SignInPhotoVerifyForm(request.POST or None)
+    form = SignInPhotoVerifyForm(request.POST or None, request.FILES or None)
     if request.method == 'POST':
         if form.is_valid():
-            pass
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
 
     return render(request, 'users/sign-in-photo-verify.html', {'form': form})
 
