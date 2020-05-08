@@ -54,4 +54,8 @@ class VerificationStep2Form(forms.Form):
 
 class SignInPhotoVerifyForm(forms.Form):
     image = forms.FileField(label="Upload Verification Photo",
-                            widget=forms.FileInput(attrs={'class': 'custom-file-input'}))
+                            widget=forms.FileInput(attrs={
+                                'class': 'custom-file-input custom-file-label',
+                                'placeholder': 'Choose file',
+                                'for': 'inputGroupFile01'
+                            }))
