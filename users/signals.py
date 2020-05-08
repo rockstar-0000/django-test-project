@@ -1,9 +1,10 @@
 import time
 from random import randint
 
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from users.models import Profile, VerificationCode, User
+
+from users.models import VerificationCode
 
 
 @receiver(pre_save, sender=VerificationCode)
