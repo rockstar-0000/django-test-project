@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
-from users.models import Profile, ProfileGenderEnum
+from users.models import Profile
 
 User = get_user_model()
 
@@ -42,6 +42,8 @@ class ProfileUpdateForm(forms.ModelForm):
                   'gender']
 
 
+
+
 class VerificationStep1Form(forms.Form):
     phone = forms.CharField(label='Phone Number',
                             widget=forms.TextInput(attrs={'placeholder': '555-555-555'}))
@@ -52,10 +54,7 @@ class VerificationStep2Form(forms.Form):
                            widget=forms.TextInput(attrs={'placeholder': '12345'}))
 
 
-class SignInPhotoVerifyForm(forms.Form):
-    image = forms.FileField(label="Upload Verification Photo",
-                            widget=forms.FileInput(attrs={
-                                'class': 'custom-file-input custom-file-label',
-                                'placeholder': 'Choose file',
-                                'for': 'inputGroupFile01'
-                            }))
+class SignInPhotoVerifyForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['verification_image']
