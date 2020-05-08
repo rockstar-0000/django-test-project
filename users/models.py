@@ -6,10 +6,7 @@ from django_site.settings import UPLOAD_DIR
 
 
 class User(AbstractUser):
-    approved = models.BooleanField(default=False)
 
-    def is_approved(self):
-        return self.approved
 
     def save(self, *args, **kwargs):
         super(User, self).save()
@@ -45,12 +42,23 @@ class Profile(models.Model):
     kik = models.CharField(max_length=30, null=True)
     gender = models.CharField(max_length=2, choices=Gender.choices, default=Gender.MALE)
 
+    approved = models.BooleanField(default=False)
+
+    def is_approved(self):
+        return self.approved
+
     def __str__(self):
         return f'{self.user.username} Profile'
 
     def save(self, *args, **kwargs):
         return super(Profile, self).save(*args, **kwargs)
 
+    def verification_image_tag(self):
+        from django.utils.html import escape
+        from django.utils.html import mark_safe
+        return mark_safe('<img src="/media/uploads/%s" />' % escape(self.verification_image.name))
+    verification_image_tag.short_description = 'Verification Image'
+    verification_image_tag.allow_tags = True
 
 class Friend(models.Model):
     wait = "Wait"
