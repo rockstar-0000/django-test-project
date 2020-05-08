@@ -11,7 +11,6 @@ class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
-    bio = forms.TextInput
 
     class Meta:
         model = User
@@ -29,7 +28,16 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image', 'gender']
+        fields = ['image',
+                  'his_age',
+                  'her_age',
+                  'bio',
+                  'city',
+                  'state',
+                  'zip',
+                  'interests',
+                  'kik',
+                  'gender']
 
 
 class VerificationStep1Form(forms.Form):
