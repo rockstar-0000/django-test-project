@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Profile
+from .models import Profile, VerificationCode
 
 
 class UserRegisterForm(UserCreationForm):
@@ -35,3 +35,13 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['image', 'gender']
+
+
+class VerificationStep1Form(forms.Form):
+    phone = forms.CharField(label='Phone Number',
+                            widget=forms.TextInput(attrs={'placeholder': '555-555-555'}))
+
+
+class VerificationStep2Form(forms.Form):
+    code = forms.CharField(label='Received Code',
+                            widget=forms.TextInput(attrs={'placeholder': '12345'}))

@@ -1,16 +1,21 @@
+import time
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core import serializers
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Q
 from django.contrib.auth import login, authenticate
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+
+from django_site.settings import TWILIO_CREDS
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, VerificationStep1Form, VerificationStep2Form
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from pprint import pprint
-from .models import Friend
+from .models import Friend, VerificationCode
 from blog.models import Post
 from blog.models import Comment
+from .services import twilio_rest_client
 
 data_response = {}
 
@@ -21,23 +26,57 @@ def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            form.save()
+            user_object = form.save()
+            user_object.is_active = True
+            user_object.save()
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
-            # login(request, user)
-            # messages.success(request, f'Your account has been created! You are now able to log in!')
-            return redirect('sign_up_post')
+            login(request, user)
+            messages.success(request, f'Your account has been created! You are now able to log in!')
+            return redirect('phone_verification_step1')
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
+
+@login_required()
+def verification_step1(request):
+    form = VerificationStep1Form(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            user = request.user
+            phone = form.cleaned_data.get('phone')
+            code = VerificationCode.objects.create(user_id=user, phone=phone)
+            twilio_rest_client.messages.create(phone, from_=TWILIO_CREDS['FROM'], body=f'Your Code is : {code.code}')
+            return redirect('phone_verification_step2')
+    return render(request, 'users/sign-up-phone-verify.html', {'form': form})
+
+
+@login_required()
+def verification_step2(request):
+    form = VerificationStep2Form(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            user = request.user
+            code = form.cleaned_data.get('code')
+            verification = VerificationCode.objects.select_related().latest()
+            if verification.valid_until < time.time():
+                if code == verification.code:
+                    verification.phone_verified = True
+                    verification.save()
+                    return redirect('sign_up_post')
+            else:
+                messages.error(request, "Is not correct")
+    return render(request, 'users/sign-up-phone-verify_step2.html', {'form': form})
+
+
 def sign_up_post(request):
     return render(request, 'users/sign-up-post.html')
 
+
 def sign_in_photo_verify(request):
     return render(request, 'users/sign-in-photo-verify.html')
-
 
 
 @login_required()
@@ -98,6 +137,7 @@ def friend_request(request):
             Friend.save(friend)
             return JsonResponse(data_response)
 
+
 def friend_request_notifications(request):
     return render(request, 'users/friend-request.html')
 
@@ -153,6 +193,7 @@ def block_friend_request(request):
         data_response['success'] = 'success'
         return JsonResponse(data_response)
 
+
 def check_block(request):
     if request.method == 'POST':
         recipientId = request.POST.get('recipientId')
@@ -177,7 +218,7 @@ def profile_detail(request, username):
 
     already_block = Friend.objects.filter(
         Q(state="Block", sender_id=selectedId, recipient_id=userId) | Q(state="Block", sender_id=userId,
-                                                                            recipient_id=selectedId)).first()
+                                                                        recipient_id=selectedId)).first()
     if already_block is not None:
         context = {'block': 'true'}
         return redirect('/home', context)
@@ -209,23 +250,30 @@ def profile_detail(request, username):
     }
     return render(request, 'users/profile-detail.html', context)
 
+
 def notifications(request):
     return render(request, 'users/notification.html')
+
 
 def profile_videos(request):
     return render(request, 'users/profile-video.html')
 
+
 def profile_friend_list(request):
     return render(request, 'users/friend-list.html')
+
 
 def profile_images(request):
     return render(request, 'users/profile-images.html')
 
+
 def profile_friend_review(request):
     return render(request, 'users/friend-review.html')
 
+
 def profile_create_review(request):
     return render(request, 'users/friend-create-review.html')
+
 
 def profile_edit(request):
     return render(request, 'users/profile-edit.html')

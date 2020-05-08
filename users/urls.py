@@ -21,4 +21,6 @@ urlpatterns = [
     path('profile/<str:username>/', views.profile_detail, name='profile-detail'),
     path('check_block/', views.check_block, name='check_block'),
     path('notifications/', views.notifications, name='notifications'),
+    path('profile/phone_verification1', views.verification_step1, name='phone_verification_step1'),
+    path('profile/phone_verification2', views.verification_step2, name='phone_verification_step2'),
 ]
