@@ -2,9 +2,8 @@ import time
 from random import randint
 
 from django.db.models.signals import post_save, pre_save
-from django.contrib.auth.models import User
 from django.dispatch import receiver
-from .models import Profile, VerificationCode
+from users.models import Profile, VerificationCode, User
 
 
 @receiver(pre_save, sender=User)
@@ -15,11 +14,11 @@ def set_new_user_inactive(sender, instance, **kwargs):
     else:
         print("Updating User Record")
 
+
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
-
 
 
 @receiver(post_save, sender=User)
