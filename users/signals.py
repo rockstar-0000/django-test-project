@@ -1,7 +1,10 @@
+import time
+from random import randint
+
 from django.db.models.signals import post_save, pre_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
-from .models import Profile
+from .models import Profile, VerificationCode
 
 
 @receiver(pre_save, sender=User)
@@ -22,3 +25,10 @@ def create_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+
+@receiver(pre_save, sender=VerificationCode)
+def set_times(sender, instance, **kwargs):
+    instance.created_at = time.time()
+    instance.valid_until = time.time() + 1 * 60 * 60
+    instance.code = randint(10000, 99999)
