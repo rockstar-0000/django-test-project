@@ -1,10 +1,8 @@
-import time
 from enum import Enum
-from random import randint
 
-from django.db import models
-from django.contrib.auth.models import AbstractUser
 from PIL import Image
+from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 
 def get_upload_path(instance, filename):
@@ -34,7 +32,7 @@ class Profile(models.Model):
     image = models.ImageField(default='default.jpg', upload_to=get_upload_path)
     his_age = models.CharField(max_length=2)
     her_age = models.CharField(max_length=2)
-    bio = models.TextField()
+    bio = models.TextField(blank=True)
     city = models.CharField(max_length=30)
     state = models.CharField(max_length=2)
     zip = models.CharField(max_length=5)
