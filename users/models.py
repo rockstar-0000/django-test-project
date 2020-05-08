@@ -10,6 +10,10 @@ class User(AbstractUser):
     def is_approved(self):
         return self.approved
 
+    def save(self, *args, **kwargs):
+        super(User, self).save()
+        Profile.objects.get_or_create(user=self)
+
 
 class Profile(models.Model):
     class Gender(models.TextChoices):
