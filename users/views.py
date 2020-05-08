@@ -91,6 +91,7 @@ def sign_up_post(request):
     }
     return render(request, 'users/sign-up-post.html', context)
 
+
 @login_required()
 def sign_in_photo_verify(request):
     form = SignInPhotoVerifyForm(request.POST or None, request.FILES or None)
@@ -99,7 +100,7 @@ def sign_in_photo_verify(request):
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
-
+            return render(request, 'users/sign-in-photo-verify-wait.html')
     return render(request, 'users/sign-in-photo-verify.html', {'form': form})
 
 
