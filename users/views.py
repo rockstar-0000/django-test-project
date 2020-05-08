@@ -303,6 +303,9 @@ def profile_create_review(request):
 def profile_edit(request):
     return render(request, 'users/profile-edit.html')
 
+def photo_verify_success(request):
+    return render(request, 'users/sign-up-phone-confirmation.html')
+
 # Different types of messages from import messages
 # messages.debug
 # messages.info
