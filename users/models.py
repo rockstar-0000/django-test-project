@@ -30,6 +30,8 @@ class Profile(models.Model):
         storage=FileSystemStorage(location=UPLOAD_DIR))
     verification_image = models.ImageField(
         default=None,
+        null=True,
+        blank=True,
         verbose_name='Verification Image',
         max_length=255,
         storage=FileSystemStorage(location=UPLOAD_DIR))
