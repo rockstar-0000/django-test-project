@@ -1,21 +1,18 @@
 import time
 
-from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.core import serializers
-from django.http import JsonResponse, HttpResponse
-from django.db.models import Q
 from django.contrib.auth import login, authenticate
-
-from django_site.settings import TWILIO_CREDS
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, VerificationStep1Form, VerificationStep2Form
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from pprint import pprint
-from .models import Friend, VerificationCode
+from django.core import serializers
+from django.db.models import Q
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render, redirect
+
 from blog.models import Post
-from blog.models import Comment
-from users.services import get_twilio_client, send_twilio_message
+from users.forms import *
+from users.services import send_twilio_message
+from .models import Friend, VerificationCode
 
 data_response = {}
 
@@ -81,7 +78,12 @@ def sign_up_post(request):
 
 @login_required()
 def sign_in_photo_verify(request):
-    return render(request, 'users/sign-in-photo-verify.html')
+    form = SignInPhotoVerifyForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            pass
+
+    return render(request, 'users/sign-in-photo-verify.html', {'form': form})
 
 
 @login_required()
