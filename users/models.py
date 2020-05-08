@@ -24,14 +24,14 @@ class Profile(models.Model):
         default='default.jpg',
         verbose_name='Profile Image',
         max_length=255,
-        storage=FileSystemStorage(location=UPLOAD_DIR))
+        storage=FileSystemStorage(location=UPLOAD_DIR, base_url='/media/uploads/'))
     verification_image = models.ImageField(
         default=None,
         null=True,
         blank=True,
         verbose_name='Verification Image',
         max_length=255,
-        storage=FileSystemStorage(location=UPLOAD_DIR))
+        storage=FileSystemStorage(location=UPLOAD_DIR, base_url='/media/uploads/'))
     his_age = models.CharField(max_length=2, null=True)
     her_age = models.CharField(max_length=2, null=True)
     bio = models.TextField(blank=True, null=True)
@@ -56,7 +56,7 @@ class Profile(models.Model):
     def verification_image_tag(self):
         from django.utils.html import escape
         from django.utils.html import mark_safe
-        return mark_safe('<img src="/media/uploads/%s" />' % escape(self.verification_image.name))
+        return mark_safe('<img src="%s" />' % escape(self.verification_image.url))
     verification_image_tag.short_description = 'Verification Image'
     verification_image_tag.allow_tags = True
 
