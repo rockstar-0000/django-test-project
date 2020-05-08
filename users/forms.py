@@ -5,21 +5,20 @@ from .models import Profile
 
 
 class UserRegisterForm(UserCreationForm):
-    # single_male = 'M'
-    # single_female = 'F'
-    # couple = 'CP'
-    #
-    # GENDER_CHOICES = (
-    #     (single_male, "Single Male"),
-    #     (single_female, "Single Female"),
-    #     (couple, 'Couple'),
-    # )
+    single_male = "Single Male"
+    single_female = "Single Female"
+    couple = "Couple's Account"
+
+    GENDER_CHOICES = (
+        (single_male, "Single Male"),
+        (single_female, "Single Female"),
+        (couple, 'Couple'),
+    )
     email = forms.EmailField()
-    # username = forms.CharField(max_length=30)
-    # email = forms.EmailField(max_length=200)
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
-    # gender = forms.CharField(max_length=6, choices=GENDER_CHOICES, default=single_male)
+    bio = forms.TextInput
+    gender = forms.CharField(max_length=6, choices=GENDER_CHOICES, default=single_male)
 
     class Meta:
         model = User

@@ -21,10 +21,16 @@ class Profile(models.Model):
         (couple, 'Couple'),
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # make bio, current city, gender, etc and other stuff here
     image = models.ImageField(default='default.jpg', upload_to=get_upload_path)
-    # image = models.ImageField(default='default.jpg', upload_to='profile_pics')
-    gender = models.CharField(max_length=25, choices=GENDER_CHOICES, default=single_male)
+    his_age = models.CharField(max_length=2)
+    her_age = models.CharField(max_length=2)
+    bio = models.TextInput()
+    city = models.CharField(max_length=30)
+    state = models.CharField(max_length=2)
+    zip = models.CharField(max_length=5)
+    interests = models.TextInput()
+    kik = models.CharField(max_length=30)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default=single_male)
 
 
     def __str__(self):
