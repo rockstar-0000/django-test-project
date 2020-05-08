@@ -1,3 +1,5 @@
+import time
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core import serializers
@@ -59,10 +61,11 @@ def verification_step2(request):
             user = request.user
             code = form.cleaned_data.get('code')
             verification = VerificationCode.objects.select_related().latest()
-            if code == verification.code:
-                verification.phone_verified = True
-                verification.save()
-                return redirect('sign_up_post')
+            if verification.valid_until < time.time():
+                if code == verification.code:
+                    verification.phone_verified = True
+                    verification.save()
+                    return redirect('sign_up_post')
             else:
                 messages.error(request, "Is not correct")
     return render(request, 'users/sign-up-phone-verify_step2.html', {'form': form})
