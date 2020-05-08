@@ -15,7 +15,7 @@ from pprint import pprint
 from .models import Friend, VerificationCode
 from blog.models import Post
 from blog.models import Comment
-from .services import twilio_rest_client
+from users.services import get_twilio_client, send_twilio_message
 
 data_response = {}
 
@@ -48,33 +48,38 @@ def verification_step1(request):
             user = request.user
             phone = form.cleaned_data.get('phone')
             code = VerificationCode.objects.create(user_id=user, phone=phone)
-            twilio_rest_client.messages.create(phone, from_=TWILIO_CREDS['FROM'], body=f'Your Code is : {code.code}')
+            send_twilio_message(phone, f'Your Code is : {code.code}')
             return redirect('phone_verification_step2')
     return render(request, 'users/sign-up-phone-verify.html', {'form': form})
 
 
 @login_required()
 def verification_step2(request):
+    successful_url = redirect('profile-photo-verify')
     form = VerificationStep2Form(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
             user = request.user
             code = form.cleaned_data.get('code')
-            verification = VerificationCode.objects.select_related().latest()
-            if verification.valid_until < time.time():
+            verification = VerificationCode.objects.filter(user_id=user).latest()
+            if verification.phone_verified:
+                return successful_url
+            if verification.valid_until > time.time():
                 if code == verification.code:
                     verification.phone_verified = True
                     verification.save()
-                    return redirect('sign_up_post')
+                    return successful_url
+                else:
+                    messages.error(request, "Is not correct")
             else:
-                messages.error(request, "Is not correct")
+                messages.error(request, "Expired")
     return render(request, 'users/sign-up-phone-verify_step2.html', {'form': form})
 
 
 def sign_up_post(request):
     return render(request, 'users/sign-up-post.html')
 
-
+@login_required()
 def sign_in_photo_verify(request):
     return render(request, 'users/sign-in-photo-verify.html')
 

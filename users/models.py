@@ -2,12 +2,20 @@ import time
 from random import randint
 
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from PIL import Image
 
 
 def get_upload_path(instance, filename):
     return '%s/%s' % (instance.user.username, filename)
+
+
+class User(AbstractUser):
+    approved = models.BooleanField(default=False)
+
+    def is_approved(self):
+        return self.approved
+    pass
 
 
 class Profile(models.Model):
@@ -80,9 +88,9 @@ class Friend(models.Model):
 
 class VerificationCode(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    code = models.TextField(default=randint(10000, 99999))  # Generates the random code
-    created_at = models.IntegerField(default=time.time())
-    valid_until = models.IntegerField(default=time.time() + 1 * 60 * 60)  # Valid for 1 hour
+    code = models.TextField()
+    created_at = models.IntegerField()
+    valid_until = models.IntegerField()
     phone = models.TextField(blank=True)
     phone_verified = models.BooleanField(default=False)
 
