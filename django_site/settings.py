@@ -147,5 +147,5 @@ TWILIO_CREDS = {
 
 AUTH_USER_MODEL = 'users.User'
 
-UPLOAD_DIR = os.path.join(MEDIA_ROOT)
+UPLOAD_DIR = os.path.join(MEDIA_ROOT, "uploads")
 
