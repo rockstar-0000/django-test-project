@@ -1,4 +1,5 @@
 import time
+from enum import Enum
 from random import randint
 
 from django.db import models
@@ -18,27 +19,28 @@ class User(AbstractUser):
     pass
 
 
-class Profile(models.Model):
-    single_male = "Single Male"
-    single_female = "Single Female"
-    couple = "Couple's Account"
+class ProfileGenderEnum(Enum):
+    MALE = 'M'
+    FEMALE = 'F'
+    COUPLE = 'C'
 
-    GENDER_CHOICES = (
-        (single_male, "Single Male"),
-        (single_female, "Single Female"),
-        (couple, 'Couple'),
-    )
+    @staticmethod
+    def choices():
+        return [(member.value, name) for name, member in ProfileGenderEnum.__members__.items()]
+
+
+class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg', upload_to=get_upload_path)
-    his_age = models.CharField(max_length=2, default='')
-    her_age = models.CharField(max_length=2, default='')
-    bio = models.TextField(default='')
-    city = models.CharField(max_length=30, default='')
-    state = models.CharField(max_length=2, default='')
-    zip = models.CharField(max_length=5, default='')
-    interests = models.TextField(default='')
-    kik = models.CharField(max_length=30, default='')
-    gender = models.CharField(max_length=30, choices=GENDER_CHOICES, default='')
+    his_age = models.CharField(max_length=2)
+    her_age = models.CharField(max_length=2)
+    bio = models.TextField()
+    city = models.CharField(max_length=30)
+    state = models.CharField(max_length=2)
+    zip = models.CharField(max_length=5)
+    interests = models.TextField()
+    kik = models.CharField(max_length=30)
+    gender = models.CharField(max_length=2, choices=ProfileGenderEnum.choices(), default=ProfileGenderEnum.MALE)
 
     def __str__(self):
         return f'{self.user.username} Profile'
