@@ -53,4 +53,4 @@ class VerificationStep2Form(forms.Form):
 class SignInPhotoVerifyForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image']
+        fields = ['verification_image']

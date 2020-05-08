@@ -4,6 +4,7 @@ from django.db import models
 
 from django_site.settings import UPLOAD_DIR
 
+
 class User(AbstractUser):
     approved = models.BooleanField(default=False)
 
@@ -22,7 +23,16 @@ class Profile(models.Model):
         COUPLE = 'C'
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(verbose_name='Profile Image', max_length=255, storage=FileSystemStorage(location=UPLOAD_DIR))
+    image = models.ImageField(
+        default='default.jpg',
+        verbose_name='Profile Image',
+        max_length=255,
+        storage=FileSystemStorage(location=UPLOAD_DIR))
+    verification_image = models.ImageField(
+        default=None,
+        verbose_name='Verification Image',
+        max_length=255,
+        storage=FileSystemStorage(location=UPLOAD_DIR))
     his_age = models.CharField(max_length=2, null=True)
     her_age = models.CharField(max_length=2, null=True)
     bio = models.TextField(blank=True, null=True)

@@ -6,7 +6,7 @@ from django.utils.html import format_html
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     def image_tag(self, obj):
-        return format_html('<img src="{}" />'.format(obj.image.url))
+        return format_html('<img src="{}" />'.format(obj.verification_image.url))
 
     image_tag.short_description = 'Image'
     list_display = ['image_tag', ]

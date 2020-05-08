@@ -97,8 +97,8 @@ def sign_in_photo_verify(request):
     form = SignInPhotoVerifyForm(request.POST or None, request.FILES or None)
     if request.method == 'POST':
         if form.is_valid():
-            profile = Profile.objects.filter(user=request.user)[0]
-            profile.image = form.files['image']
+            profile = Profile.objects.get(user=request.user)
+            profile.verification_image = form.files['verification_image']
             profile.save()
             return render(request, 'users/sign-in-photo-verify-wait.html')
     return render(request, 'users/sign-in-photo-verify.html', {'form': form})
