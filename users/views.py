@@ -30,8 +30,8 @@ def register(request):
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
             login(request, user)
-            messages.success(request, f'Your account has been created! You are now able to log in!')
-            return redirect('phone_verification_step1')
+            # messages.success(request, f'Your account has been created! You are now able to log in!')
+            return redirect('sign_up_post')
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
@@ -77,8 +77,7 @@ def sign_up_post(request):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
         p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user)
-        if u_form.is_valid() and p_form.is_valid():
-            u_form.save()
+        if p_form.is_valid():
             p_form.save()
             return redirect('sign_in_photo_verify')
     else:
