@@ -305,6 +305,9 @@ def profile_edit(request):
 def photo_verify_success(request):
     return render(request, 'users/sign-in-photo-verify-confirmation.html')
 
+def become_full_member(request):
+    return render(request, 'users/pages-pricing-one.html')
+
 # Different types of messages from import messages
 # messages.debug
 # messages.info

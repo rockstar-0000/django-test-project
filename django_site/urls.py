@@ -35,7 +35,8 @@ urlpatterns = [
          name='password_reset_complete'
          ),
     path('', include('blog.urls')),
-    path('users/', include('users.urls'))
+    path('users/', include('users.urls')),
+    path('become_member/', user_views.become_full_member, name='become_full_member')
 ]
 
 if settings.DEBUG:
