@@ -10,9 +10,6 @@ blog/__pycache__/
 django_site/__pycache__/
 users/__pycache__
 
-# Media files
-media
-
 # C extensions
 *.so
 
