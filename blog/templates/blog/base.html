@@ -72,19 +72,14 @@
                         <a href="{% url 'profile-videos' %}" class="iq-waves-effect"><i class="las la-video"></i><span>Your
                               Videos</span></a>
                     </li>
+                    <li>
+                        <a href="{% url 'user_messages' %}" class="iq-waves-effect"><i class="ri-mail-line"></i><span>Messages</span></a>
+                    </li>
 
                     {#                          <li>#}
                     {#                              <a href="chat.html" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Chat</span></a>#}
                     {#                          </li>#}
-                    <li>
-                        <a href="#mailbox" class="iq-waves-effect collapsed" data-toggle="collapse"
-                           aria-expanded="false"><i class="ri-mail-line"></i><span>Messages</span><i
-                                class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-                        <ul id="mailbox" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                            <li><a href="app/index.html"><i class="ri-inbox-line"></i>Inbox</a></li>
-                            <li><a href="app/email-compose.html"><i class="ri-edit-line"></i>Compose</a></li>
-                        </ul>
-                    </li>
+
                 </ul>
             </nav>
             <div class="p-3"></div>

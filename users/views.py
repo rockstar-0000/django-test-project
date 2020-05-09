@@ -308,6 +308,9 @@ def photo_verify_success(request):
 def become_full_member(request):
     return render(request, 'users/pages-pricing-one.html')
 
+def user_messages(request):
+    return render(request, 'users/user-messages.html')
+
 # Different types of messages from import messages
 # messages.debug
 # messages.info
