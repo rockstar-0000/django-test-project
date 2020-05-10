@@ -41,9 +41,18 @@ def sign_up_post(request):
     if request.method == 'POST':
         p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user)
         if p_form.is_valid():
-            user_object = p_form.save()
-            user_object.save()
-            print(p_form.errors)
+            profile = Profile.objects.get(user=request.user)
+            profile.image = p_form.cleaned_data['image']
+            profile.his_age = p_form.cleaned_data['his_age']
+            profile.her_age = p_form.cleaned_data['her_age']
+            profile.bio = p_form.cleaned_data['bio']
+            profile.city = p_form.cleaned_data['city']
+            profile.state = p_form.cleaned_data['state']
+            profile.zip = p_form.cleaned_data['zip']
+            profile.interests = p_form.cleaned_data['interests']
+            profile.kik = p_form.cleaned_data['kik']
+            profile.gender = p_form.cleaned_data['gender']
+            profile.save()
             return redirect('sign_in_photo_verify')
     else:
         p_form = ProfileUpdateForm(instance=request.user.profile)
