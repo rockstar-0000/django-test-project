@@ -7,10 +7,22 @@ from django_site.settings import UPLOAD_DIR
 
 class User(AbstractUser):
 
-
     def save(self, *args, **kwargs):
         super(User, self).save()
         Profile.objects.get_or_create(user=self)
+
+
+class Conversation(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_sender")
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_receiver")
+    timestamp = models.TimeField(auto_now_add=True)
+
+
+class Message(models.Model):
+    conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
+    message_text = models.TextField(blank=False, null=True)
+    has_read = models.BooleanField(default=False)
+    timestamp = models.TimeField(auto_now_add=True)
 
 
 class Profile(models.Model):

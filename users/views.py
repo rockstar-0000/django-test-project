@@ -12,7 +12,7 @@ from django.shortcuts import render, redirect
 from blog.models import Post
 from users.forms import *
 from users.services import send_twilio_message
-from .models import Friend, VerificationCode
+from .models import Friend, VerificationCode, Message
 
 data_response = {}
 
@@ -275,6 +275,16 @@ def profile_detail(request, username):
     return render(request, 'users/profile-detail.html', context)
 
 
+def create_message(request):
+    if request.method == 'POST':
+        message_text = request.POST.get('messageText')
+        sender_id = request.POST.get('senderId')
+        receiver_id = request.POST.get('receiverId')
+        has_read = False
+
+        Message.objects.create(message_text, sender_id, receiver_id, has_read=has_read)
+
+
 def notifications(request):
     return render(request, 'users/notification.html')
 
@@ -309,7 +319,13 @@ def become_full_member(request):
     return render(request, 'users/pages-pricing-one.html')
 
 def user_messages(request):
-    return render(request, 'users/user-messages.html')
+    user_id = request.user.id
+    convo_users = {}
+    convos = {}
+
+    context = {'conversations': convos}
+
+    return render(request, 'users/user-messages.html', context)
 
 # Different types of messages from import messages
 # messages.debug

@@ -25,4 +25,5 @@ urlpatterns = [
     path('profile/phone_verification2', views.verification_step2, name='phone_verification_step2'),
     path('profile/photo_verify', views.sign_in_photo_verify, name='profile-photo-verify'),
     path('messages/', views.user_messages, name='user_messages'),
+    path('message/send', views.create_message, name='create-message'),
 ]
