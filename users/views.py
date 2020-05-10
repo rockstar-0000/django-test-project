@@ -1,5 +1,5 @@
 import time
-
+from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -311,14 +311,28 @@ def become_full_member(request):
 
 # messages
 
-def create_message(request):
+def create_message(request, conversation_id):
     if request.method == 'POST':
         message_text = request.POST.get('messageText')
-        sender_id = request.POST.get('senderId')
-        receiver_id = request.POST.get('receiverId')
-        has_read = False
+        cur_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        msg = Message(conversation_id=int(conversation_id), from_user_id=request.user.id, message_text=message_text,
+                      has_read=False)
+        msg.save()
+
+        C = Conversation.objects.get(pk=int(conversation_id))
+        C.last_update = cur_time
+        C.last_message_id = msg.id
+        C.save()
+        return conversation_messages(request, conversation_id)
 
 
+def conversation_messages(request, conversation_id):
+    messages = list(Message.objects.filter(conversation_id=conversation_id))
+    sorted_messages = sorted(messages, key=lambda x: x.timestamp, reverse=True)
+
+    context = {'messages': sorted_messages, 'userId': request.user.id, 'conversationId': conversation_id}
+    return render(request, 'users/user-conversation-messages.html', context)
 
 def user_messages(request):
     user_id = request.user.id
@@ -327,13 +341,17 @@ def user_messages(request):
     conversations_raw = list(Conversation.objects.filter(users__id=user_id, last_message_id__gt=0))
     conversations = []
 
-    i = 0
-    for conversation_raw in conversations_raw:
-        conversations.append({})
-        conversations[i]["name"] = conversation_raw.users.exclude(id=user_id).first().first_name
-        conversations[i]["lastMessage"] = Message.objects.filter(id=conversation_raw.last_message_id)\
-            .first().message_text
-        i += 1
+    for i in range(0, len(conversations_raw)):
+        user = conversations_raw[i].users.exclude(id=user_id).first()
+        last_message = Message.objects.filter(id=conversations_raw[i].last_message_id).first().message_text
+        last_update = conversations_raw[i].last_update
+        convo_id = conversations_raw[i].id
+        if user is not None and last_message is not None and last_update != -1:
+            conversations.append({})
+            conversations[i]["id"] = str(convo_id)
+            conversations[i]["name"] = user.first_name
+            conversations[i]["lastMessage"] = last_message[:70] + (last_message[70:] and '...')
+            conversations[i]["lastUpdate"] = last_update
 
     context = {'conversations': conversations}
 
