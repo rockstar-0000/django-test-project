@@ -28,6 +28,7 @@ class UserUpdateForm(forms.ModelForm):
 
 
 class ProfileUpdateForm(forms.ModelForm):
+    image = forms.FileField()
     class Meta:
         model = Profile
         fields = ['image',
@@ -40,8 +41,6 @@ class ProfileUpdateForm(forms.ModelForm):
                   'interests',
                   'kik',
                   'gender']
-
-
 
 
 class VerificationStep1Form(forms.Form):
