@@ -4,7 +4,6 @@ from django.db import models
 
 from django_site.settings import UPLOAD_DIR
 
-
 class User(AbstractUser):
 
     def save(self, *args, **kwargs):
@@ -12,17 +11,22 @@ class User(AbstractUser):
         Profile.objects.get_or_create(user=self)
 
 
+# Each user is apart of two conversations one as the sender and one as the receiver
 class Conversation(models.Model):
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_sender")
-    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_receiver")
-    timestamp = models.TimeField(auto_now_add=True)
+    users = models.ManyToManyField(User)
+    timestamp = models.TimeField(auto_now_add=True,  null=True)
+    # if -1 no messages are in conversation
+    last_message_id = models.IntegerField(default=-1)
 
+    # if -1 no messages are in conversation
+    last_update = models.TimeField(auto_now_add=True)
 
 class Message(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
+    from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="from_user")
     message_text = models.TextField(blank=False, null=True)
     has_read = models.BooleanField(default=False)
-    timestamp = models.TimeField(auto_now_add=True)
+    timestamp = models.TimeField(auto_now_add=True,  null=True)
 
 
 class Profile(models.Model):
@@ -71,6 +75,7 @@ class Profile(models.Model):
         return mark_safe('<img src="%s" />' % escape(self.verification_image.url))
     verification_image_tag.short_description = 'Verification Image'
     verification_image_tag.allow_tags = True
+
 
 class Friend(models.Model):
     wait = "Wait"

@@ -12,7 +12,7 @@ from django.shortcuts import render, redirect
 from blog.models import Post
 from users.forms import *
 from users.services import send_twilio_message
-from .models import Friend, VerificationCode, Message
+from .models import Friend, VerificationCode, Message, Conversation
 
 data_response = {}
 
@@ -275,16 +275,6 @@ def profile_detail(request, username):
     return render(request, 'users/profile-detail.html', context)
 
 
-def create_message(request):
-    if request.method == 'POST':
-        message_text = request.POST.get('messageText')
-        sender_id = request.POST.get('senderId')
-        receiver_id = request.POST.get('receiverId')
-        has_read = False
-
-        Message.objects.create(message_text, sender_id, receiver_id, has_read=has_read)
-
-
 def notifications(request):
     return render(request, 'users/notification.html')
 
@@ -318,14 +308,38 @@ def photo_verify_success(request):
 def become_full_member(request):
     return render(request, 'users/pages-pricing-one.html')
 
+
+# messages
+
+def create_message(request):
+    if request.method == 'POST':
+        message_text = request.POST.get('messageText')
+        sender_id = request.POST.get('senderId')
+        receiver_id = request.POST.get('receiverId')
+        has_read = False
+
+
+
 def user_messages(request):
     user_id = request.user.id
-    convo_users = {}
-    convos = {}
 
-    context = {'conversations': convos}
+    # If Last_message_id is -1 then conversation has not started
+    conversations_raw = list(Conversation.objects.filter(users__id=user_id, last_message_id__gt=0))
+    conversations = []
+
+    i = 0
+    for conversation_raw in conversations_raw:
+        conversations.append({})
+        conversations[i]["name"] = conversation_raw.users.exclude(id=user_id).first().first_name
+        conversations[i]["lastMessage"] = Message.objects.filter(id=conversation_raw.last_message_id)\
+            .first().message_text
+        i += 1
+
+    context = {'conversations': conversations}
 
     return render(request, 'users/user-messages.html', context)
+
+
 
 # Different types of messages from import messages
 # messages.debug

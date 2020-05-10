@@ -11,25 +11,25 @@
                                 <h4 class="card-title"> Conversations</h4>
                             </div>
                         </div>
-                        {% for message in message_list %}
                         <div class="iq-card-body">
                             <ul class="request-list list-inline m-0 p-0">
+                                  {% for convo in conversations %}
                                 <li class="d-flex align-items-center">
 
                                     <div class="media-support-info ml-3">
-                                        <h6>Jaques Amole</h6>
-                                        <p class="mb-0">1 unread message</p>
+                                        <h6>{{ convo.name }}</h6>
+                                        <p class="mb-0"><b>1 unread message</b></p>
                                     </div>
                                     <div class="d-flex align-items-center">
-                                   <p>{{message.message_text}}</p>
+                                   <p> {{ convo.lastMessage }}</p>
                                     </div>
                                 </li>
+                                  {% endfor %}
                                 <li class="d-block text-center">
                                     <a href="#" class="mr-3 btn">View More Conversations</a>
                                 </li>
                             </ul>
                         </div>
-                        {% endfor %}
                     </div>
 
                 </div>
@@ -38,6 +38,3 @@
     </div>
 {%  endblock %}
 
-<script>
-    console.log( {{ all_messages }})
-</script>
