@@ -206,7 +206,7 @@
             chatHtmlString = `  <div class="chat">
                                                 <div class="chat-user">
                                                    <a class="avatar m-0">
-                                                   <img src="images/user/1.jpg" alt="avatar" class="avatar-35 ">
+                                                   <img src="{{ user.profile.image.url }}" alt="avatar" class="avatar-35 ">
                                                    </a>
                                                    <span class="chat-time mt-1">${timeStr}</span>
                                                 </div>
@@ -220,7 +220,7 @@
             chatHtmlString = `         <div class="chat chat-left">
                                                 <div class="chat-user">
                                                    <a class="avatar m-0">
-                                                   <img src="images/user/05.jpg" alt="avatar" class="avatar-35 ">
+                                                   <img src="{{ user.profile.image.url }}" alt="avatar" class="avatar-35 ">
                                                    </a>
                                                    <span class="chat-time mt-1">${timeStr}</span>
                                                 </div>
