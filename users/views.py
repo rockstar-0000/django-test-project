@@ -53,7 +53,7 @@ def sign_up_post(request):
             profile.kik = p_form.cleaned_data['kik']
             profile.gender = p_form.cleaned_data['gender']
             profile.save()
-            return redirect('sign_in_photo_verify')
+            return redirect('phone_verification_step1')
     else:
         p_form = ProfileUpdateForm(instance=request.user.profile)
 
@@ -93,13 +93,10 @@ def verification_step2(request):
                     verification.save()
                     return successful_url
                 else:
-                    messages.error(request, "Is not correct")
+                    messages.error(request, "The code you entered is not correct!")
             else:
-                messages.error(request, "Expired")
+                messages.error(request, "This code has expired!")
     return render(request, 'users/sign-up-phone-verify_step2.html', {'form': form})
-
-
-
 
 
 @login_required()
