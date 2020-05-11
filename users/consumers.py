@@ -3,7 +3,6 @@ import json
 from channels.layers import get_channel_layer
 from channels.generic.websocket import WebsocketConsumer
 from users.models import Profile, Conversation, Message
-from django.core import serializers
 from datetime import datetime
 from asgiref.sync import async_to_sync
 
