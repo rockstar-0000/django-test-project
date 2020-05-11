@@ -1,5 +1,5 @@
 import time
-
+from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -12,7 +12,7 @@ from django.shortcuts import render, redirect
 from blog.models import Post
 from users.forms import *
 from users.services import send_twilio_message
-from .models import Friend, VerificationCode
+from .models import Friend, VerificationCode, Message, Conversation
 
 
 data_response = {}
@@ -203,7 +203,17 @@ def accept_friend_request(request):
         modify.save()
 
         data_response['success'] = 'success'
+
+        # Create Conversation
+        user1 = User.objects.get(pk=modify.sender_id)
+        user2 = User.objects.get(pk=modify.recipient_id)
+        C = Conversation()
+        C.save()
+        C.users.add(user1, user2)
+        C.save()
+
         return JsonResponse(data_response)
+
 
 
 def reject_friend_request(request):
@@ -319,8 +329,49 @@ def photo_verify_success(request):
 def become_full_member(request):
     return render(request, 'users/pages-pricing-one.html')
 
-def user_messages(request):
-    return render(request, 'users/user-messages.html')
+
+# messages
+
+#debug add conversation from url
+
+def debug_add_convo(request, username):
+    other_user = User.objects.get(username=username)
+    C = Conversation()
+    C.save()
+    C.users.add(other_user, request.user)
+    C.save()
+    return JsonResponse({'fired': True})
+
+
+def chat(request):
+    user_id = request.user.id
+
+
+    conversations_raw = list(Conversation.objects.filter(users__id=user_id))
+    conversations = []
+
+    for i in range(0, len(conversations_raw)):
+        user = conversations_raw[i].users.exclude(id=user_id).first()
+        last_message = ''
+
+        # If Last_message_id is -1 then conversation has not started
+
+        if conversations_raw[i].last_message_id != -1:
+            last_message = Message.objects.filter(id=conversations_raw[i].last_message_id).first().message_text
+
+        last_update = conversations_raw[i].last_update
+        convo_id = conversations_raw[i].id
+        if user is not None and last_message is not None and last_update != -1:
+            conversations.append({})
+            conversations[i]["id"] = str(convo_id)
+            conversations[i]["name"] = user.first_name
+            conversations[i]["lastMessage"] = last_message[:70] + (last_message[70:] and '...')
+            conversations[i]["lastUpdate"] = last_update
+
+    context = {'conversations': conversations, 'myName': request.user.first_name, 'id': user_id}
+
+    return render(request, 'users/chat.html', context)
+
 
 # Different types of messages from import messages
 # messages.debug

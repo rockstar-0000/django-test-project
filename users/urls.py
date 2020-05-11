@@ -24,5 +24,10 @@ urlpatterns = [
     path('profile/phone_verification1', views.verification_step1, name='phone_verification_step1'),
     path('profile/phone_verification2', views.verification_step2, name='phone_verification_step2'),
     path('profile/photo_verify', views.sign_in_photo_verify, name='profile-photo-verify'),
-    path('messages/', views.user_messages, name='user_messages'),
+
+    # chat url
+    path('chat/', views.chat, name='chat'),
+
+    # add conversation debug username is the other person's username
+    path('debug/add_convo/<str:username>/', views.debug_add_convo)
 ]
