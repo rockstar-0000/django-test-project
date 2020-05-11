@@ -253,15 +253,17 @@
             if (data['command'] === 'load_messages') {
                 for (const msg of data['messages']) {
                     add_message(msg['message_text'], msg['from_user_id'], timeConverter(msg['timestamp']))
-
                 }
+                                             setTimeout(updateScroll, 250);
                 // Loads new incoming messages  (realtime)
             } else if (data['command'] === 'load_message')
                 if(data['cid'] === current_cid) {
                 add_message(data['message_text'], data['from_user_id'], timeConverter(data['timestamp']))
+                             updateScroll()
             } else {
                        document.getElementById("newMsgConvo" + String(data['cid'])).textContent = 'new Message'
                 }
+
         };
      // user exits website
      chatSocket.onclose = function(e) {
@@ -304,5 +306,11 @@ function timeConverter(UNIX_timestamp){
       return  day + ' ' + month;
   }
 }
+
+function updateScroll(){
+    const element = document.getElementById("chat-content-box");
+    element.scrollTop = element.scrollHeight;
+}
+
     </script>
 {%  endblock %}
