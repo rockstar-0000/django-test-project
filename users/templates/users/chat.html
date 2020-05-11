@@ -232,7 +232,7 @@
                                              </div>`;
         }
     child.innerHTML = chatHtmlString;
-    document.getElementById("chat-content-box").insertBefore(child, document.getElementById("chat-content-box").firstChild);
+    document.getElementById("chat-content-box").insertBefore(child, document.getElementById("chat-content-box").lastChild);
     }
 
     // ChatSocket parses the incoming message by looking at the command field
