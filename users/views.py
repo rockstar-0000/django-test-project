@@ -14,6 +14,7 @@ from users.forms import *
 from users.services import send_twilio_message
 from .models import Friend, VerificationCode
 
+
 data_response = {}
 
 
@@ -29,14 +30,16 @@ def register(request):
             user_object.save()
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
-            login(request, user)
+            # user = authenticate(username=username, password=password)
+            user = form.save()
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             # messages.success(request, f'Your account has been created! You are now able to log in!')
             return redirect('sign_up_post')
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
+@login_required()
 def sign_up_post(request):
     if request.method == 'POST':
         p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user)

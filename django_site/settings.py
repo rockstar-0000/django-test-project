@@ -148,7 +148,8 @@ TWILIO_CREDS = {
 }
 
 AUTHENTICATION_BACKENDS = [
-    "django_site.backends.ProfileCheckBackend"
+    "django_site.backends.ProfileCheckBackend",
+    # "django.contrib.auth.backends.ModelBackend"
 
 ]
 

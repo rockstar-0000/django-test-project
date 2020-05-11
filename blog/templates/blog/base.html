@@ -907,44 +907,44 @@
             $("#" + id).val(username1 + " " + username2 + " ");
         }
 
-        function checkIfComment() {
-
-
-            setInterval(function () {
-
-                $.ajax({
-                    headers: {"X-CSRFToken": token},
-                    url: '/post/checkComment/',
-                    async: true,
-                    type: 'POST',
-                    data: {
-                        'userId': userId,
-                    },
-                    success: function (result) {
-                        var total = localStorage.getItem("CommentCount");
-                        if (total == "0") {
-                            localStorage.setItem("CommentCount", result);
-                        } else {
-                            if (result > total) {
-                                $.ajax({
-                                    headers: {"X-CSRFToken": token},
-                                    url: '/post/getLastComment/',
-                                    async: true,
-                                    type: 'POST',
-                                    data: {
-                                        'userId': userId,
-                                    },
-                                    success: function (result) {
-                                        toastr.success("You received a new comment:\n" + "\"" + result.content + "\"");
-                                        localStorage.setItem("CommentCount", result);
-                                    }
-                                });
-                            }
-                        }
-                    }
-                });
-            }, 1000);
-        }
+        {#function checkIfComment() {#}
+        {##}
+        {##}
+        {#    setInterval(function () {#}
+        {##}
+        {#        $.ajax({#}
+        {#            headers: {"X-CSRFToken": token},#}
+        {#            url: '/post/checkComment/',#}
+        {#            async: true,#}
+        {#            type: 'POST',#}
+        {#            data: {#}
+        {#                'userId': userId,#}
+        {#            },#}
+        {#            success: function (result) {#}
+        {#                var total = localStorage.getItem("CommentCount");#}
+        {#                if (total == "0") {#}
+        {#                    localStorage.setItem("CommentCount", result);#}
+        {#                } else {#}
+        {#                    if (result > total) {#}
+        {#                        $.ajax({#}
+        {#                            headers: {"X-CSRFToken": token},#}
+        {#                            url: '/post/getLastComment/',#}
+        {#                            async: true,#}
+        {#                            type: 'POST',#}
+        {#                            data: {#}
+        {#                                'userId': userId,#}
+        {#                            },#}
+        {#                            success: function (result) {#}
+        {#                                toastr.success("You received a new comment:\n" + "\"" + result.content + "\"");#}
+        {#                                localStorage.setItem("CommentCount", result);#}
+        {#                            }#}
+        {#                        });#}
+        {#                    }#}
+        {#                }#}
+        {#            }#}
+        {#        });#}
+        {#    }, 1000);#}
+        {#}#}
     </script>
 </body>
 </html>
