@@ -200,7 +200,17 @@ def accept_friend_request(request):
         modify.save()
 
         data_response['success'] = 'success'
+
+        # Create Conversation
+        user1 = User.objects.get(pk=modify.sender_id)
+        user2 = User.objects.get(pk=modify.recipient_id)
+        C = Conversation()
+        C.save()
+        C.users.add(user1, user2)
+        C.save()
+
         return JsonResponse(data_response)
+
 
 
 def reject_friend_request(request):
