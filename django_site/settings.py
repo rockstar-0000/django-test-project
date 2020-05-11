@@ -156,11 +156,11 @@ TWILIO_CREDS = {
     'FROM': os.getenv('twilio_from'),
 }
 
-AUTHENTICATION_BACKENDS = [
-    "django_site.backends.ProfileCheckBackend",
-    # "django.contrib.auth.backends.ModelBackend"
-
-]
+# AUTHENTICATION_BACKENDS = [
+#     "django_site.backends.ProfileCheckBackend",
+#     # "django.contrib.auth.backends.ModelBackend"
+#
+# ]
 
 AUTH_USER_MODEL = 'users.User'
 

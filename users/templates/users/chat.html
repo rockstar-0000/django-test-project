@@ -15,11 +15,11 @@
                                         <div class="chat-search pt-3 pl-3">
                                             <div class="d-flex align-items-center">
                                                 <div class="chat-profile mr-3">
-                                                    <img src="images/user/1.jpg" alt="chat-user" class="avatar-60 ">
+                                                    <img src="{{ user.profile.image.url }}" alt="chat-user" class="avatar-60 ">
                                                 </div>
                                                 <div class="chat-caption">
-                                                    <h5 class="mb-0">Trevor</h5>
-                                                    <p class="m-0">Web Designer</p>
+                                                    <h5 class="mb-0">{{ user.first_name }} {{ user.last_name }}</h5>
+                                                    <p class="m-0">{{ user.profile.gender}}</p>
                                                 </div>
                                                 <button type="submit" class="close-btn-res p-3"><i class="ri-close-fill"></i></button>
                                             </div>
@@ -67,7 +67,7 @@
                                                         <a  data-toggle="pill" href="#chatbox1">
                                                             <div class="d-flex align-items-center">
                                                                 <div class="avatar mr-2">
-                                                                    <img src="images/user/10.jpg" alt="chatuserimage" class="avatar-50 ">
+                                                                    <img src="{{ convo.name }}" alt="chatuserimage" class="avatar-50 ">
                                                                     <span class="avatar-status"><i class="ri-checkbox-blank-circle-fill text-dark"></i></span>
                                                                 </div>
                                                                 <div class="chat-sidebar-name">
@@ -98,7 +98,7 @@
                                                                 <i class="ri-menu-3-line"></i>
                                                             </div>
                                                             <div class="avatar chat-user-profile m-0 mr-3">
-                                                                <img src="images/user/05.jpg" alt="avatar" class="avatar-50 ">
+                                                                <img src="{{ user.profile.image.url }}" alt="avatar" class="avatar-50 ">
                                                                 <span class="avatar-status"><i class="ri-checkbox-blank-circle-fill text-success"></i></span>
                                                             </div>
                                                             <h5 class="mb-0">Chat Box</h5>
@@ -108,40 +108,35 @@
                                                                 <button type="submit" class="close-popup p-3"><i class="ri-close-fill"></i></button>
                                                                 <div class="user mb-4">
                                                                     <a class="avatar m-0">
-                                                                        <img src="images/user/05.jpg" alt="avatar">
+                                                                        <img src="{{ user.profile.image.url }}" alt="avatar">
                                                                     </a>
                                                                     <div class="user-name mt-4">
-                                                                        <h4>Trevor</h4>
+                                                                        <h4>{{ user.first_name }} {{ user.last_name }}</h4>
                                                                     </div>
                                                                     <div class="user-desc">
-                                                                        <p>Cape Town, RSA</p>
+                                                                        <p>{{ user.profile.city }}</p>
                                                                     </div>
                                                                 </div>
                                                                 <hr>
                                                                 <div class="chatuser-detail text-left mt-4">
                                                                     <div class="row">
-                                                                        <div class="col-6 col-md-6 title">Bni Name:</div>
-                                                                        <div class="col-6 col-md-6 text-right">Bni</div>
+                                                                        <div class="col-6 col-md-6 title">Name:</div>
+                                                                        <div class="col-6 col-md-6 text-right">{{ user.first_name }} {{ user.last_name }}</div>
                                                                     </div>
                                                                     <hr>
                                                                     <div class="row">
-                                                                        <div class="col-6 col-md-6 title">Tel:</div>
-                                                                        <div class="col-6 col-md-6 text-right">072 143 9920</div>
+                                                                        <div class="col-6 col-md-6 title">Age:</div>
+                                                                        <div class="col-6 col-md-6 text-right">{{ user.profile.his_age }}</div>
                                                                     </div>
                                                                     <hr>
                                                                     <div class="row">
-                                                                        <div class="col-6 col-md-6 title">Date Of Birth:</div>
-                                                                        <div class="col-6 col-md-6 text-right">July 12, 1989</div>
+                                                                        <div class="col-6 col-md-6 title">Account Type:</div>
+                                                                        <div class="col-6 col-md-6 text-right">{{ user.profile.gender }}</div>
                                                                     </div>
                                                                     <hr>
                                                                     <div class="row">
-                                                                        <div class="col-6 col-md-6 title">Gender:</div>
-                                                                        <div class="col-6 col-md-6 text-right">Male</div>
-                                                                    </div>
-                                                                    <hr>
-                                                                    <div class="row">
-                                                                        <div class="col-6 col-md-6 title">Language:</div>
-                                                                        <div class="col-6 col-md-6 text-right">Engliah</div>
+                                                                        <div class="col-6 col-md-6 title">Kik:</div>
+                                                                        <div class="col-6 col-md-6 text-right">{{ user.profile.kik }}</div>
                                                                     </div>
                                                                 </div>
                                                             </div>

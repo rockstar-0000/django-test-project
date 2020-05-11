@@ -148,10 +148,7 @@
                                                           aria-expanded="false" role="button">
                                                 <span id="num_comment_{{ post.id }}">{{ post.comments.all|length }}</span> Comments
                                             </span>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item" href="#">Max
-                                                            Emum</a>
-                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -186,7 +183,7 @@
                                         <li class="mb-2">
                                             <div class="d-flex flex-wrap">
                                                 <div class="user-img">
-                                                    <img src="/media/{{ comment.author.profile.image }}"
+                                                    <img src="/media/uploads/{{ comment.author.profile.image }}"
                                                          alt="userimg"
                                                          class="avatar-35 rounded-circle img-fluid">
                                                 </div>
