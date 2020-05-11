@@ -311,39 +311,33 @@ def become_full_member(request):
 
 # messages
 
-def create_message(request, conversation_id):
-    if request.method == 'POST':
-        message_text = request.POST.get('messageText')
-        cur_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+#debug add conversation from url
 
-        msg = Message(conversation_id=int(conversation_id), from_user_id=request.user.id, message_text=message_text,
-                      has_read=False)
-        msg.save()
-
-        C = Conversation.objects.get(pk=int(conversation_id))
-        C.last_update = cur_time
-        C.last_message_id = msg.id
-        C.save()
-        return conversation_messages(request, conversation_id)
+def debug_add_convo(request, username):
+    other_user = User.objects.get(username=username)
+    C = Conversation()
+    C.save()
+    C.users.add(other_user, request.user)
+    C.save()
+    return JsonResponse({'fired': True})
 
 
-def conversation_messages(request, conversation_id):
-    messages = list(Message.objects.filter(conversation_id=conversation_id))
-    sorted_messages = sorted(messages, key=lambda x: x.timestamp, reverse=True)
-
-    context = {'messages': sorted_messages, 'userId': request.user.id, 'conversationId': conversation_id}
-    return render(request, 'users/user-conversation-messages.html', context)
-
-def user_messages(request):
+def chat(request):
     user_id = request.user.id
 
-    # If Last_message_id is -1 then conversation has not started
-    conversations_raw = list(Conversation.objects.filter(users__id=user_id, last_message_id__gt=0))
+
+    conversations_raw = list(Conversation.objects.filter(users__id=user_id))
     conversations = []
 
     for i in range(0, len(conversations_raw)):
         user = conversations_raw[i].users.exclude(id=user_id).first()
-        last_message = Message.objects.filter(id=conversations_raw[i].last_message_id).first().message_text
+        last_message = ''
+
+        # If Last_message_id is -1 then conversation has not started
+
+        if conversations_raw[i].last_message_id != -1:
+            last_message = Message.objects.filter(id=conversations_raw[i].last_message_id).first().message_text
+
         last_update = conversations_raw[i].last_update
         convo_id = conversations_raw[i].id
         if user is not None and last_message is not None and last_update != -1:
@@ -353,10 +347,9 @@ def user_messages(request):
             conversations[i]["lastMessage"] = last_message[:70] + (last_message[70:] and '...')
             conversations[i]["lastUpdate"] = last_update
 
-    context = {'conversations': conversations}
+    context = {'conversations': conversations, 'myName': request.user.first_name, 'id': user_id}
 
-    return render(request, 'users/user-messages.html', context)
-
+    return render(request, 'users/chat.html', context)
 
 
 # Different types of messages from import messages

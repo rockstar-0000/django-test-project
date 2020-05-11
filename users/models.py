@@ -59,6 +59,8 @@ class Profile(models.Model):
     kik = models.CharField(max_length=30, null=True)
     gender = models.CharField(max_length=2, choices=Gender.choices, default=Gender.MALE)
 
+    channel_name = models.CharField(max_length=75, default='')
+
     approved = models.BooleanField(default=False)
 
     def is_approved(self):

@@ -10,3 +10,4 @@ six==1.14.0
 sqlparse==0.3.0
 twilio==6.39.0
 wincertstore==0.2
+channels==2.4.0
