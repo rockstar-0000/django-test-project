@@ -4,7 +4,7 @@ from django.db import models
 
 from django_site.settings import UPLOAD_DIR
 
-from datetime import  datetime
+
 class User(AbstractUser):
 
     def save(self, *args, **kwargs):
