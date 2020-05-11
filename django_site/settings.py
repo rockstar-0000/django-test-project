@@ -156,6 +156,11 @@ TWILIO_CREDS = {
     'FROM': os.getenv('twilio_from'),
 }
 
+# AUTHENTICATION_BACKENDS = [
+#     "<django_site>.backends.profile_check_backend.ProfileCheckBackend"
+#
+# ]
+
 AUTH_USER_MODEL = 'users.User'
 
 UPLOAD_DIR = os.path.join(MEDIA_ROOT, "uploads")

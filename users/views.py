@@ -19,6 +19,7 @@ data_response = {}
 
 # class
 
+
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -31,10 +32,35 @@ def register(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             # messages.success(request, f'Your account has been created! You are now able to log in!')
-            return redirect('phone_verification_step1')
+            return redirect('sign_up_post')
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
+
+def sign_up_post(request):
+    if request.method == 'POST':
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user)
+        if p_form.is_valid():
+            profile = Profile.objects.get(user=request.user)
+            profile.image = p_form.cleaned_data['image']
+            profile.his_age = p_form.cleaned_data['his_age']
+            profile.her_age = p_form.cleaned_data['her_age']
+            profile.bio = p_form.cleaned_data['bio']
+            profile.city = p_form.cleaned_data['city']
+            profile.state = p_form.cleaned_data['state']
+            profile.zip = p_form.cleaned_data['zip']
+            profile.interests = p_form.cleaned_data['interests']
+            profile.kik = p_form.cleaned_data['kik']
+            profile.gender = p_form.cleaned_data['gender']
+            profile.save()
+            return redirect('phone_verification_step1')
+    else:
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {
+        'p_form': p_form
+    }
+    return render(request, 'users/sign-up-post.html', context)
 
 
 @login_required()
@@ -67,28 +93,10 @@ def verification_step2(request):
                     verification.save()
                     return successful_url
                 else:
-                    messages.error(request, "Is not correct")
+                    messages.error(request, "The code you entered is not correct!")
             else:
-                messages.error(request, "Expired")
+                messages.error(request, "This code has expired!")
     return render(request, 'users/sign-up-phone-verify_step2.html', {'form': form})
-
-
-def sign_up_post(request):
-    if request.method == 'POST':
-        u_form = UserUpdateForm(request.POST, instance=request.user)
-        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user)
-        if p_form.is_valid():
-            p_form.save()
-            return redirect('sign_in_photo_verify')
-    else:
-        u_form = UserUpdateForm(instance=request.user)
-        p_form = ProfileUpdateForm(instance=request.user.profile)
-
-    context = {
-        'u_form': u_form,
-        'p_form': p_form
-    }
-    return render(request, 'users/sign-up-post.html', context)
 
 
 @login_required()
