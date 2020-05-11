@@ -28,26 +28,20 @@
                                                     <button type="submit" class="close-popup p-3"><i class="ri-close-fill"></i></button>
                                                     <div class="user text-center mb-4">
                                                         <a class="avatar m-0">
-                                                            <img src="images/user/1.jpg" alt="avatar">
+                                                            <img src="{{ user.profile.image.url }}" alt="avatar">
                                                         </a>
                                                         <div class="user-name mt-4">
                                                             <h4>{{ myName }}</h4>
                                                         </div>
                                                         <div class="user-desc">
-                                                            <p>Web Designer</p>
+                                                            <p>{{ user.profile.gender }}</p>
                                                         </div>
                                                     </div>
                                                     <hr>
                                                     <div class="user-detail text-left mt-4 pl-4 pr-4">
                                                         <h5 class="mt-4 mb-4">About</h5>
-                                                        <p>It is long established fact that a reader will be distracted bt the reddable.</p>
-                                                        <h5 class="mt-3 mb-3">Status</h5>
-                                                        <ul class="user-status p-0">
-                                                            <li class="mb-1"><i class="ri-checkbox-blank-circle-fill text-success pr-1"></i><span>Online</span></li>
-                                                            <li class="mb-1"><i class="ri-checkbox-blank-circle-fill text-warning pr-1"></i><span>Away</span></li>
-                                                            <li class="mb-1"><i class="ri-checkbox-blank-circle-fill text-danger pr-1"></i><span>Do Not Disturb</span></li>
-                                                            <li class="mb-1"><i class="ri-checkbox-blank-circle-fill text-light pr-1"></i><span>Offline</span></li>
-                                                        </ul>
+                                                        <p>{{ user.profile.bio }}</p>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -63,7 +57,7 @@
                                             <h5 class="mt-3">Direct Message</h5>
                                             <ul class="iq-chat-ui nav flex-column nav-pills">
                                                 {% for convo in conversations %}
-                                                    <li onclick="getChat({{convo.id }})">
+                                                    <li onclick="getChat({{ convo.id }})">
                                                         <a  data-toggle="pill" href="#chatbox1">
                                                             <div class="d-flex align-items-center">
                                                                 <div class="avatar mr-2">
@@ -140,25 +134,6 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="chat-header-icons d-flex">
-                                                            <a href="javascript:void();" class="chat-icon-phone iq-bg-primary">
-                                                                <i class="ri-phone-line"></i>
-                                                            </a>
-                                                            <a href="javascript:void();" class="chat-icon-video iq-bg-primary">
-                                                                <i class="ri-vidicon-line"></i>
-                                                            </a>
-                                                            <a href="javascript:void();" class="chat-icon-delete iq-bg-primary">
-                                                                <i class="ri-delete-bin-line"></i>
-                                                            </a>
-                                                            <span class="dropdown iq-bg-primary">
-                                                   <i class="ri-more-2-line cursor-pointer dropdown-toggle nav-hide-arrow cursor-pointer pr-0" id="dropdownMenuButton02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu"></i>
-                                                   <span class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton02">
-                                                   <a class="dropdown-item" href="JavaScript:void(0);"><i class="fa fa-thumb-tack" aria-hidden="true"></i> Pin to top</a>
-                                                   <a class="dropdown-item" href="JavaScript:void(0);"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete chat</a>
-                                                   <a class="dropdown-item" href="JavaScript:void(0);"><i class="fa fa-ban" aria-hidden="true"></i> Block</a>
-                                                   </span>
-                                                   </span>
                                                         </div>
                                                     </header>
                                                 </div>

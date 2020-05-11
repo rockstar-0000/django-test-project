@@ -32,9 +32,9 @@ class Message(models.Model):
 
 class Profile(models.Model):
     class Gender(models.TextChoices):
-        MALE = 'M'
-        FEMALE = 'F'
-        COUPLE = 'C'
+        MALE = 'Single Male'
+        FEMALE = 'Single Female'
+        COUPLE = 'Couple'
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(
@@ -57,7 +57,7 @@ class Profile(models.Model):
     zip = models.CharField(max_length=5, null=True)
     interests = models.TextField(null=True)
     kik = models.CharField(max_length=30, null=True)
-    gender = models.CharField(max_length=2, choices=Gender.choices, default=Gender.MALE)
+    gender = models.CharField(max_length=13, choices=Gender.choices, default=Gender.MALE)
 
     channel_name = models.CharField(max_length=75, default='')
 

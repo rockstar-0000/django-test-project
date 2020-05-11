@@ -566,53 +566,50 @@
                                         </ul>
                                     </div>
                                     <div class="col-md-9 pl-4">
-                                        <h4 class="mb-3">Age</h4>
-                                        <p> 40</p>
-                                        <h4 class="mb-3">Location</h4>
-                                        <p> Austin, TX</p>
-                                        <h4 class="mb-3">About Me/Us</h4>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vitae
-                                            metus eros. Sed eget est sed odio volutpat volutpat sed nec diam.
-                                            Donec varius pretium lacus id fringilla. Praesent ut nisl ac justo
-                                            rutrum efficitur. Sed placerat odio at facilisis feugiat. Donec nunc
-                                            magna, fermentum nec tortor ut, rhoncus maximus ipsum. Sed vulputate
-                                            rhoncus orci.
+                                    <div class="row">
+                                        <div class="col-4">
+                                            {% if user.profile.gender == "Single Male" %}
+                                                <h4 class="mb-3">Age:</h4>
+                                                <p> {{ user.profile.his_age }}</p>
+                                            {% elif user.profile.gender == "Single Female" %}
+                                                <h4 class="mb-3">Age:</h4>
+                                                <p> {{ user.profile.her_age }}</p>
+                                            {% else %}
+                                                <h4 class="mb-3">Age:</h4>
+                                                <p class="mb-3">His Age: {{ user.profile.his_age }}</p>
+                                                <p class="mb-3">Her Age: {{ user.profile.her_age }}</p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-4">
+                                            <h4 class="mb-3">Kik: </h4>
+                                            <p>{{ user.profile.kik }}</p>
+                                        </div>
 
-                                            Vivamus volutpat velit quis orci iaculis convallis. Phasellus
-                                            eleifend, metus at pulvinar fringilla, risus mi rutrum ante, sed
-                                            congue eros augue sed dolor. Curabitur euismod pulvinar convallis.
-                                            Vestibulum ornare, massa nec facilisis hendrerit, nisl ex fermentum
-                                            ex, ac viverra nibh ante vitae nisl. Pellentesque ut blandit ipsum,
-                                            commodo faucibus diam. Aenean viverra et risus et maximus.
-                                            Suspendisse eu malesuada tellus. Praesent sagittis risus nec dictum
-                                            vestibulum. Etiam posuere eleifend ipsum, et vestibulum sem
-                                            ultricies et. Fusce at ligula purus. Aliquam ac iaculis justo, at
-                                            suscipit elit.
+                                        <div class="col-4">
+                                            <h4 class="mb-3">Location:</h4>
+                                            <p>{{ user.profile.city }}, {{ user.profile.state }}</p>
+                                        </div>
+                                    </div>
+                                        <hr>
 
-                                            Aenean consectetur nisi sit amet ullamcorper cursus. Nam at interdum
-                                            metus. Aliquam auctor augue et tincidunt viverra. Curabitur viverra
-                                            laoreet lacus, sit amet dapibus turpis accumsan vel. Duis risus
-                                            tortor, semper vel ligula id, tristique hendrerit justo. Duis
-                                            suscipit nibh ut suscipit ullamcorper. Fusce sit amet ligula lectus.
-
-                                            Vivamus tincidunt rutrum orci accumsan interdum. Ut quis eros vel
-                                            leo iaculis efficitur non eu est. Ut leo urna, tristique sed velit
-                                            vestibulum, vehicula fringilla nisi. Ut tempor molestie leo eu
-                                            tempus. Praesent vehicula magna nulla, at condimentum diam dapibus
-                                            sed. Cras congue a urna ut interdum. Cras auctor sit amet sem eu
-                                            bibendum. Morbi faucibus dolor est, in tempor ex pretium vel.
-
-                                            Duis in ex vitae turpis euismod ultrices. Aenean eget fringilla
-                                            felis. Sed eget est viverra, rutrum dolor pellentesque, ullamcorper
-                                            tortor. Suspendisse euismod ex eget nibh mollis tincidunt. Duis
-                                            fringilla enim quis orci malesuada, a elementum justo pulvinar.
-                                            Integer sagittis et dolor a euismod. Vestibulum ante ipsum primis in
-                                            faucibus orci luctus et ultrices posuere cubilia Curae; Aenean
-                                            tellus nulla, posuere sit amet viverra ut, maximus sed augue.
-                                            Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-                                            posuere cubilia Curae; Donec ac hendrerit lacus. Aliquam id nisi non
-                                            diam scelerisque dapibus id at felis. Donec sollicitudin convallis
-                                            ligula.</p>
+                                    <div class="row">
+                                        <div class="col">
+                                        <h4 class="mb-3">Interests</h4>
+                                            <p><span class="ml-3">{{ user.profile.interests }}</span></p>
+                                        </div>
+                                    </div>
+                                        <hr>
+                                    <div class="row">
+                                        <div class="col">
+                                            {% if user.profile.gender == "Single Male" or user.profile.gender == "Single Female" %}
+                                                <h4 class="mb-3">About Me</h4>
+                                            {% else %}
+                                                <h4 class="mb-3">About Us</h4>
+                                            {% endif %}
+                                            <p><span class="ml-3">{{ user.profile.bio }}</span></p>
+                                        </div>
+                                    </div>
+                                        <hr>
                                     </div>
                                 </div>
                             </div>
