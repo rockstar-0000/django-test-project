@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_site.middleware.ProfileCheckMiddleware',
 ]
 
 ROOT_URLCONF = 'django_site.urls'
@@ -156,11 +157,6 @@ TWILIO_CREDS = {
     'FROM': os.getenv('twilio_from'),
 }
 
-# AUTHENTICATION_BACKENDS = [
-#     "django_site.backends.ProfileCheckBackend",
-#     # "django.contrib.auth.backends.ModelBackend"
-#
-# ]
 
 AUTH_USER_MODEL = 'users.User'
 
