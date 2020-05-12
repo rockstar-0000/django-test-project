@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.files.storage import FileSystemStorage
 from django.db import models
+from PIL import Image
 
 from django_site.settings import UPLOAD_DIR
 
@@ -31,7 +32,7 @@ class Message(models.Model):
 
 
 class Profile(models.Model):
-    class Gender(models.TextChoices):
+    class AccountType(models.TextChoices):
         MALE = 'Single Male'
         FEMALE = 'Single Female'
         COUPLE = 'Couple'
@@ -40,24 +41,25 @@ class Profile(models.Model):
     image = models.ImageField(
         default='default.jpg',
         verbose_name='Profile Image',
+        blank=True,
         max_length=255,
         storage=FileSystemStorage(location=UPLOAD_DIR, base_url='/media/uploads/'))
     verification_image = models.ImageField(
-        default=None,
+        default='default.jpg',
         null=True,
         blank=True,
         verbose_name='Verification Image',
         max_length=255,
         storage=FileSystemStorage(location=UPLOAD_DIR, base_url='/media/uploads/'))
-    his_age = models.CharField(max_length=2, null=True)
-    her_age = models.CharField(max_length=2, null=True)
+    his_age = models.CharField(max_length=2, blank=True, null=True)
+    her_age = models.CharField(max_length=2, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
-    city = models.CharField(max_length=30, null=True)
-    state = models.CharField(max_length=2, null=True)
-    zip = models.CharField(max_length=5, null=True)
-    interests = models.TextField(null=True)
-    kik = models.CharField(max_length=30, null=True)
-    gender = models.CharField(max_length=13, choices=Gender.choices, default=Gender.MALE)
+    city = models.CharField(max_length=30, blank=True, null=True)
+    state = models.CharField(max_length=2, blank=True, null=True)
+    zip = models.CharField(max_length=5, blank=True, null=True)
+    interests = models.TextField(blank=True, null=True)
+    kik = models.CharField(max_length=30, blank=True, null=True)
+    account_type = models.CharField(max_length=13, blank=True, choices=AccountType.choices, default='')
 
     channel_name = models.CharField(max_length=75, default='')
 
@@ -70,7 +72,24 @@ class Profile(models.Model):
         return f'{self.user.username} Profile'
 
     def save(self, *args, **kwargs):
-        return super(Profile, self).save(*args, **kwargs)
+        super(Profile, self).save(*args, **kwargs)
+        # open the image of the current instance
+        profile_image = Image.open(self.image.path)
+        verification_image = Image.open(self.verification_image.path)
+
+        if profile_image.height > 500 or\
+                profile_image.width > 500:
+            output_size = (500, 500)
+            profile_image.thumbnail(output_size)
+            profile_image.save(self.image.path)
+
+        if verification_image.height > 500 or\
+                verification_image.width > 500:
+            output_size = (500, 500)
+            verification_image.thumbnail(output_size)
+            verification_image.save(self.verification_image.path)
+
+
 
     def verification_image_tag(self):
         from django.utils.html import escape

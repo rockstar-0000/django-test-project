@@ -42,26 +42,30 @@ def register(request):
 @login_required()
 def sign_up_post(request):
     if request.method == 'POST':
-        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user)
-        if p_form.is_valid():
+        form = ProfileUpdateForm(request.POST, request.FILES)
+        if form.is_valid():
             profile = Profile.objects.get(user=request.user)
-            profile.image = p_form.cleaned_data['image']
-            profile.his_age = p_form.cleaned_data['his_age']
-            profile.her_age = p_form.cleaned_data['her_age']
-            profile.bio = p_form.cleaned_data['bio']
-            profile.city = p_form.cleaned_data['city']
-            profile.state = p_form.cleaned_data['state']
-            profile.zip = p_form.cleaned_data['zip']
-            profile.interests = p_form.cleaned_data['interests']
-            profile.kik = p_form.cleaned_data['kik']
-            profile.gender = p_form.cleaned_data['gender']
+            profile.image = form.cleaned_data['image']
+            profile.his_age = form.cleaned_data['his_age']
+            profile.her_age = form.cleaned_data['her_age']
+            profile.bio = form.cleaned_data['bio']
+            profile.city = form.cleaned_data['city']
+            profile.state = form.cleaned_data['state']
+            profile.zip = form.cleaned_data['zip']
+
+            if len(profile.zip) > 5:
+                messages.error(request, "The zip code is too long! Please enter a five digit zip code.")
+                return redirect('sign_up_post')
+            profile.interests = form.cleaned_data['interests']
+            profile.kik = form.cleaned_data['kik']
+            profile.account_type = form.cleaned_data['account_type']
             profile.save()
             return redirect('phone_verification_step1')
     else:
-        p_form = ProfileUpdateForm(instance=request.user.profile)
+        form = ProfileUpdateForm(request.POST, request.FILES)
 
     context = {
-        'p_form': p_form
+        'form': form
     }
     return render(request, 'users/sign-up-post.html', context)
 

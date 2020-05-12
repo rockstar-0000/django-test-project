@@ -1,5 +1,5 @@
 /*
-Template: FTP - Responsive Bootstrap 4 Admin Dashboard Template
+Template: FTP - A new concept in connecting with others
 Author: iqonicthemes.in
 Design and Developed by: iqonicthemes.in
 NOTE: This file contains the styling for responsive Template.
@@ -85,7 +85,7 @@ h6 { font-size: 1.0em; }
 Input
 ------------------------------------------------*/
 label { color: var(--iq-dark-title-text); }
-.form-control { height: 45px; line-height: 45px; background: #2a3455d6; border: #5a629a 1px solid ; font-size: 14px; color: var(--iq-dark-body-text); border-radius: 10px; }
+.form-control { height: 45px; line-height: 45px; background: #2a3455d6; border: 1px solid var(--iq-border-dark); font-size: 14px; color: var(--iq-dark-body-text); border-radius: 10px; }
 .form-control:focus { color: var(--iq-dark-title-text); border-color: var(--iq-primary); background: transparent; box-shadow: none; }
 
 /* Definition Lists */

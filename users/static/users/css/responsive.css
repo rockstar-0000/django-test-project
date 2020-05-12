@@ -1,5 +1,5 @@
 /*
-Template: FTP - Responsive Bootstrap 4 Admin Dashboard Template
+Template: FTP - A new concept in connecting with others
 Author: iqonicthemes.in
 Design and Developed by: iqonicthemes.in
 NOTE: This file contains the styling for responsive Template.

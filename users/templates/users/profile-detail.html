@@ -27,7 +27,7 @@
                                     <div class="profile-detail">
                                         <h3 class="">{{ selectedUser.first_name }} {{ selectedUser.last_name }}</h3>
                                         <h6 class="text-success">Verified!</h6>
-                                        <h6>{{ selectedUser.profile.gender }}</h6>
+                                        <h6>{{ selectedUser.profile.account_type }}</h6>
                                     </div>
                                 </div>
                                 <div class="profile-info p-4 d-flex align-items-center justify-content-between position-relative">
@@ -568,10 +568,10 @@
                                     <div class="col-md-9 pl-4">
                                     <div class="row">
                                         <div class="col-4">
-                                            {% if user.profile.gender == "Single Male" %}
+                                            {% if user.profile.account_type == "Single Male" %}
                                                 <h4 class="mb-3">Age:</h4>
                                                 <p> {{ user.profile.his_age }}</p>
-                                            {% elif user.profile.gender == "Single Female" %}
+                                            {% elif user.profile.account_type == "Single Female" %}
                                                 <h4 class="mb-3">Age:</h4>
                                                 <p> {{ user.profile.her_age }}</p>
                                             {% else %}
@@ -601,7 +601,7 @@
                                         <hr>
                                     <div class="row">
                                         <div class="col">
-                                            {% if user.profile.gender == "Single Male" or user.profile.gender == "Single Female" %}
+                                            {% if user.profile.account_type == "Single Male" or user.profile.account_type == "Single Female" %}
                                                 <h4 class="mb-3">About Me</h4>
                                             {% else %}
                                                 <h4 class="mb-3">About Us</h4>
