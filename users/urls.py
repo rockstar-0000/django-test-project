@@ -14,11 +14,12 @@ urlpatterns = [
     # new paths for new site
     path('profile/videos/', views.profile_videos, name='profile-videos'),
     path('profile/friend_list/', views.profile_friend_list, name='profile-friend-list'),
-    path('profile/user_review/', views.profile_friend_review, name='profile-friend-review'),
+    path('profile/<str:username>/', views.profile_detail, name='profile-detail'),
+    path('profile/user_review/<str:username>/', views.profile_friend_review, name='profile-friend-review'),
     path('profile/friend_create_review/', views.profile_create_review, name='profile-friend-create-review'),
     path('profile/user_images/', views.profile_images, name='profile-user-images'),
     path('profile/user_edit/', views.profile_edit, name='profile-user-edit'),
-    path('profile/<str:username>/', views.profile_detail, name='profile-detail'),
+
     path('check_block/', views.check_block, name='check_block'),
     path('notifications/', views.notifications, name='notifications'),
     path('profile/phone_verification1', views.verification_step1, name='phone_verification_step1'),

@@ -10,7 +10,7 @@
                         <div class="iq-card">
                             <div class="iq-card-header d-flex justify-content-between">
                                 <div class="iq-header-title">
-                                    <h4 class="card-title">John Smith's Reviews</h4>
+                                    <h4 class="card-title">{{ selectedUser.first_name }} {{ selectedUser.last_name }}'s Reviews</h4>
                                 </div>
                                 <div class="iq-header-title">
                                     <a href="{% url 'profile-friend-create-review' %}">

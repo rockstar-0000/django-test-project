@@ -12,7 +12,7 @@ from django.shortcuts import render, redirect
 from blog.models import Post
 from users.forms import *
 from users.services import send_twilio_message
-from .models import Friend, VerificationCode, Message, Conversation
+from .models import Friend, VerificationCode, Message, Conversation, UserReview
 
 
 data_response = {}
@@ -114,29 +114,29 @@ def sign_in_photo_verify(request):
     return render(request, 'users/sign-in-photo-verify.html', {'form': form})
 
 
-@login_required()
-def profile(request):
-    if request.method == 'POST':
-        u_form = UserUpdateForm(request.POST,
-                                instance=request.user)
-        p_form = ProfileUpdateForm(request.POST,
-                                   request.FILES,
-                                   instance=request.user.profile)
-        if u_form.is_valid() and p_form.is_valid():
-            u_form.save()
-            p_form.save()
-            messages.success(request, f'Your account has been updated!')
-            return redirect('profile')
-    else:
-        u_form = UserUpdateForm(instance=request.user)
-        p_form = ProfileUpdateForm(instance=request.user.profile)
-
-    context = {
-        'u_form': u_form,
-        'p_form': p_form
-    }
-    return render(request, 'users/profile.html', context)
-    # return redirect('home')
+# @login_required()
+# def profile(request):
+#     if request.method == 'POST':
+#         u_form = UserUpdateForm(request.POST,
+#                                 instance=request.user)
+#         p_form = ProfileUpdateForm(request.POST,
+#                                    request.FILES,
+#                                    instance=request.user.profile)
+#         if u_form.is_valid() and p_form.is_valid():
+#             u_form.save()
+#             p_form.save()
+#             messages.success(request, f'Your account has been updated!')
+#             return redirect('profile')
+#     else:
+#         u_form = UserUpdateForm(instance=request.user)
+#         p_form = ProfileUpdateForm(instance=request.user.profile)
+#
+#     context = {
+#         'u_form': u_form,
+#         'p_form': p_form
+#     }
+#     return render(request, 'users/profile_old_delete.html', context)
+#     # return redirect('home')
 
 
 def friend_request(request):
@@ -312,11 +312,22 @@ def profile_images(request):
     return render(request, 'users/profile-images.html')
 
 
-def profile_friend_review(request):
-    return render(request, 'users/friend-review.html')
+# http://localhost:8000/users/profile/user_review/
+def profile_friend_review(request, username):
+#     if request.method == 'POST':
+#         create = UserReview(request.POST)
+#         if create.is_valid():
+
+
+    context = {
+        'selectedUser': User.objects.filter(username=username).first()
+
+    }
+    return render(request, 'users/friend-review.html', context)
 
 
 def profile_create_review(request):
+
     return render(request, 'users/friend-create-review.html')
 
 

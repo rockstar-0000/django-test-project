@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.files.storage import FileSystemStorage
 from django.db import models
 from PIL import Image
+from django.utils import timezone
 
 from django_site.settings import UPLOAD_DIR
 
@@ -143,4 +144,32 @@ class VerificationCode(models.Model):
         db_table = 'verification_code'
         verbose_name = 'Verification Code'
         verbose_name_plural = 'Verification Codes'
+        get_latest_by = "created_at"
+
+class UserReview(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    date_posted = models.DateTimeField(default=timezone.now)
+    reply = models.TextField(blank=True)
+
+    class Meta:
+        db_table = 'user_review'
+        verbose_name = 'User Review'
+        verbose_name_plural = 'User Reviews'
+        get_latest_by = "created_at"
+
+    def __str__(self):
+        return "Username: {} :Date {}".format(self.author.username, self.date_posted)
+
+class UserReviewReply(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    post = models.ForeignKey('users.UserReview', on_delete=models.CASCADE)
+    reply = models.TextField(blank=True)
+    date_posted = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        db_table = 'user_review_reply'
+        verbose_name = 'User Review Reply'
+        verbose_name_plural = 'User Review Replies'
         get_latest_by = "created_at"
