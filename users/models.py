@@ -173,3 +173,6 @@ class UserReviewReply(models.Model):
         verbose_name = 'User Review Reply'
         verbose_name_plural = 'User Review Replies'
         get_latest_by = "created_at"
+
+    def __str__(self):
+        return "Username: {} :Date {}".format(self.author.username, self.date_posted)

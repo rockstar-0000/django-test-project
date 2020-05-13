@@ -314,13 +314,13 @@ def profile_images(request):
 
 # http://localhost:8000/users/profile/user_review/
 def profile_friend_review(request, username):
-#     if request.method == 'POST':
-#         create = UserReview(request.POST)
-#         if create.is_valid():
+    selectedId = User.objects.filter(username=username).first().id
 
 
     context = {
-        'selectedUser': User.objects.filter(username=username).first()
+        'selectedUser': User.objects.filter(username=username).first(),
+        'reviews': UserReview.objects.all(),
+        'friends': Friend.objects.all()
 
     }
     return render(request, 'users/friend-review.html', context)
