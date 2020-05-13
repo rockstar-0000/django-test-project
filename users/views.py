@@ -52,10 +52,6 @@ def sign_up_post(request):
             profile.city = form.cleaned_data['city']
             profile.state = form.cleaned_data['state']
             profile.zip = form.cleaned_data['zip']
-
-            if len(profile.zip) > 5:
-                messages.error(request, "The zip code is too long! Please enter a five digit zip code.")
-                return redirect('sign_up_post')
             profile.interests = form.cleaned_data['interests']
             profile.kik = form.cleaned_data['kik']
             profile.account_type = form.cleaned_data['account_type']
