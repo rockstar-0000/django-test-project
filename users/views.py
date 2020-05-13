@@ -39,7 +39,7 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
-@login_required()
+
 def sign_up_post(request):
     if request.method == 'POST':
         form = ProfileUpdateForm(request.POST, request.FILES)
@@ -79,7 +79,7 @@ def verification_step1(request):
     return render(request, 'users/sign-up-phone-verify.html', {'form': form})
 
 
-@login_required()
+
 def verification_step2(request):
     successful_url = redirect('profile-photo-verify')
     form = VerificationStep2Form(request.POST or None)
@@ -102,7 +102,7 @@ def verification_step2(request):
     return render(request, 'users/sign-up-phone-verify_step2.html', {'form': form})
 
 
-@login_required()
+
 def sign_in_photo_verify(request):
     form = SignInPhotoVerifyForm(request.POST or None, request.FILES or None)
     if request.method == 'POST':

@@ -17,7 +17,14 @@ class ProfileCheckMiddleware:
     def __call__(self, request):
         print(request.path)
         login_url = reverse("login")
-        url_whitelist = [reverse("sign_up_post")]  # Include a list of authenticated views that don't require an approved profile
+        url_whitelist = [
+                            reverse("sign_up_post"),
+                            reverse("phone_verification_step1"),
+                            reverse("phone_verification_step2"),
+                            reverse("profile-photo-verify"),
+                            reverse("sign_in_photo_verify_success")
+
+                         ]  # Include a list of authenticated views that don't require an approved profile
 
         if not _profile_is_approved(request.user) and request.path not in url_whitelist:
             logout(request)
