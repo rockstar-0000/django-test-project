@@ -10,7 +10,7 @@
                         <div class="iq-card">
                             <div class="iq-card-header d-flex justify-content-between">
                                 <div class="iq-header-title">
-                                    <h4 class="card-title">{{ selectedUser.first_name }} {{ selectedUser.last_name }}'s Reviews</h4>
+                                    <h4 class="card-title">John Smith's Reviews</h4>
                                 </div>
                                 <div class="iq-header-title">
                                     <a href="{% url 'profile-friend-create-review' %}">
@@ -20,13 +20,12 @@
                             </div>
                             <div class="iq-card-body">
                                 <ul class="request-list list-inline m-0 p-0">
-                                    {% for review in reviews %}
                                     <div class="d-flex align-items-center">
-                                        <div class="user-img img-fluid"><img src="{{ review.author.profile.image.url }}" alt="story-img"
+                                        <div class="user-img img-fluid"><img src="{% static 'users/images/user/05.jpg' %}" alt="story-img"
                                                 class="rounded-circle avatar-40"></div>
                                         <div class="media-support-info ml-3">
-                                            <h6>{{ review.author.first_name }} {{ review.author.last_name }}</h6>
-                                            <p class="mb-0">{{ friends|length }} friends</p>
+                                            <h6>Jaques Amole</h6>
+                                            <p class="mb-0">40 friends</p>
                                         </div>
                                         <div class="media-support-info ml-3">
                                             <h6>Rating</h6>
@@ -45,7 +44,7 @@
                                                         <div class="form-group row">
                                                             <div class="col-md-12">
                                                                 <textarea class="textarea form-control"
-                                                                    rows="5">{{ review.content }}</textarea>
+                                                                    rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae mi vitae augue luctus malesuada vel eget tortor. Mauris malesuada mollis nisi, non fringilla eros maximus in. In tristique sapien et tortor aliquam, ullamcorper dictum mauris hendrerit. Ut faucibus metus nisi, sit amet porttitor velit aliquam sit amet. Aenean vel euismod augue. Duis tristique quis est imperdiet consequat. Curabitur erat odio, ultricies ac tortor non, volutpat faucibus libero. Nunc urna orci, pellentesque bibendum mattis id, finibus luctus nunc. Duis ut dui non lectus bibendum volutpat. Morbi vulputate fermentum hendrerit. Praesent in risus tincidunt, dignissim nulla ut, sodales sapien. Phasellus ante enim, auctor eu sapien nec, elementum elementum nisl. Duis tincidunt ante aliquet, ornare purus non, mollis nunc. Aliquam vehicula elit et justo suscipit pretium. Nullam sagittis massa vel sem hendrerit maximus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc fringilla iaculis turpis vitae sodales. Pellentesque congue vulputate consectetur. Donec id condimentum dui. Quisque gravida odio turpis, a varius est gravida id. Morbi massa magna, rutrum id elementum non, aliquam nec ex. Sed molestie consectetur turpis sed pellentesque. Proin quis justo porta, egestas ante id, bibendum ante. Morbi egestas nec velit eu euismod. Cras non nulla nibh. Etiam vel pellentesque.</textarea>
                                                             </div>
                                                         </div>
                                                         <div class="row">
@@ -60,8 +59,358 @@
                                             </div>
                                         </div>
                                     </li>
-                                    {% endfor %}
-
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-img img-fluid"><img src="{% static 'users/images/user/06.jpg' %}" alt="story-img"
+                                                class="rounded-circle avatar-40"></div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Lucy Tania</h6>
+                                            <p class="mb-0">12 friends</p>
+                                        </div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Rating</h6>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                        </div>
+                                    </div>
+                                    <li class="text-center mt-3">
+                                        <div class="container">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                                <textarea class="textarea form-control"
+                                                                    rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae mi vitae augue luctus malesuada vel eget tortor. Mauris malesuada mollis nisi, non fringilla eros maximus in. In tristique sapien et tortor aliquam, ullamcorper dictum mauris hendrerit. Ut faucibus metus nisi, sit amet porttitor velit aliquam sit amet. Aenean vel euismod augue. Duis tristique quis est imperdiet consequat. Curabitur erat odio, ultricies ac tortor non, volutpat faucibus libero. Nunc urna orci, pellentesque bibendum mattis id, finibus luctus nunc. Duis ut dui non lectus bibendum volutpat. Morbi vulputate fermentum hendrerit. Praesent in risus tincidunt, dignissim nulla ut, sodales sapien. Phasellus ante enim, auctor eu sapien nec, elementum elementum nisl. Duis tincidunt ante aliquet, ornare purus non, mollis nunc. Aliquam vehicula elit et justo suscipit pretium. Nullam sagittis massa vel sem hendrerit maximus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc fringilla iaculis turpis vitae sodales. Pellentesque congue vulputate consectetur. Donec id condimentum dui. Quisque gravida odio turpis, a varius est gravida id. Morbi massa magna, rutrum id elementum non, aliquam nec ex. Sed molestie consectetur turpis sed pellentesque. Proin quis justo porta, egestas ante id, bibendum ante. Morbi egestas nec velit eu euismod. Cras non nulla nibh. Etiam vel pellentesque.</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                            <a href="#">
+                                                                <button class="btn btn-outline-primary btn-block">Leave A Response</button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-img img-fluid"><img src="{% static 'users/images/user/07.jpg' %}" alt="story-img"
+                                                class="rounded-circle avatar-40"></div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Val Adictorian</h6>
+                                            <p class="mb-0">0 friends</p>
+                                        </div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Rating</h6>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                        </div>
+                                    </div>
+                                    <li class="text-center mt-3">
+                                        <div class="container">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                                <textarea class="textarea form-control"
+                                                                    rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae mi vitae augue luctus malesuada vel eget tortor. Mauris malesuada mollis nisi, non fringilla eros maximus in. In tristique sapien et tortor aliquam, ullamcorper dictum mauris hendrerit. Ut faucibus metus nisi, sit amet porttitor velit aliquam sit amet. Aenean vel euismod augue. Duis tristique quis est imperdiet consequat. Curabitur erat odio, ultricies ac tortor non, volutpat faucibus libero. Nunc urna orci, pellentesque bibendum mattis id, finibus luctus nunc. Duis ut dui non lectus bibendum volutpat. Morbi vulputate fermentum hendrerit. Praesent in risus tincidunt, dignissim nulla ut, sodales sapien. Phasellus ante enim, auctor eu sapien nec, elementum elementum nisl. Duis tincidunt ante aliquet, ornare purus non, mollis nunc. Aliquam vehicula elit et justo suscipit pretium. Nullam sagittis massa vel sem hendrerit maximus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc fringilla iaculis turpis vitae sodales. Pellentesque congue vulputate consectetur. Donec id condimentum dui. Quisque gravida odio turpis, a varius est gravida id. Morbi massa magna, rutrum id elementum non, aliquam nec ex. Sed molestie consectetur turpis sed pellentesque. Proin quis justo porta, egestas ante id, bibendum ante. Morbi egestas nec velit eu euismod. Cras non nulla nibh. Etiam vel pellentesque.</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                            <a href="#">
+                                                                <button class="btn btn-outline-primary btn-block">Leave A Response</button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-img img-fluid"><img src="{% static 'users/images/user/08.jpg' %}" alt="story-img"
+                                                class="rounded-circle avatar-40"></div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Manny Petty</h6>
+                                            <p class="mb-0">3 friends</p>
+                                        </div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Rating</h6>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                        </div>
+                                    </div>
+                                    <li class="text-center mt-3">
+                                        <div class="container">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                                <textarea class="textarea form-control"
+                                                                    rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae mi vitae augue luctus malesuada vel eget tortor. Mauris malesuada mollis nisi, non fringilla eros maximus in. In tristique sapien et tortor aliquam, ullamcorper dictum mauris hendrerit. Ut faucibus metus nisi, sit amet porttitor velit aliquam sit amet. Aenean vel euismod augue. Duis tristique quis est imperdiet consequat. Curabitur erat odio, ultricies ac tortor non, volutpat faucibus libero. Nunc urna orci, pellentesque bibendum mattis id, finibus luctus nunc. Duis ut dui non lectus bibendum volutpat. Morbi vulputate fermentum hendrerit. Praesent in risus tincidunt, dignissim nulla ut, sodales sapien. Phasellus ante enim, auctor eu sapien nec, elementum elementum nisl. Duis tincidunt ante aliquet, ornare purus non, mollis nunc. Aliquam vehicula elit et justo suscipit pretium. Nullam sagittis massa vel sem hendrerit maximus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc fringilla iaculis turpis vitae sodales. Pellentesque congue vulputate consectetur. Donec id condimentum dui. Quisque gravida odio turpis, a varius est gravida id. Morbi massa magna, rutrum id elementum non, aliquam nec ex. Sed molestie consectetur turpis sed pellentesque. Proin quis justo porta, egestas ante id, bibendum ante. Morbi egestas nec velit eu euismod. Cras non nulla nibh. Etiam vel pellentesque.</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                            <a href="#">
+                                                                <button class="btn btn-outline-primary btn-block">Leave A Response</button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-img img-fluid"><img src="{% static 'users/images/user/09.jpg' %}" alt="story-img"
+                                                class="rounded-circle avatar-40"></div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Marsha Mello</h6>
+                                            <p class="mb-0">15 friends</p>
+                                        </div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Rating</h6>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                        </div>
+                                    </div>
+                                    <li class="text-center mt-3">
+                                        <div class="container">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                                <textarea class="textarea form-control"
+                                                                    rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae mi vitae augue luctus malesuada vel eget tortor. Mauris malesuada mollis nisi, non fringilla eros maximus in. In tristique sapien et tortor aliquam, ullamcorper dictum mauris hendrerit. Ut faucibus metus nisi, sit amet porttitor velit aliquam sit amet. Aenean vel euismod augue. Duis tristique quis est imperdiet consequat. Curabitur erat odio, ultricies ac tortor non, volutpat faucibus libero. Nunc urna orci, pellentesque bibendum mattis id, finibus luctus nunc. Duis ut dui non lectus bibendum volutpat. Morbi vulputate fermentum hendrerit. Praesent in risus tincidunt, dignissim nulla ut, sodales sapien. Phasellus ante enim, auctor eu sapien nec, elementum elementum nisl. Duis tincidunt ante aliquet, ornare purus non, mollis nunc. Aliquam vehicula elit et justo suscipit pretium. Nullam sagittis massa vel sem hendrerit maximus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc fringilla iaculis turpis vitae sodales. Pellentesque congue vulputate consectetur. Donec id condimentum dui. Quisque gravida odio turpis, a varius est gravida id. Morbi massa magna, rutrum id elementum non, aliquam nec ex. Sed molestie consectetur turpis sed pellentesque. Proin quis justo porta, egestas ante id, bibendum ante. Morbi egestas nec velit eu euismod. Cras non nulla nibh. Etiam vel pellentesque.</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                            <a href="#">
+                                                                <button class="btn btn-outline-primary btn-block">Leave A Response</button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-img img-fluid"><img src="{% static 'users/images/user/10.jpg' %}" alt="story-img"
+                                                class="rounded-circle avatar-40"></div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Caire Innet</h6>
+                                            <p class="mb-0">8 friends</p>
+                                        </div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Rating</h6>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                        </div>
+                                    </div>
+                                    <li class="text-center mt-3">
+                                        <div class="container">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                                <textarea class="textarea form-control"
+                                                                    rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae mi vitae augue luctus malesuada vel eget tortor. Mauris malesuada mollis nisi, non fringilla eros maximus in. In tristique sapien et tortor aliquam, ullamcorper dictum mauris hendrerit. Ut faucibus metus nisi, sit amet porttitor velit aliquam sit amet. Aenean vel euismod augue. Duis tristique quis est imperdiet consequat. Curabitur erat odio, ultricies ac tortor non, volutpat faucibus libero. Nunc urna orci, pellentesque bibendum mattis id, finibus luctus nunc. Duis ut dui non lectus bibendum volutpat. Morbi vulputate fermentum hendrerit. Praesent in risus tincidunt, dignissim nulla ut, sodales sapien. Phasellus ante enim, auctor eu sapien nec, elementum elementum nisl. Duis tincidunt ante aliquet, ornare purus non, mollis nunc. Aliquam vehicula elit et justo suscipit pretium. Nullam sagittis massa vel sem hendrerit maximus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc fringilla iaculis turpis vitae sodales. Pellentesque congue vulputate consectetur. Donec id condimentum dui. Quisque gravida odio turpis, a varius est gravida id. Morbi massa magna, rutrum id elementum non, aliquam nec ex. Sed molestie consectetur turpis sed pellentesque. Proin quis justo porta, egestas ante id, bibendum ante. Morbi egestas nec velit eu euismod. Cras non nulla nibh. Etiam vel pellentesque.</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                            <a href="#">
+                                                                <button class="btn btn-outline-primary btn-block">Leave A Response</button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-img img-fluid"><img src="{% static 'users/images/user/11.jpg' %}" alt="story-img"
+                                                class="rounded-circle avatar-40"></div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Gio Metric</h6>
+                                            <p class="mb-0">10 friends</p>
+                                        </div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Rating</h6>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                        </div>
+                                    </div>
+                                    <li class="text-center mt-3">
+                                        <div class="container">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                                <textarea class="textarea form-control"
+                                                                    rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae mi vitae augue luctus malesuada vel eget tortor. Mauris malesuada mollis nisi, non fringilla eros maximus in. In tristique sapien et tortor aliquam, ullamcorper dictum mauris hendrerit. Ut faucibus metus nisi, sit amet porttitor velit aliquam sit amet. Aenean vel euismod augue. Duis tristique quis est imperdiet consequat. Curabitur erat odio, ultricies ac tortor non, volutpat faucibus libero. Nunc urna orci, pellentesque bibendum mattis id, finibus luctus nunc. Duis ut dui non lectus bibendum volutpat. Morbi vulputate fermentum hendrerit. Praesent in risus tincidunt, dignissim nulla ut, sodales sapien. Phasellus ante enim, auctor eu sapien nec, elementum elementum nisl. Duis tincidunt ante aliquet, ornare purus non, mollis nunc. Aliquam vehicula elit et justo suscipit pretium. Nullam sagittis massa vel sem hendrerit maximus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc fringilla iaculis turpis vitae sodales. Pellentesque congue vulputate consectetur. Donec id condimentum dui. Quisque gravida odio turpis, a varius est gravida id. Morbi massa magna, rutrum id elementum non, aliquam nec ex. Sed molestie consectetur turpis sed pellentesque. Proin quis justo porta, egestas ante id, bibendum ante. Morbi egestas nec velit eu euismod. Cras non nulla nibh. Etiam vel pellentesque.</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                            <a href="#">
+                                                                <button class="btn btn-outline-primary btn-block">Leave A Response</button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-img img-fluid"><img src="{% static 'users/images/user/12.jpg' %}" alt="story-img"
+                                                class="rounded-circle avatar-40"></div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Chris P. Cream</h6>
+                                            <p class="mb-0">18 friends</p>
+                                        </div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Rating</h6>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                        </div>
+                                    </div>
+                                    <li class="text-center mt-3">
+                                        <div class="container">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                                <textarea class="textarea form-control"
+                                                                    rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae mi vitae augue luctus malesuada vel eget tortor. Mauris malesuada mollis nisi, non fringilla eros maximus in. In tristique sapien et tortor aliquam, ullamcorper dictum mauris hendrerit. Ut faucibus metus nisi, sit amet porttitor velit aliquam sit amet. Aenean vel euismod augue. Duis tristique quis est imperdiet consequat. Curabitur erat odio, ultricies ac tortor non, volutpat faucibus libero. Nunc urna orci, pellentesque bibendum mattis id, finibus luctus nunc. Duis ut dui non lectus bibendum volutpat. Morbi vulputate fermentum hendrerit. Praesent in risus tincidunt, dignissim nulla ut, sodales sapien. Phasellus ante enim, auctor eu sapien nec, elementum elementum nisl. Duis tincidunt ante aliquet, ornare purus non, mollis nunc. Aliquam vehicula elit et justo suscipit pretium. Nullam sagittis massa vel sem hendrerit maximus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc fringilla iaculis turpis vitae sodales. Pellentesque congue vulputate consectetur. Donec id condimentum dui. Quisque gravida odio turpis, a varius est gravida id. Morbi massa magna, rutrum id elementum non, aliquam nec ex. Sed molestie consectetur turpis sed pellentesque. Proin quis justo porta, egestas ante id, bibendum ante. Morbi egestas nec velit eu euismod. Cras non nulla nibh. Etiam vel pellentesque.</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                            <a href="#">
+                                                                <button class="btn btn-outline-primary btn-block">Leave A Response</button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-img img-fluid"><img src="{% static 'users/images/user/13.jpg' %}" alt="story-img"
+                                                class="rounded-circle avatar-40"></div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Paul Misunday</h6>
+                                            <p class="mb-0">6 friends</p>
+                                        </div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Rating</h6>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                        </div>
+                                    </div>
+                                    <li class="text-center mt-3">
+                                        <div class="container">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                                <textarea class="textarea form-control"
+                                                                    rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae mi vitae augue luctus malesuada vel eget tortor. Mauris malesuada mollis nisi, non fringilla eros maximus in. In tristique sapien et tortor aliquam, ullamcorper dictum mauris hendrerit. Ut faucibus metus nisi, sit amet porttitor velit aliquam sit amet. Aenean vel euismod augue. Duis tristique quis est imperdiet consequat. Curabitur erat odio, ultricies ac tortor non, volutpat faucibus libero. Nunc urna orci, pellentesque bibendum mattis id, finibus luctus nunc. Duis ut dui non lectus bibendum volutpat. Morbi vulputate fermentum hendrerit. Praesent in risus tincidunt, dignissim nulla ut, sodales sapien. Phasellus ante enim, auctor eu sapien nec, elementum elementum nisl. Duis tincidunt ante aliquet, ornare purus non, mollis nunc. Aliquam vehicula elit et justo suscipit pretium. Nullam sagittis massa vel sem hendrerit maximus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc fringilla iaculis turpis vitae sodales. Pellentesque congue vulputate consectetur. Donec id condimentum dui. Quisque gravida odio turpis, a varius est gravida id. Morbi massa magna, rutrum id elementum non, aliquam nec ex. Sed molestie consectetur turpis sed pellentesque. Proin quis justo porta, egestas ante id, bibendum ante. Morbi egestas nec velit eu euismod. Cras non nulla nibh. Etiam vel pellentesque.</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                            <a href="#">
+                                                                <button class="btn btn-outline-primary btn-block">Leave A Response</button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-img img-fluid"><img src="{% static 'users/images/user/14.jpg' %}" alt="story-img"
+                                                class="rounded-circle avatar-40"></div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Reanne Carnation</h6>
+                                            <p class="mb-0">12 friends</p>
+                                        </div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Rating</h6>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                        </div>
+                                    </div>
+                                    
+                                    <li class="text-center mt-3">
+                                        <div class="container">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                                <textarea class="textarea form-control"
+                                                                    rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae mi vitae augue luctus malesuada vel eget tortor. Mauris malesuada mollis nisi, non fringilla eros maximus in. In tristique sapien et tortor aliquam, ullamcorper dictum mauris hendrerit. Ut faucibus metus nisi, sit amet porttitor velit aliquam sit amet. Aenean vel euismod augue. Duis tristique quis est imperdiet consequat. Curabitur erat odio, ultricies ac tortor non, volutpat faucibus libero. Nunc urna orci, pellentesque bibendum mattis id, finibus luctus nunc. Duis ut dui non lectus bibendum volutpat. Morbi vulputate fermentum hendrerit. Praesent in risus tincidunt, dignissim nulla ut, sodales sapien. Phasellus ante enim, auctor eu sapien nec, elementum elementum nisl. Duis tincidunt ante aliquet, ornare purus non, mollis nunc. Aliquam vehicula elit et justo suscipit pretium. Nullam sagittis massa vel sem hendrerit maximus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc fringilla iaculis turpis vitae sodales. Pellentesque congue vulputate consectetur. Donec id condimentum dui. Quisque gravida odio turpis, a varius est gravida id. Morbi massa magna, rutrum id elementum non, aliquam nec ex. Sed molestie consectetur turpis sed pellentesque. Proin quis justo porta, egestas ante id, bibendum ante. Morbi egestas nec velit eu euismod. Cras non nulla nibh. Etiam vel pellentesque.</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                            <a href="#">
+                                                                <button class="btn btn-outline-primary btn-block">Leave A Response</button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
                                     <li class="d-block text-center">
                                         <a href="#" class="mr-3 btn">View More Reviews</a>
                                     </li>
