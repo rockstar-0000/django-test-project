@@ -291,6 +291,7 @@ def profile_detail(request, username):
         'selectedUser': User.objects.filter(username=username).first(),
         'friend': friend,
         'posts': Post.objects.filter(author_id=selectedId).order_by('-date_posted'),
+        'friends': Friend.objects.filter(recipient_id=selectedId),
         'already': already
     }
     return render(request, 'users/profile-detail.html', context)
