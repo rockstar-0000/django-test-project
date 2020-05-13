@@ -1,13 +1,26 @@
 version: '3.7'
+
 services:
-  db:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: secret
-      POSTGRES_USER: django
-      POSTGRES_DB: django
+  web:
+    build: ./app
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./pg_data:/var/lib/postgresql/data
+      - ./app/:/usr/src/app/
     ports:
-      - "5432:5432"
+      - 8000:8000
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+      
+  db:
+    image: postgres:12.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=superuser
+      - POSTGRES_DB=public
+
+volumes:
+  postgres_data:
