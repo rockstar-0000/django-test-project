@@ -1,5 +1,4 @@
 import time
-from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -12,7 +11,7 @@ from django.shortcuts import render, redirect
 from blog.models import Post
 from users.forms import *
 from users.services import send_twilio_message
-from .models import Friend, VerificationCode, Message, Conversation, UserReview
+from .models import Friend, VerificationCode, Message, Conversation, UserReview, Verification
 
 
 data_response = {}
@@ -107,9 +106,9 @@ def sign_in_photo_verify(request):
     form = SignInPhotoVerifyForm(request.POST or None, request.FILES or None)
     if request.method == 'POST':
         if form.is_valid():
-            profile = Profile.objects.get(user=request.user)
-            profile.verification_image = form.files['verification_image']
-            profile.save()
+            verification = Verification.objects.get(user=request.user)
+            verification.verification_image = form.files['verification_image']
+            verification.save()
             return render(request, 'users/sign-in-photo-verify-confirmation.html')
     return render(request, 'users/sign-in-photo-verify.html', {'form': form})
 

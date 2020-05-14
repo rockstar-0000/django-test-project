@@ -2,7 +2,7 @@
 import json
 from channels.layers import get_channel_layer
 from channels.generic.websocket import WebsocketConsumer
-from users.models import Profile, Conversation, Message
+from users.models import Profile, Conversation, Message, Socket
 from datetime import datetime
 from asgiref.sync import async_to_sync
 
@@ -26,25 +26,27 @@ class ChatConsumer(WebsocketConsumer):
     # to push realtime updates to
     def connect(self):
         try:
-            user_id = self.scope["user"].id
-            user_profile = Profile.objects.filter(user_id=user_id).first()
-            user_profile.channel_name = self.channel_name
-            user_profile.save()
+            socket = Socket.objects.get_or_create(user=self.scope["user"])[0]
+            socket.channel_name = self.channel_name
+            # TODO fix timestamp maybe add connected | disconnected timestamps
+            # socket.last_timestamp
+            socket.save()
             self.accept()
         except Exception as e:
             print(e)
-
 
     # When disconnecting we set the channel name to ''
     def disconnect(self, close_code):
         try:
             user_id = self.scope["user"].id
-            user_profile = Profile.objects.filter(user_id=user_id).first()
-            user_profile.channel_name = ''
-            user_profile.save()
+            socket = Socket.objects.get(user_id=user_id)
+            socket.channel_name = ''
+            socket.is_connected = False
+            # TODO add last_timestamp
+            # socket.last_timestamp =
+            socket.save()
         except Exception as e:
             print(e)
-
 
     def receive(self, text_data):
         try:
@@ -80,8 +82,8 @@ class ChatConsumer(WebsocketConsumer):
                 c_users = list(C.users.all())
 
                 for user in c_users:
-                    channel_name = user.profile.channel_name
-                    if channel_name != '':
+                    channel_name = Socket.objects.get(user_id=user.id).channel_name
+                    if channel_name != '' and channel_name is not None:
                         channel_layer = get_channel_layer()
                         msg_to_send = message_to_dict(msg)
                         msg_to_send['command'] = 'load_message'

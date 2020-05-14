@@ -24,6 +24,7 @@ class Conversation(models.Model):
     # if -1 no messages are in conversation
     last_update = models.DateTimeField(auto_now_add=True)
 
+
 class Message(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
     from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="from_user")
@@ -32,19 +33,16 @@ class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True,  null=True)
 
 
-class Profile(models.Model):
-    class AccountType(models.TextChoices):
-        MALE = 'Single Male'
-        FEMALE = 'Single Female'
-        COUPLE = 'Couple'
-
+class Socket(models.Model):
+    # TODO add correct max_length of channel name
+    channel_name = models.CharField(default="", max_length=128, unique=True)
+    last_timestamp = models.DateTimeField(auto_now_add=True,  null=True)
+    is_connected = models.BooleanField(default=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(
-        default='default.jpg',
-        verbose_name='Profile Image',
-        blank=True,
-        max_length=255,
-        storage=FileSystemStorage(location=UPLOAD_DIR, base_url='/media/uploads/'))
+
+
+class Verification(models.Model):
+    is_approved = models.BooleanField(default=False)
     verification_image = models.ImageField(
         default='default.jpg',
         null=True,
@@ -52,22 +50,53 @@ class Profile(models.Model):
         verbose_name='Verification Image',
         max_length=255,
         storage=FileSystemStorage(location=UPLOAD_DIR, base_url='/media/uploads/'))
-    his_age = models.CharField(max_length=2, blank=True, null=True)
-    her_age = models.CharField(max_length=2, blank=True, null=True)
-    bio = models.TextField(blank=True, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        super(Verification, self).save(*args, **kwargs)
+        # open the image of the current instance
+        verification_image = Image.open(self.verification_image.path)
+        if verification_image.height > 500 or\
+                verification_image.width > 500:
+            output_size = (500, 500)
+            verification_image.thumbnail(output_size)
+            verification_image.save(self.verification_image.path)
+
+    def verification_image_tag(self):
+        from django.utils.html import escape
+        from django.utils.html import mark_safe
+        return mark_safe('<img src="%s" />' % escape(self.verification_image.url))
+    verification_image_tag.short_description = 'Verification Image'
+    verification_image_tag.allow_tags = True
+
+
+class ProfileAddress(models.Model):
     city = models.CharField(max_length=30, blank=True, null=True)
     state = models.CharField(max_length=2, blank=True, null=True)
     zip = models.CharField(max_length=5, blank=True, null=True)
+
+
+class Profile(models.Model):
+    class AccountType(models.TextChoices):
+        MALE = 'Single Male'
+        FEMALE = 'Single Female'
+        COUPLE = 'Couple'
+    image = models.ImageField(
+        default='default.jpg',
+        verbose_name='Profile Image',
+        blank=True,
+        max_length=255,
+        storage=FileSystemStorage(location=UPLOAD_DIR, base_url='/media/uploads/'))
+    first_name = models.CharField(max_length=64, blank=True, null=True)
+    last_name = models.CharField(max_length=64, blank=True, null=True)
+    his_age = models.CharField(max_length=2, blank=True, null=True)
+    her_age = models.CharField(max_length=2, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
     interests = models.TextField(blank=True, null=True)
     kik = models.CharField(max_length=30, blank=True, null=True)
     account_type = models.CharField(max_length=13, blank=True, choices=AccountType.choices, default='')
-
-    channel_name = models.CharField(max_length=75, default='')
-
-    approved = models.BooleanField(default=False)
-
-    def is_approved(self):
-        return self.approved
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    address = models.OneToOneField(ProfileAddress, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f'{self.user.username} Profile'
@@ -76,28 +105,12 @@ class Profile(models.Model):
         super(Profile, self).save(*args, **kwargs)
         # open the image of the current instance
         profile_image = Image.open(self.image.path)
-        verification_image = Image.open(self.verification_image.path)
 
         if profile_image.height > 500 or\
                 profile_image.width > 500:
             output_size = (500, 500)
             profile_image.thumbnail(output_size)
             profile_image.save(self.image.path)
-
-        if verification_image.height > 500 or\
-                verification_image.width > 500:
-            output_size = (500, 500)
-            verification_image.thumbnail(output_size)
-            verification_image.save(self.verification_image.path)
-
-
-
-    def verification_image_tag(self):
-        from django.utils.html import escape
-        from django.utils.html import mark_safe
-        return mark_safe('<img src="%s" />' % escape(self.verification_image.url))
-    verification_image_tag.short_description = 'Verification Image'
-    verification_image_tag.allow_tags = True
 
 
 class Friend(models.Model):
@@ -146,6 +159,7 @@ class VerificationCode(models.Model):
         verbose_name_plural = 'Verification Codes'
         get_latest_by = "created_at"
 
+
 class UserReview(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
@@ -160,6 +174,7 @@ class UserReview(models.Model):
 
     def __str__(self):
         return "Username: {} :Date {}".format(self.author.username, self.date_posted)
+
 
 class UserReviewReply(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
