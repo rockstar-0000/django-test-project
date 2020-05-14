@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect
 from blog.models import Post
 from users.forms import *
 from users.services import send_twilio_message
-from .models import VerificationCode, Message, Conversation, UserReview, Verification
+from .models import VerificationCode, Message, Conversation, Verification
 
 
 data_response = {}
@@ -199,10 +199,8 @@ def profile_images(request):
 def profile_friend_review(request, username):
     selectedId = User.objects.filter(username=username).first().id
 
-
     context = {
         'selectedUser': User.objects.filter(username=username).first(),
-        'reviews': UserReview.objects.all(),
         'friends': []
 
     }

@@ -135,34 +135,16 @@ class VerificationCode(models.Model):
         get_latest_by = "created_at"
 
 
-class UserReview(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+class Review(models.Model):
     content = models.TextField()
-    date_posted = models.DateTimeField(default=timezone.now)
-    reply = models.TextField(blank=True)
-
-    class Meta:
-        db_table = 'user_review'
-        verbose_name = 'User Review'
-        verbose_name_plural = 'User Reviews'
-        get_latest_by = "created_at"
-
-    def __str__(self):
-        return "Username: {} :Date {}".format(self.author.username, self.date_posted)
+    rating = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    edit_timestamp = models.DateTimeField(auto_now_add=True)
 
 
-class UserReviewReply(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+class ReviewReply(models.Model):
     content = models.TextField()
-    post = models.ForeignKey('users.UserReview', on_delete=models.CASCADE)
-    reply = models.TextField(blank=True)
-    date_posted = models.DateTimeField(default=timezone.now)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    edit_timestamp = models.DateTimeField(auto_now_add=True)
+    review = models.ForeignKey(Review, on_delete=models.DO_NOTHING)
 
-    class Meta:
-        db_table = 'user_review_reply'
-        verbose_name = 'User Review Reply'
-        verbose_name_plural = 'User Review Replies'
-        get_latest_by = "created_at"
-
-    def __str__(self):
-        return "Username: {} :Date {}".format(self.author.username, self.date_posted)

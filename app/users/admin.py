@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from users.models import Profile, User, UserReview, UserReviewReply, Verification
+from users.models import Profile, User, Verification, Review, ReviewReply
 from django.utils.html import format_html
 
 
@@ -14,5 +14,5 @@ class ProfileAdmin(admin.ModelAdmin):
 class UserAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(UserReview)
-admin.site.register(UserReviewReply)
+admin.site.register(Review)
+admin.site.register(ReviewReply)
