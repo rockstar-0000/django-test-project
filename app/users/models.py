@@ -110,7 +110,7 @@ class Profile(models.Model):
             profile_image.save(self.image.path)
 
 
-class Friendship:
+class Friendship(models.Model):
     class Status(models.TextChoices):
         BLOCKED = 'block'
         FRIENDS = 'friends'
