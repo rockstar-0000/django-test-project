@@ -135,16 +135,22 @@ class VerificationCode(models.Model):
         get_latest_by = "created_at"
 
 
+class ReviewContent(models.Model):
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    rating = models.IntegerField(null=True)
+
+
 class Review(models.Model):
-    content = models.TextField()
-    rating = models.IntegerField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    edit_timestamp = models.DateTimeField(auto_now_add=True)
+    by_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to_user')
+    review_content = models.ForeignKey(ReviewContent, on_delete=models.CASCADE, related_name='review_content')
+    reply_content = models.ForeignKey(ReviewContent, on_delete=models.CASCADE)
 
 
-class ReviewReply(models.Model):
-    content = models.TextField()
+class Notification(models.Model):
+    content = models.CharField(max_length=256)
     timestamp = models.DateTimeField(auto_now_add=True)
-    edit_timestamp = models.DateTimeField(auto_now_add=True)
-    review = models.ForeignKey(Review, on_delete=models.DO_NOTHING)
-
+    has_read = models.BooleanField(default=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
