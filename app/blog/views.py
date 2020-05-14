@@ -18,11 +18,8 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
-from .models import Post
-from .models import Comment
-from users.models import Profile
-from users.models import Friend
-
+from .models import Post, Comment
+from users.models import Friendship
 # from ..users import views as user_views
 
 data_response = {}
@@ -43,7 +40,7 @@ class PostListview(ListView):
 
     def get_queryset(self):
         userId = self.request.user.id
-        friends_list = Friend.objects.filter(Q(sender_id=userId) | Q(recipient_id=userId))
+        friends_list = []
 
         query = Q(state="public") | Q(author_id=userId)
 
