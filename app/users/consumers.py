@@ -10,10 +10,10 @@ from asgiref.sync import async_to_sync
 # serializes the message to a dictionary
 def message_to_dict(message):
     msg = {}
-    msg['message_text'] = message.message_text
+    msg['content'] = message.content
     msg['has_read'] = message.has_read
     msg['timestamp'] = message.timestamp.timestamp()
-    msg['conversation_id'] = message.conversation_id
+    msg['convo_id'] = message.convo_id
     msg['from_user_id'] = message.from_user_id
     return msg
 
@@ -56,7 +56,7 @@ class ChatConsumer(WebsocketConsumer):
             command = text_data_json['command']
 
             if command == 'load_conversation':
-                messages = list(Message.objects.filter(conversation_id=cid))
+                messages = list(Message.objects.filter(convo_id=cid))
                 sorted_messages = sorted(messages, key=lambda x: x.timestamp, reverse=False)
                 for i in range(0, len(sorted_messages)):
                     sorted_messages[i] = message_to_dict(sorted_messages[i])
@@ -66,11 +66,11 @@ class ChatConsumer(WebsocketConsumer):
                 }))
 
             elif command == 'send_message':
-                message_text = text_data_json['message']
+                content = text_data_json['message']
                 cid = text_data_json['cid']
                 user_id = self.scope["user"].id
                 cur_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                msg = Message(conversation_id=int(cid), from_user_id=user_id, message_text=message_text,
+                msg = Message(convo_id=int(cid), from_user_id=user_id, content=content,
                               has_read=False)
                 msg.save()
 

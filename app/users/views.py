@@ -357,27 +357,24 @@ def debug_add_convo(request, username):
 def chat(request):
     user_id = request.user.id
 
-
     conversations_raw = list(Conversation.objects.filter(users__id=user_id))
     conversations = []
 
     for i in range(0, len(conversations_raw)):
-        user = conversations_raw[i].users.exclude(id=user_id).first()
-        last_message = ''
+        user2 = conversations_raw[i].users.exclude(id=user_id).first()
+        last_message = None
+        if conversations_raw[i].message_count > 0:
+            last_message = Message.objects.filter(id=conversations_raw[i].last_message_id).first()
 
-        # If Last_message_id is -1 then conversation has not started
-
-        if conversations_raw[i].last_message_id != -1:
-            last_message = Message.objects.filter(id=conversations_raw[i].last_message_id).first().message_text
-
-        last_update = conversations_raw[i].last_update
         convo_id = conversations_raw[i].id
-        if user is not None and last_message is not None and last_update != -1:
+
+        if user2 is not None:
             conversations.append({})
             conversations[i]["id"] = str(convo_id)
-            conversations[i]["name"] = user.first_name
-            conversations[i]["lastMessage"] = last_message[:70] + (last_message[70:] and '...')
-            conversations[i]["lastUpdate"] = last_update
+            conversations[i]["name"] = user2.first_name
+            if last_message is not None:
+                conversations[i]["lastMessage"] = last_message.content[:70] + (last_message.content[70:] and '...')
+                conversations[i]["lastUpdate"] = last_message.timestamp
 
     context = {'conversations': conversations, 'myName': request.user.first_name, 'id': user_id}
 

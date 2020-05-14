@@ -18,17 +18,14 @@ class User(AbstractUser):
 class Conversation(models.Model):
     users = models.ManyToManyField(User)
     timestamp = models.DateTimeField(auto_now_add=True,  null=True)
-    # if -1 no messages are in conversation
-    last_message_id = models.IntegerField(default=-1)
-
-    # if -1 no messages are in conversation
-    last_update = models.DateTimeField(auto_now_add=True)
+    message_count = models.IntegerField(default=0)
+    last_message = models.ForeignKey('Message', null=True, on_delete=models.CASCADE)
 
 
 class Message(models.Model):
-    conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
+    convo = models.ForeignKey(Conversation, on_delete=models.CASCADE)
     from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="from_user")
-    message_text = models.TextField(blank=False, null=True)
+    content = models.TextField(blank=False, null=True)
     has_read = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True,  null=True)
 
