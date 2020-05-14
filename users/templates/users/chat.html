@@ -1,0 +1,286 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    {% load static %}
+
+    <!-- Page Content  -->
+    <div id="content-page" class="content-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="iq-card">
+                        <div class="iq-card-body chat-page p-0">
+                            <div class="chat-data-block">
+                                <div class="row">
+                                    <div class="col-lg-3 chat-data-left scroller">
+                                        <div class="chat-search pt-3 pl-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="chat-profile mr-3">
+                                                    <img src="{{ user.profile.image.url }}" alt="chat-user" class="avatar-60 ">
+                                                </div>
+                                                <div class="chat-caption">
+                                                    <h5 class="mb-0">{{ user.first_name }} {{ user.last_name }}</h5>
+                                                    <p class="m-0">{{ user.profile.gender}}</p>
+                                                </div>
+                                                <button type="submit" class="close-btn-res p-3"><i class="ri-close-fill"></i></button>
+                                            </div>
+                                            <div id="user-detail-popup" class="scroller">
+                                                <div class="user-profile">
+                                                    <button type="submit" class="close-popup p-3"><i class="ri-close-fill"></i></button>
+                                                    <div class="user text-center mb-4">
+                                                        <a class="avatar m-0">
+                                                            <img src="{{ user.profile.image.url }}" alt="avatar">
+                                                        </a>
+                                                        <div class="user-name mt-4">
+                                                            <h4>{{ myName }}</h4>
+                                                        </div>
+                                                        <div class="user-desc">
+                                                            <p>{{ user.profile.gender }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="user-detail text-left mt-4 pl-4 pr-4">
+                                                        <h5 class="mt-4 mb-4">About</h5>
+                                                        <p>{{ user.profile.bio }}</p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="chat-searchbar mt-4">
+                                                <div class="form-group chat-search-data m-0">
+                                                    <input type="text" class="form-control round" id="chat-search" placeholder="Search">
+                                                    <i class="ri-search-line"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="chat-sidebar-channel scroller mt-4 pl-3">
+
+                                            <h5 class="mt-3">Direct Message</h5>
+                                            <ul class="iq-chat-ui nav flex-column nav-pills">
+                                                {% for convo in conversations %}
+                                                    <li onclick="getChat({{ convo.id }})">
+                                                        <a  data-toggle="pill" href="#chatbox1">
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="avatar mr-2">
+                                                                    <img src="{{ convo.name }}" alt="chatuserimage" class="avatar-50 ">
+                                                                    <span class="avatar-status"><i class="ri-checkbox-blank-circle-fill text-dark"></i></span>
+                                                                </div>
+                                                                <div class="chat-sidebar-name">
+                                                                    <h6 class="mb-0">{{ convo.name }}</h6>
+                                                                    <span class="newMsgConvo" id="newMsgConvo{{convo.id}}"></span>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-9 chat-data p-0 chat-data-right">
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade active show" id="default-block" role="tabpanel">
+                                                <div class="chat-start">
+                                                    <span class="iq-start-icon text-primary"><i class="ri-message-3-line"></i></span>
+                                                    <button id="chat-start" class="btn bg-white mt-3">Start
+                                                        Conversation!</button>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="chatbox1" role="tabpanel">
+                                                <div class="chat-head">
+                                                    <header class="d-flex justify-content-between align-items-center bg-white pt-3 pr-3 pb-3">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="sidebar-toggle">
+                                                                <i class="ri-menu-3-line"></i>
+                                                            </div>
+                                                            <div class="avatar chat-user-profile m-0 mr-3">
+                                                                <img src="{{ user.profile.image.url }}" alt="avatar" class="avatar-50 ">
+                                                                <span class="avatar-status"><i class="ri-checkbox-blank-circle-fill text-success"></i></span>
+                                                            </div>
+                                                            <h5 class="mb-0">Chat Box</h5>
+                                                        </div>
+                                                        <div class="chat-user-detail-popup scroller">
+                                                            <div class="user-profile text-center">
+                                                                <button type="submit" class="close-popup p-3"><i class="ri-close-fill"></i></button>
+                                                                <div class="user mb-4">
+                                                                    <a class="avatar m-0">
+                                                                        <img src="{{ user.profile.image.url }}" alt="avatar">
+                                                                    </a>
+                                                                    <div class="user-name mt-4">
+                                                                        <h4>{{ user.first_name }} {{ user.last_name }}</h4>
+                                                                    </div>
+                                                                    <div class="user-desc">
+                                                                        <p>{{ user.profile.city }}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="chatuser-detail text-left mt-4">
+                                                                    <div class="row">
+                                                                        <div class="col-6 col-md-6 title">Name:</div>
+                                                                        <div class="col-6 col-md-6 text-right">{{ user.first_name }} {{ user.last_name }}</div>
+                                                                    </div>
+                                                                    <hr>
+                                                                    <div class="row">
+                                                                        <div class="col-6 col-md-6 title">Age:</div>
+                                                                        <div class="col-6 col-md-6 text-right">{{ user.profile.his_age }}</div>
+                                                                    </div>
+                                                                    <hr>
+                                                                    <div class="row">
+                                                                        <div class="col-6 col-md-6 title">Account Type:</div>
+                                                                        <div class="col-6 col-md-6 text-right">{{ user.profile.gender }}</div>
+                                                                    </div>
+                                                                    <hr>
+                                                                    <div class="row">
+                                                                        <div class="col-6 col-md-6 title">Kik:</div>
+                                                                        <div class="col-6 col-md-6 text-right">{{ user.profile.kik }}</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </header>
+                                                </div>
+                                                <div class="chat-content scroller" id="chat-content-box">
+
+                                                </div>
+                                                <div class="chat-footer p-3 bg-white">
+                                                    <form class="d-flex align-items-center"  action="javascript:void(0);">
+                                                        <div class="chat-attagement d-flex">
+                                                            <a href="javascript:void();"><i class="fa fa-smile-o pr-3" aria-hidden="true"></i></a>
+                                                            <a href="javascript:void();"><i class="fa fa-paperclip pr-3" aria-hidden="true"></i></a>
+                                                        </div>
+                                                        <input type="text" id="sendMessageInput"  class="form-control mr-3" placeholder="Type your message">
+                                                        <button onclick="sendMessage()" type="submit" class="btn btn-primary d-flex align-items-center p-2"><i class="fa fa-paper-plane-o" aria-hidden="true"></i><span class="d-none d-lg-block ml-1">Send</span></button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        let current_cid = -1;
+
+        function clearChatbox() {
+            document.getElementById("chat-content-box").innerHTML = '';
+        }
+
+        function add_message(message, fromUserId, timeStr) {
+            let child = document.createElement('div');
+            let chatHtmlString = '';
+            if (fromUserId === {{ id }}) {
+                chatHtmlString = `  <div class="chat">
+                                                <div class="chat-user">
+                                                   <a class="avatar m-0">
+                                                   <img src="{{ user.profile.image.url }}" alt="avatar" class="avatar-35 ">
+                                                   </a>
+                                                   <span class="chat-time mt-1">${timeStr}</span>
+                                                </div>
+                                                <div class="chat-detail">
+                                                   <div class="chat-message">
+                                                      <p>${message}</p>
+                                                   </div>
+                                                </div>
+                                             </div>`;
+            } else {
+                chatHtmlString = `         <div class="chat chat-left">
+                                                <div class="chat-user">
+                                                   <a class="avatar m-0">
+                                                   <img src="{{ user.profile.image.url }}" alt="avatar" class="avatar-35 ">
+                                                   </a>
+                                                   <span class="chat-time mt-1">${timeStr}</span>
+                                                </div>
+                                                <div class="chat-detail">
+                                                   <div class="chat-message">
+                                                      ${message}
+                                                   </div>
+                                                </div>
+                                             </div>`;
+            }
+            child.innerHTML = chatHtmlString;
+            document.getElementById("chat-content-box").insertBefore(child, document.getElementById("chat-content-box").lastChild);
+        }
+
+        // ChatSocket parses the incoming message by looking at the command field
+
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + 'test'
+            + '/'
+        );
+
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+
+            // Loads all messages from database
+            if (data['command'] === 'load_messages') {
+                for (const msg of data['messages']) {
+                    add_message(msg['message_text'], msg['from_user_id'], timeConverter(msg['timestamp']))
+                }
+                setTimeout(updateScroll, 250);
+                // Loads new incoming messages  (realtime)
+            } else if (data['command'] === 'load_message')
+                if(data['cid'] === current_cid) {
+                    add_message(data['message_text'], data['from_user_id'], timeConverter(data['timestamp']))
+                    updateScroll()
+                } else {
+                    document.getElementById("newMsgConvo" + String(data['cid'])).textContent = 'new Message'
+                }
+
+        };
+        // user exits website
+        chatSocket.onclose = function(e) {
+
+        };
+
+        // Fires when user clicks a conversation, tells server to send conversation messages
+        function getChat(cid) {
+            current_cid = cid;
+            chatSocket.send(JSON.stringify({
+                'command': 'load_conversation',
+                'cid': cid
+            }));
+            document.getElementById("newMsgConvo" + String(current_cid)).textContent = ''
+        }
+
+        // Fires when user presses send message
+        function sendMessage () {
+            const cid = current_cid;
+            const message = document.getElementById("sendMessageInput").value;
+            chatSocket.send(JSON.stringify({
+                'command': 'send_message',
+                'cid': cid,
+                'message': message
+            }));
+            document.getElementById("sendMessageInput").value = ""
+        }
+        // converts timestamp into readable format. Shows hours and minutes or days and month depending
+        // on the time difference
+        function timeConverter(UNIX_timestamp){
+            var msgDate = new Date(UNIX_timestamp * 1000);
+            var nowDay = new Date().getDate();
+            var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            var month = months[msgDate.getMonth()];
+            var day = msgDate.getDate();
+
+            if (nowDay === day) {
+                return    String(msgDate.getHours()).padStart(1, '0') + ':' + String(msgDate.getMinutes()).padStart(2, '0');
+            } else {
+                return  day + ' ' + month;
+            }
+        }
+
+        function updateScroll(){
+            const element = document.getElementById("chat-content-box");
+            element.scrollTop = element.scrollHeight;
+        }
+
+    </script>
+{%  endblock %}

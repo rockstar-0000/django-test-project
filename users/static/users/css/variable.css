@@ -1,0 +1,31 @@
+/*------------- Variable ------------*/
+
+:root {
+  --iq-title-text: #3f414d;
+  --iq-body-text: #777D74;
+  --iq-primary: #50b5ff;
+  --iq-secondary: #a09e9e;
+  --iq-success: #49f0d3;
+  --iq-warning: #ffba68;
+  --iq-danger: #ff9b8a;
+  --iq-info: #d592ff;
+  --iq-dark: #3f414d;
+  --iq-light: #2d354e;
+  --iq-white: #ffffff;
+  --iq-black: #000000;
+  --iq-light-primary: #29324f;
+  --iq-light-secondary: rgba(160,158,158,0.2);
+  --iq-light-success: rgba(73,240,211,0.2);
+  --iq-light-danger: rgba(255,155,138,0.2);
+  --iq-light-warning: rgba(255,186,104,0.2);
+  --iq-light-info: rgba(213,146,255,0.2);
+  --iq-light-dark: #1c2235;
+  --iq-primary-hover: #2aa3fb;
+  --iq-border-light: #f1f1f1;
+  --iq-dark-bg: #182039;
+  --iq-dark-box: #1e2745;
+  --iq-dark-body-text: #8c91b6;
+  --iq-dark-title-text: #8c91b6;
+  --iq-border-dark: #636384;
+}
+
