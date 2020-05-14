@@ -67,7 +67,7 @@ class Verification(models.Model):
     verification_image_tag.allow_tags = True
 
 
-class ProfileAddress(models.Model):
+class Address(models.Model):
     city = models.CharField(max_length=30, blank=True, null=True)
     state = models.CharField(max_length=2, blank=True, null=True)
     zip = models.CharField(max_length=5, blank=True, null=True)
@@ -93,7 +93,7 @@ class Profile(models.Model):
     kik = models.CharField(max_length=30, blank=True, null=True)
     account_type = models.CharField(max_length=13, blank=True, choices=AccountType.choices, default='')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    address = models.OneToOneField(ProfileAddress, on_delete=models.CASCADE, null=True)
+    address = models.OneToOneField(Address, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f'{self.user.username} Profile'
@@ -110,36 +110,14 @@ class Profile(models.Model):
             profile_image.save(self.image.path)
 
 
-class Friend(models.Model):
-    wait = "Wait"
-    accept = "Accept"
-    block = "Block"
-    new_accept = "New_Accept"
-
-    STATE_CHOICES = {
-        (accept, "Accept"),
-        (wait, "Wait"),
-        (block, "Block"),
-        (new_accept, "New_Accept")
-    }
-
-    sender_id = models.IntegerField()
-    recipient_id = models.IntegerField()
-    sender_firstName = models.CharField(max_length=35, default='')
-    sender_lastName = models.CharField(max_length=35, default='')
-    sender_image = models.ImageField(default='default.jpg')
-    recipient_firstName = models.CharField(max_length=35, default='')
-    recipient_lastName = models.CharField(max_length=35, default='')
-    recipient_image = models.ImageField(default='default.jpg')
-    state = models.CharField(max_length=35, choices=STATE_CHOICES, default=wait)
-
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    # def __str__(self):
-    #     return '%s %s' % (self.sender_id, self.recipient_id)
-
-    def save(self, *args, **kwargs):
-        super(Friend, self).save(*args, **kwargs)
+class Friendship:
+    class Status(models.TextChoices):
+        BLOCKED = 'block'
+        FRIENDS = 'friends'
+        IGNORE = 'ignore'
+    timestamp = models.DateTimeField(auto_now_add=True,  null=True)
+    status = models.CharField(choices=Status.choices, max_length=8, default='')
+    users = models.ManyToManyField(User)
 
 
 class VerificationCode(models.Model):

@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect
 from blog.models import Post
 from users.forms import *
 from users.services import send_twilio_message
-from .models import Friend, VerificationCode, Message, Conversation, UserReview, Verification
+from .models import VerificationCode, Message, Conversation, UserReview, Verification
 
 
 data_response = {}
@@ -137,7 +137,7 @@ def sign_in_photo_verify(request):
 #     return render(request, 'users/profile_old_delete.html', context)
 #     # return redirect('home')
 
-
+"""
 def friend_request(request):
     if request.method == 'POST':
         recipient_id = request.POST.get("recipient_id")
@@ -252,6 +252,8 @@ def check_block(request):
         else:
             data_response['response'] = 'no'
             return JsonResponse(data_response)
+
+"""
 
 
 def profile_detail(request, username):
