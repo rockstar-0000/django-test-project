@@ -14,8 +14,8 @@ class User(AbstractUser):
         other_user = User.objects.filter(pk=other_user_id).first()
         if other_user is None:
             return None
-        
-        # TODO fix this scenario: user1 blocks users2 we need to somehow save that
+
+        # TODO fix this scenario: user1 blocks users2 we need to somehow save that maybe add status table???
         user_friendships = Friendship_Model.objects.filter(users=self, status=Friendship_Model.Status.FRIENDS)
         other_friendships = Friendship_Model.objects.filter(users=other_user, status=Friendship_Model.Status.FRIENDS)
         return user_friendships.intersection(other_friendships).first()
