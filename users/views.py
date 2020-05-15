@@ -22,7 +22,7 @@ data_response = {}
 #debug
 
 def debug(request):
-    request.user.is_friend(3)
+    profile = request.user.get_profile()
     return redirect('')
 
 def register(request):

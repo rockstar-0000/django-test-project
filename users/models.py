@@ -24,6 +24,14 @@ class User(AbstractUser):
         else:
             return True
 
+    def get_conversations(self):
+        Conversation_Model = apps.get_model('users', 'Conversation')
+        return list(Conversation_Model.objects.filter(users=self))
+
+    def get_profile(self):
+        Profile_Model = apps.get_model('users', 'Profile')
+        return Profile_Model.objects.filter(user=self).first()
+
     def save(self, *args, **kwargs):
         super(User, self).save()
         Profile.objects.get_or_create(user=self)
