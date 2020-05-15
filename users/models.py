@@ -135,15 +135,9 @@ class Profile(models.Model):
             profile_image.thumbnail(output_size)
             profile_image.save(self.image.path)
 
-
 class Friendship(models.Model):
-    class Status(models.TextChoices):
-        BLOCKED = 'block'
-        FRIENDS = 'friends'
-        IGNORE = 'ignore'
     timestamp = models.DateTimeField(auto_now_add=True,  null=True)
-    status = models.CharField(choices=Status.choices, max_length=8, default='')
-    users = models.ManyToManyField(User)
+    users = models.ManyToManyField(User, through='Status')
 
     def is_blocked(self):
         return self.status == self.Status.BLOCKED
@@ -153,6 +147,21 @@ class Friendship(models.Model):
 
     def is_friend(self):
         return self.status == self.Status.IGNORE
+
+
+class Status(models.Model):
+    friendship = models.ForeignKey(Friendship, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True,  null=True)
+
+    class Relationship(models.TextChoices):
+        FRIEND = 'friend'
+        BLOCKED = 'blocked'
+        IGNORE = 'ignore'
+        NONE = ''
+
+    relationship = models.CharField(max_length=10, choices=Relationship.choices, default=Relationship.NONE)
+
 
 class VerificationCode(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
