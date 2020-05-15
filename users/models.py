@@ -3,11 +3,19 @@ from django.core.files.storage import FileSystemStorage
 from django.db import models
 from PIL import Image
 from django.utils import timezone
-
+from django.apps import apps
 from django_site.settings import UPLOAD_DIR
 
 
 class User(AbstractUser):
+
+    def is_friend(self, other_user_id):
+        Friendship_Model = apps.get_model('users', 'Friendship')
+        other_user = User.objects.filter(pk=other_user_id)
+        if other_user is None:
+            return None
+        my_friendships = Friendship_Model.objects.filter(users=self)
+        print('done')
 
     def save(self, *args, **kwargs):
         super(User, self).save()
