@@ -1,0 +1,76 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    {% load static %}
+
+    <!-- Page Content  -->
+    <div id="content-page" class="content-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="iq-card">
+                        <div class="iq-card-header d-flex justify-content-between">
+                            <div class="iq-header-title">
+                                <h4 class="card-title">{{ selectedUser.first_name }} {{ selectedUser.last_name }}'s Reviews</h4>
+                            </div>
+                            <div class="iq-header-title">
+                                <a href="{% url 'profile-friend-create-review' %}">
+                                    <button class="btn btn-outline-primary btn-block">Leave Review</button>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="iq-card-body">
+                            <ul class="request-list list-inline m-0 p-0">
+                                {% for review in reviews %}
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-img img-fluid"><img src="{{ review.author.profile.image.url }}" alt="story-img"
+                                                                             class="rounded-circle avatar-40"></div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>{{ review.author.first_name }} {{ review.author.last_name }}</h6>
+                                            <p class="mb-0">{{ friends|length }} friends</p>
+                                        </div>
+                                        <div class="media-support-info ml-3">
+                                            <h6>Rating</h6>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                            <p class="mb-0 fa fa-star"></p>
+                                        </div>
+                                    </div>
+                                    <li class="text-center mt-3">
+                                        <div class="container">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                                <textarea class="textarea form-control"
+                                                                          rows="5">{{ review.content }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                                <a href="#">
+                                                                    <button class="btn btn-outline-primary btn-block">Leave A Response</button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+
+                                <li class="d-block text-center">
+                                    <a href="#" class="mr-3 btn">View More Reviews</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{%  endblock %}
