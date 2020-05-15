@@ -2,12 +2,15 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from users.models import Verification
 
 
 def _profile_is_approved(user):
-    if user.is_authenticated and getattr(user, "profile", False):
-        return user.profile.approved
-    return user.is_anonymous
+    if user.is_anonymous is not True:
+        verification = Verification.objects.filter(user=user).first()
+        if user.is_authenticated and verification is not None:
+            return verification.is_approved
+    return False
 
 
 class ProfileCheckMiddleware:
@@ -22,7 +25,8 @@ class ProfileCheckMiddleware:
                             reverse("phone_verification_step1"),
                             reverse("phone_verification_step2"),
                             reverse("profile-photo-verify"),
-                            reverse("sign_in_photo_verify_success")
+                            reverse("sign_in_photo_verify_success"),
+                            reverse("login")
 
                          ]  # Include a list of authenticated views that don't require an approved profile
 

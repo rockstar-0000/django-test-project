@@ -2,7 +2,7 @@
 import json
 from channels.layers import get_channel_layer
 from channels.generic.websocket import WebsocketConsumer
-from users.models import Profile, Conversation, Message
+from users.models import Profile, Conversation, Message, Socket
 from datetime import datetime
 from asgiref.sync import async_to_sync
 
@@ -10,10 +10,10 @@ from asgiref.sync import async_to_sync
 # serializes the message to a dictionary
 def message_to_dict(message):
     msg = {}
-    msg['message_text'] = message.message_text
+    msg['content'] = message.content
     msg['has_read'] = message.has_read
     msg['timestamp'] = message.timestamp.timestamp()
-    msg['conversation_id'] = message.conversation_id
+    msg['convo_id'] = message.convo_id
     msg['from_user_id'] = message.from_user_id
     return msg
 
@@ -26,25 +26,27 @@ class ChatConsumer(WebsocketConsumer):
     # to push realtime updates to
     def connect(self):
         try:
-            user_id = self.scope["user"].id
-            user_profile = Profile.objects.filter(user_id=user_id).first()
-            user_profile.channel_name = self.channel_name
-            user_profile.save()
+            socket = Socket.objects.get_or_create(user=self.scope["user"])[0]
+            socket.channel_name = self.channel_name
+            # TODO fix timestamp maybe add connected | disconnected timestamps
+            # socket.last_timestamp
+            socket.save()
             self.accept()
         except Exception as e:
             print(e)
-
 
     # When disconnecting we set the channel name to ''
     def disconnect(self, close_code):
         try:
             user_id = self.scope["user"].id
-            user_profile = Profile.objects.filter(user_id=user_id).first()
-            user_profile.channel_name = ''
-            user_profile.save()
+            socket = Socket.objects.get(user_id=user_id)
+            socket.channel_name = ''
+            socket.is_connected = False
+            # TODO add last_timestamp
+            # socket.last_timestamp =
+            socket.save()
         except Exception as e:
             print(e)
-
 
     def receive(self, text_data):
         try:
@@ -54,7 +56,7 @@ class ChatConsumer(WebsocketConsumer):
             command = text_data_json['command']
 
             if command == 'load_conversation':
-                messages = list(Message.objects.filter(conversation_id=cid))
+                messages = list(Message.objects.filter(convo_id=cid))
                 sorted_messages = sorted(messages, key=lambda x: x.timestamp, reverse=False)
                 for i in range(0, len(sorted_messages)):
                     sorted_messages[i] = message_to_dict(sorted_messages[i])
@@ -64,11 +66,11 @@ class ChatConsumer(WebsocketConsumer):
                 }))
 
             elif command == 'send_message':
-                message_text = text_data_json['message']
+                content = text_data_json['message']
                 cid = text_data_json['cid']
                 user_id = self.scope["user"].id
                 cur_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                msg = Message(conversation_id=int(cid), from_user_id=user_id, message_text=message_text,
+                msg = Message(convo_id=int(cid), from_user_id=user_id, content=content,
                               has_read=False)
                 msg.save()
 
@@ -80,8 +82,8 @@ class ChatConsumer(WebsocketConsumer):
                 c_users = list(C.users.all())
 
                 for user in c_users:
-                    channel_name = user.profile.channel_name
-                    if channel_name != '':
+                    channel_name = Socket.objects.get(user_id=user.id).channel_name
+                    if channel_name != '' and channel_name is not None:
                         channel_layer = get_channel_layer()
                         msg_to_send = message_to_dict(msg)
                         msg_to_send['command'] = 'load_message'

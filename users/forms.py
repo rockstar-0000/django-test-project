@@ -5,7 +5,7 @@ from crispy_forms.layout import Layout, Submit, Row, Column, Fieldset, ButtonHol
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
-from users.models import Profile, Message
+from users.models import Profile, Message, Verification
 
 User = get_user_model()
 
@@ -98,12 +98,6 @@ class ProfileUpdateForm(forms.Form):
                               widget=forms.TextInput(attrs={'placeholder': 'Please Enter Her Age'}))
     bio = forms.CharField(label='Your Bio', required=False,
                           widget=forms.Textarea(attrs={'placeholder': 'Tell us something about you!', 'rows': '5'}))
-    city = forms.CharField(label='City', required=True,
-                           widget=forms.TextInput(attrs={'placeholder': 'Enter your city'}))
-    state = forms.ChoiceField(label='State', required=True,
-                              choices=STATE_CHOICES)
-    zip = forms.CharField(label='Zip', max_length = 5, min_length = 5, required=True,
-                          widget=forms.TextInput(attrs={'placeholder': 'Enter your zip', 'id': 'zip_length'}))
     interests = forms.CharField(label='Your Interests', required=False,
                                 widget=forms.Textarea(
                                     attrs={'placeholder': 'What are your interests? What are you looking for?',
@@ -125,11 +119,6 @@ class ProfileUpdateForm(forms.Form):
             ),
             Row(
                 Column('bio', css_class='form-group col-12')
-            ),
-            Row(
-                Column('city', css_class='form-group col-4'),
-                Column('state', css_class='form-group col-4'),
-                Column('zip', css_class='form-group col-4')
             ),
             Row(
                 Column('interests', css_class='form-group col-12')
@@ -155,5 +144,5 @@ class VerificationStep2Form(forms.Form):
 
 class SignInPhotoVerifyForm(forms.ModelForm):
     class Meta:
-        model = Profile
+        model = Verification
         fields = ['verification_image']

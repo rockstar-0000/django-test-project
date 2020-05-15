@@ -1,0 +1,64 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+ <div id="content-page" class="content-page">
+    <div class="container">
+       <div class="row">
+          <div class="col-lg-12">
+             <div class="iq-card">
+                <div class="iq-card-body p-0">
+                   <div class="iq-edit-list">
+                      <ul class="iq-edit-profile d-flex nav nav-pills">
+                         <li class="col-md-3 p-0">
+                            <a class="nav-link active" data-toggle="pill" href="#personal-information">
+                            Personal Information
+                            </a>
+                         </li>
+                      </ul>
+                   </div>
+                </div>
+             </div>
+          </div>
+          <div class="col-lg-12">
+             <div class="iq-edit-list-data">
+                <div class="tab-content">
+                   <div class="tab-pane fade active show" id="personal-information" role="tabpanel">
+                      <div class="iq-card">
+                         <div class="iq-card-header d-flex justify-content-between">
+                            <div class="iq-header-title">
+                               <h4 class="card-title">Personal Information</h4>
+                            </div>
+                         </div>
+                         <div class="iq-card-body">
+                            <form>
+                               {% csrf_token %}
+                               <div class="form-group row align-items-center">
+                                  <div class="col-md-12">
+                                     <div class="profile-img-edit">
+                                        <img class="profile-pic" src="{{ user.profile.image.url }}" alt="profile-pic">
+                                        <div class="p-image">
+                                           <i class="ri-pencil-line upload-button"></i>
+                                           <input class="file-upload" type="file" accept="image/*"/>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                               <fieldset class="form-group">
+                                  <legend class="border-bottom mb-4">Profile Info</legend>
+                                  {{ u_form|crispy }}
+                                  {{ p_form|crispy }}
+                               </fieldset>
+                               <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                               <button type="reset" class="btn iq-bg-danger">Cancel</button>
+                            </form>
+                         </div>
+                      </div>
+                   </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
+</div>
+{% endblock content %}

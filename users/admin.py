@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from users.models import Profile, User, UserReview, UserReviewReply
+from users.models import Profile, User, Verification, Review, ReviewContent
 from django.utils.html import format_html
 
 
-@admin.register(Profile)
+@admin.register(Verification)
 class ProfileAdmin(admin.ModelAdmin):
     readonly_fields = ["verification_image_tag"]
 
@@ -14,5 +14,5 @@ class ProfileAdmin(admin.ModelAdmin):
 class UserAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(UserReview)
-admin.site.register(UserReviewReply)
+admin.site.register(Review)
+admin.site.register(ReviewContent)
