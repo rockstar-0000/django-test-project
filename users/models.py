@@ -14,8 +14,10 @@ class User(AbstractUser):
         other_user = User.objects.filter(pk=other_user_id).first()
         if other_user is None:
             return None
-        user_friendships = Friendship_Model.objects.filter(users=self)
-        other_friendships = Friendship_Model.objects.filter(users=other_user)
+        
+        # TODO fix this scenario: user1 blocks users2 we need to somehow save that
+        user_friendships = Friendship_Model.objects.filter(users=self, status=Friendship_Model.Status.FRIENDS)
+        other_friendships = Friendship_Model.objects.filter(users=other_user, status=Friendship_Model.Status.FRIENDS)
         return user_friendships.intersection(other_friendships).first()
 
     def is_friend(self, other_user_id):
@@ -31,6 +33,7 @@ class User(AbstractUser):
     def get_profile(self):
         Profile_Model = apps.get_model('users', 'Profile')
         return Profile_Model.objects.filter(user=self).first()
+
 
     def save(self, *args, **kwargs):
         super(User, self).save()
@@ -142,6 +145,14 @@ class Friendship(models.Model):
     status = models.CharField(choices=Status.choices, max_length=8, default='')
     users = models.ManyToManyField(User)
 
+    def is_blocked(self):
+        return self.status == self.Status.BLOCKED
+
+    def is_ignored(self):
+        return self.status == self.Status.IGNORE
+
+    def is_friend(self):
+        return self.status == self.Status.IGNORE
 
 class VerificationCode(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
