@@ -9,13 +9,20 @@ from django_site.settings import UPLOAD_DIR
 
 class User(AbstractUser):
 
-    def is_friend(self, other_user_id):
+    def get_friendship(self, other_user_id):
         Friendship_Model = apps.get_model('users', 'Friendship')
-        other_user = User.objects.filter(pk=other_user_id)
+        other_user = User.objects.filter(pk=other_user_id).first()
         if other_user is None:
             return None
-        my_friendships = Friendship_Model.objects.filter(users=self)
-        print('done')
+        user_friendships = Friendship_Model.objects.filter(users=self)
+        other_friendships = Friendship_Model.objects.filter(users=other_user)
+        return user_friendships.intersection(other_friendships).first()
+
+    def is_friend(self, other_user_id):
+        if self.get_friendship(other_user_id) is None:
+            return False
+        else:
+            return True
 
     def save(self, *args, **kwargs):
         super(User, self).save()

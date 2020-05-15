@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect
 from blog.models import Post
 from users.forms import *
 from users.services import send_twilio_message
-from .models import VerificationCode, Message, Conversation, Verification
+from .models import VerificationCode, Message, Conversation, Verification, Friendship
 
 
 data_response = {}
@@ -19,6 +19,11 @@ data_response = {}
 
 # class
 
+#debug
+
+def debug(request):
+    request.user.is_friend(3)
+    return redirect('')
 
 def register(request):
     if request.method == 'POST':

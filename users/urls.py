@@ -30,5 +30,8 @@ urlpatterns = [
     path('chat/', views.chat, name='chat'),
 
     # add conversation debug username is the other person's username
-    path('debug/add_convo/<str:username>/', views.debug_add_convo)
+    path('debug/add_convo/<str:username>/', views.debug_add_convo),
+
+    # changeable debug
+    path('debug/', views.debug, name='debug'),
 ]
