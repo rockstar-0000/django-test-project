@@ -1,6 +1,7 @@
 
 # migrations
-migrations/
+migrations/*
+!migrations/__init__.py
 
 
 # Created by .ignore support plugin (hsz.mobi)
