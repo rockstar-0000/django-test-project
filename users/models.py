@@ -27,7 +27,7 @@ class BaseModel(models.Model):
 
 class User(AbstractUser):
     def get_friendship(self, other_user_id):
-        Friendship_Model = apps.get_model('users', 'Friendship')
+        Friendship_Model: Friendship = apps.get_model('users', 'Friendship')
         other_user = User.objects.filter(pk=other_user_id).first()
         if other_user is None:
             return None
@@ -44,11 +44,11 @@ class User(AbstractUser):
             return True
 
     def get_conversations(self):
-        Conversation_Model = apps.get_model('users', 'Conversation')
+        Conversation_Model: Conversation = apps.get_model('users', 'Conversation')
         return list(Conversation_Model.objects.filter(users=self))
 
     def get_profile(self):
-        Profile_Model = apps.get_model('users', 'Profile')
+        Profile_Model: Profile = apps.get_model('users', 'Profile')
         return Profile_Model.objects.filter(user=self).first()
 
 

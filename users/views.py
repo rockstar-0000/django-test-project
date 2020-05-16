@@ -19,11 +19,10 @@ data_response = {}
 
 # class
 
-#debug
-
+# debug
 def debug(request):
-    profile = request.user.get_profile()
     return redirect('')
+
 
 def register(request):
     if request.method == 'POST':
