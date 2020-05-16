@@ -11,7 +11,7 @@ import time
 
 
 def NOW_TIMESTAMP():
-    return int(round(time.time() * 1000))
+    return int(round(time.time()))
 
 
 class BaseModel(models.Model):
@@ -117,6 +117,7 @@ class Address(BaseModel):
     city = models.CharField(max_length=30, blank=True, null=True)
     state = models.CharField(max_length=2, blank=True, null=True)
     zip = models.CharField(max_length=5, blank=True, null=True)
+    country = models.CharField(max_length=40, blank=True, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 

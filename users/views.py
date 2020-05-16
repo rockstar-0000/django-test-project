@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect
 from blog.models import Post
 from users.forms import *
 from users.services import send_twilio_message
-from .models import VerificationCode, Message, Conversation, Verification, Friendship
+from .models import VerificationCode, Message, Conversation, Verification, Friendship, Address
 
 
 data_response = {}
@@ -39,23 +39,33 @@ def register(request):
 
 
 def register_profile(request):
-    t = request.user
 
     if request.method == 'POST':
         form = UserRegisterProfileForm(request.POST, request.FILES)
+
         if form.is_valid():
-            profile = Profile.objects.get(user=request.user)
-            profile.image = form.cleaned_data['image']
-            profile.his_age = form.cleaned_data['his_age']
-            profile.her_age = form.cleaned_data['her_age']
-            profile.bio = form.cleaned_data['bio']
-            profile.city = form.cleaned_data['city']
-            profile.state = form.cleaned_data['state']
-            profile.zip = form.cleaned_data['zip']
-            profile.interests = form.cleaned_data['interests']
-            profile.kik = form.cleaned_data['kik']
-            profile.account_type = form.cleaned_data['account_type']
+            user = request.user
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            image = form.cleaned_data['image']
+            his_age = form.cleaned_data['his_age']
+            her_age = form.cleaned_data['her_age']
+            bio = form.cleaned_data['bio']
+            city = form.cleaned_data['city']
+            state = form.cleaned_data['state']
+            zip = form.cleaned_data['zip']
+            country = form.cleaned_data['country']
+            interests = form.cleaned_data['interests']
+            kik = form.cleaned_data['kik']
+            account_type = form.cleaned_data['account_type']
+
+            profile = Profile(user=user, first_name=first_name, last_name=last_name, image=image, his_age=his_age,
+                              her_age=her_age, bio=bio, interests=interests, kik=kik, account_type=account_type)
+            address = Address(user=user, city=city, state=state, zip=zip, country=country)
+
             profile.save()
+            address.save()
+
             return redirect('phone_verification_step1')
     else:
         form = UserRegisterProfileForm(request.POST, request.FILES)

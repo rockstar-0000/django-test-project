@@ -20,6 +20,7 @@ class ProfileCheckMiddleware:
         print(request.path)
         login_url = reverse("login")
         register_profile_url = reverse("register_profile")
+        register = reverse("register")
         url_whitelist = [
                             reverse("register_profile"),
                             reverse("phone_verification_step1"),
@@ -32,11 +33,17 @@ class ProfileCheckMiddleware:
                          ]  # Include a list of authenticated views that don't require an approved profile
 
         if not _profile_is_approved(request.user) and request.path not in url_whitelist:
-            messages.error(request, 'Your profile is not yet approved.')
-            return HttpResponseRedirect(login_url)
+            if request.user.is_anonymous:
+                return HttpResponseRedirect(login_url)
+            else:
+                messages.error(request, 'Your profile is not yet approved.')
+                return HttpResponseRedirect(login_url)
 
         if request.path == reverse("register") and request.user.is_anonymous is not True:
             return HttpResponseRedirect(register_profile_url)
+
+        if request.path == reverse("register_profile") and request.user.is_anonymous is True:
+            return HttpResponseRedirect(register)
 
         response = self.get_response(request)
 

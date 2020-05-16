@@ -24,9 +24,9 @@ class UserRegisterProfileForm(forms.Form):
 
     ACCT_TYPE_CHOICES = (
         ('', 'Choose Account Type...'),
-        ("Single Male", "sm"),
-        ("Single Female", "sf"),
-        ("Couple", "c"),
+        ("sm", "Single Male"),
+        ("sf", "Single Female"),
+        ("c", "Couple"),
     )
 
     STATE_CHOICES = (
@@ -321,6 +321,11 @@ class UserRegisterProfileForm(forms.Form):
     ('YE', 'YEMEN'),
     ('ZW', 'ZIMBABWE')
 )
+    first_name = forms.CharField(label="First Name", required=True,
+                                 widget=forms.TextInput(attrs={'placeholder': 'Please Enter Your First Name'}))
+
+    last_name = forms.CharField(label="Last Name", required=True,
+                                widget=forms.TextInput(attrs={'placeholder': 'Please Enter Your Last Name'}))
 
     image = forms.FileField(label='Public Profile Image', required=True)
     account_type = forms.ChoiceField(label='Account Type', choices=ACCT_TYPE_CHOICES, required=True)
@@ -351,12 +356,12 @@ class UserRegisterProfileForm(forms.Form):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
-                Column('account_type', css_class='form-group col-6'),
-                Column('image', css_class='form-group col-6')
+                Column('first_name', css_class='form-group col-6'),
+                Column('last_name', css_class='form-group col-6')
             ),
             Row(
-                Column('his_age', css_class='form-group col-6'),
-                Column('her_age', css_class='form-group col-6')
+                Column('account_type', css_class='form-group col-6'),
+                Column('image', css_class='form-group col-6')
             ),
             Row(
                 Column('his_age', css_class='form-group col-6'),
