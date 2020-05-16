@@ -14,7 +14,7 @@ def NOW_TIMESTAMP():
 
 class BaseModel(models.Model):
     timestamp = models.IntegerField(default=NOW_TIMESTAMP())
-    last_timestamp = models.DateTimeField(default=NOW_TIMESTAMP())
+    last_timestamp = models.IntegerField(default=NOW_TIMESTAMP())
 
     class Meta:
         abstract = True
