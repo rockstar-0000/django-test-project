@@ -104,6 +104,11 @@ class Profile(models.Model):
         MALE = 'Single Male'
         FEMALE = 'Single Female'
         COUPLE = 'Couple'
+
+    class Gender(models.TextChoices):
+        MALE = 'Male'
+        FEMALE = 'Female'
+
     image = models.ImageField(
         default='default.jpg',
         verbose_name='Profile Image',
@@ -118,6 +123,7 @@ class Profile(models.Model):
     interests = models.TextField(blank=True, null=True)
     kik = models.CharField(max_length=30, blank=True, null=True)
     account_type = models.CharField(max_length=13, blank=True, choices=AccountType.choices, default='')
+    gender = models.CharField = models.CharField(max_length=7, blank=True, choices=Gender.choices, default='')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.OneToOneField(Address, on_delete=models.CASCADE, null=True)
 
@@ -135,18 +141,10 @@ class Profile(models.Model):
             profile_image.thumbnail(output_size)
             profile_image.save(self.image.path)
 
+
 class Friendship(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True,  null=True)
     users = models.ManyToManyField(User, through='Status')
-
-    def is_blocked(self):
-        return self.status == self.Status.BLOCKED
-
-    def is_ignored(self):
-        return self.status == self.Status.IGNORE
-
-    def is_friend(self):
-        return self.status == self.Status.IGNORE
 
 
 class Status(models.Model):
@@ -160,7 +158,7 @@ class Status(models.Model):
         IGNORE = 'ignore'
         NONE = ''
 
-    relationship = models.CharField(max_length=10, choices=Relationship.choices, default=Relationship.NONE)
+    relationship = models.CharField(max_length=8, choices=Relationship.choices, default=Relationship.NONE)
 
 
 class VerificationCode(models.Model):
