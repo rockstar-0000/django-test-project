@@ -3,10 +3,11 @@ from django.utils import timezone
 from django.urls import reverse
 from django.contrib.postgres.fields import ArrayField
 
-from users.models import User as AUTH_USER_MODEL
+from users.models import User as USER_MODEL
+from users.models import BaseModel
 
 
-class Post(models.Model):
+class Post(BaseModel):
     public = "public"
     private = "private"
 
@@ -19,11 +20,9 @@ class Post(models.Model):
     content = models.TextField()
     images = ArrayField(models.CharField(max_length=250, blank=True), default=list, null=True)
     state = models.CharField(max_length=35, choices=STATE_CHOICES, default=public)
-    # images = models.TextField()
-    date_posted = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
-    like = ArrayField(models.IntegerField(), null=True)
-    dislike = ArrayField(models.IntegerField(), null=True)
+    user = models.ForeignKey(USER_MODEL, on_delete=models.CASCADE)
+    like_count = ArrayField(models.IntegerField(), null=True)
+    dislike_count = ArrayField(models.IntegerField(), null=True)
 
     def __str__(self):
         return self.title
@@ -35,12 +34,19 @@ class Post(models.Model):
         super(Post, self).save(*args, **kwargs)
 
 
-class Comment(models.Model):
+class Comment(BaseModel):
     content = models.TextField()
     image = models.CharField(max_length=250, blank=True)
     post = models.ForeignKey('blog.Post', on_delete=models.CASCADE, null=True, related_name='comments')
-    author = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
-    vote = ArrayField(models.IntegerField(), null=True)
-    devote = ArrayField(models.IntegerField(), null=True)
+    author = models.ForeignKey(USER_MODEL, on_delete=models.CASCADE, null=True)
+    upvote_count = models.IntegerField(default=0)
+    downvote_count = models.IntegerField(default=0)
     def __str__(self):
         return self.content
+
+
+class Vote(BaseModel):
+    value = models.SmallIntegerField()
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(USER_MODEL, on_delete=models.CASCADE, null=True)
