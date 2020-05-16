@@ -43,6 +43,19 @@
                         <div class="sign-in-from">
                             <h1 class="mb-0">Tell Us About You</h1>
                             <p>Please tell us about you. Feel free to leave anything blank. Only tell us what you want us to know.</p>
+                        <nav aria-label="...">
+                              <ul class="pagination pagination-lg justify-content-center" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--iq-border-dark);" >
+                                <li class="page-item " aria-current="page">
+                                    <a class="page-link" href="#">Account</a>
+                                </li>
+                                <li class="page-item active">
+                                    <a class="page-link" href="#">Profile</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Verification</a>
+                                </li>
+                              </ul>
+                            </nav>
                             {% if messages %}
                                 {% for message in messages %}
                                     <div class="alert alert-danger">

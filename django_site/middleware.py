@@ -21,13 +21,13 @@ class ProfileCheckMiddleware:
         print(request.path)
         login_url = reverse("login")
         url_whitelist = [
-                            reverse("sign_up_post"),
+                            reverse("register_profile"),
                             reverse("phone_verification_step1"),
                             reverse("phone_verification_step2"),
                             reverse("profile-photo-verify"),
                             reverse("sign_in_photo_verify_success"),
                             reverse("login"),
-                            reverse("register")
+                            reverse("register"),
 
                          ]  # Include a list of authenticated views that don't require an approved profile
 

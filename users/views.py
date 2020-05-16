@@ -37,15 +37,17 @@ def register(request):
             user = form.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             # messages.success(request, f'Your account has been created! You are now able to log in!')
-            return redirect('sign_up_post')
+            return redirect('register/profile')
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
 
-def sign_up_post(request):
+def register_profile(request):
+    t = request.user
+
     if request.method == 'POST':
-        form = ProfileUpdateForm(request.POST, request.FILES)
+        form = UserRegisterProfileForm(request.POST, request.FILES)
         if form.is_valid():
             profile = Profile.objects.get(user=request.user)
             profile.image = form.cleaned_data['image']
@@ -61,12 +63,12 @@ def sign_up_post(request):
             profile.save()
             return redirect('phone_verification_step1')
     else:
-        form = ProfileUpdateForm(request.POST, request.FILES)
+        form = UserRegisterProfileForm(request.POST, request.FILES)
 
     context = {
         'form': form
     }
-    return render(request, 'users/sign-up-post.html', context)
+    return render(request, 'users/sign-up-profile.html', context)
 
 
 @login_required()

@@ -17,6 +17,7 @@
       <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
       <!-- Responsive CSS -->
       <link rel="stylesheet" href="{% static 'users/css/responsive.css' %}">
+
       
    </head>
    <body>
@@ -59,10 +60,23 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-md-6 bg-white pt-5">
                         <div class="sign-in-from">
                             <h1 class="mb-0">Sign Up</h1>
+                            <nav aria-label="...">
+                              <ul class="pagination pagination-md justify-content-center" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--iq-border-dark);" >
+                                <li class="page-item active" aria-current="page">
+                                    <a class="page-link" href="#">Account</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Profile</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Verification</a>
+                                </li>
+                              </ul>
+                            </nav>
                             <div class="sign-info">
                                 <span class="dark-color d-inline-block line-height-2">Sign up using Facebook or Google</span>
                                 <ul class="iq-social-media">
@@ -81,7 +95,7 @@
                                         <input type="checkbox" class="custom-control-input" id="customCheck1">
                                         <label class="custom-control-label" for="customCheck1">I accept <a href="#">Terms and Conditions</a></label>
                                     </div>
-                                    <button type="submit" class="btn btn-primary float-right">Sign Up</button>
+                                    <button type="submit" class="btn btn-primary float-right">next</button>
                                 </div>
                                 <div class="sign-info">
                                     <span class="dark-color d-inline-block line-height-2">Already Have Account ? <a href="{% url 'login' %}">Log In</a></span>
