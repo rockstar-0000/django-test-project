@@ -24,6 +24,7 @@ from users.models import Friendship
 
 data_response = {}
 
+# TODO fix blog logic
 def home(request):
     context = {
         'posts': Post.objects.all()
@@ -32,7 +33,7 @@ def home(request):
 
 
 class PostListview(ListView):
-    model = Post
+    modelmodel = Post
     template_name = 'blog/home.html'
     context_object_name = 'posts'
     # ordering = ['id']
@@ -42,25 +43,25 @@ class PostListview(ListView):
         userId = self.request.user.id
         friends_list = []
 
-        query = Q(state="public") | Q(author_id=userId)
+        query = Q(state="public") | Q(user_id=userId)
 
         for friend in friends_list:
             if friend.sender_id == userId:
                 if friend.state == "Block":
                     # print(int(friend.recipient_id))
-                    query = query & ~Q(author_id=int(friend.recipient_id))
+                    query = query & ~Q(user_id=int(friend.recipient_id))
                 # else:
-                #     query = query | Q(state="private", author_id=int(friend.recipient_id))
+                #     query = query | Q(state="private", user_id=int(friend.recipient_id))
                 elif friend.state != "Wait":
-                    query = query | Q(state="private", author_id=int(friend.recipient_id))
+                    query = query | Q(state="private", user_id=int(friend.recipient_id))
             elif friend.recipient_id == userId:
                 if friend.state == "Block":
                     # print(int(friend.sender_id))
-                    query = query & ~Q(author_id=int(friend.sender_id))
+                    query = query & ~Q(user_id=int(friend.sender_id))
                 elif friend.state != "Wait":
-                    query = query | Q(state="private", author_id=int(friend.sender_id))
+                    query = query | Q(state="private", user_id=int(friend.sender_id))
                 else:
-                    query = query | Q(state="private", author_id=int(friend.sender_id))
+                    query = query | Q(state="private", user_id=int(friend.sender_id))
         print(Post.objects.filter(query).order_by("-id"))
         return Post.objects.filter(query).order_by("-id")
 
@@ -152,7 +153,7 @@ def add_new_post(request):
         fs.save(path, file)
         images.append(destination)
 
-    post = Post(content=post_content, author_id=request.user.id, images=images, state=public_private)
+    post = Post(content=post_content, user_id=request.user.id, images=images, state=public_private)
     Post.save(post)
 
     data_response['success'] = "success"
@@ -172,10 +173,10 @@ def add_new_comment(request):
         path = settings.MEDIA_ROOT + destination
         fs.save(path, comment_image)
 
-    comment = Comment(content=comment_text, author_id=request.user.id, image=destination, post_id=postId)
+    comment = Comment(content=comment_text, user_id=request.user.id, image=destination, post_id=postId)
     Comment.save(comment)
 
-    new_comment_id = Comment.objects.filter(post_id=postId, author_id=request.user.id).last().id
+    new_comment_id = Comment.objects.filter(post_id=postId, user_id=request.user.id).last().id
     new_comment_queryset = Comment.objects.filter(id=new_comment_id)
     new_comment = serializers.serialize('json', new_comment_queryset)
     data_response['comment'] = new_comment
@@ -324,7 +325,7 @@ def checkComment(request):
     count = 0
     if request.method == 'POST':
         userId = request.user.id
-        post = Post.objects.filter(author_id=userId)
+        post = Post.objects.filter(user_id=userId)
         for posts in post:
             comment = Comment.objects.filter(post_id=posts.id)
             for comments in comment:
@@ -335,7 +336,7 @@ def getLastComment(request):
     maxId = 0
     if request.method == 'POST':
         userId = request.user.id
-        post = Post.objects.filter(author_id=userId)
+        post = Post.objects.filter(user_id=userId)
         for posts in post:
             comment = Comment.objects.filter(post_id=posts.id).latest('id')
             commentId = comment.id
