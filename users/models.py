@@ -26,6 +26,9 @@ class BaseModel(models.Model):
 
 
 class User(AbstractUser):
+
+    is_verified = models.BooleanField(default=False)
+
     def get_friendship(self, other_user_id):
         Friendship_Model: Friendship = apps.get_model('users', 'Friendship')
         other_user = User.objects.filter(pk=other_user_id).first()
@@ -78,8 +81,13 @@ class Socket(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
+# Verification is in separate table because users can have multiple verification attempts
 class Verification(BaseModel):
-    is_approved = models.BooleanField(default=False)
+    class StatusType(models.TextChoices):
+        NONE = ''
+        APPROVED = 'approved'
+        DECLINED = 'declined'
+    status = models.CharField(max_length=10, default='', choices=StatusType)
     verification_image = models.ImageField(
         default='default.jpg',
         null=True,
@@ -87,7 +95,7 @@ class Verification(BaseModel):
         verbose_name='Verification Image',
         max_length=255,
         storage=FileSystemStorage(location=UPLOAD_DIR, base_url='/media/uploads/'))
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         super(Verification, self).save(*args, **kwargs)
