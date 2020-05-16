@@ -3,7 +3,7 @@ from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from users.models import Verification
-
+from django.contrib import admin
 
 def _profile_is_approved(user):
     if user.is_anonymous is not True:
@@ -27,23 +27,22 @@ class ProfileCheckMiddleware:
                             reverse("phone_verification_step2"),
                             reverse("profile-photo-verify"),
                             reverse("sign_in_photo_verify_success"),
-                            reverse("login"),
-                            reverse("register"),
+                            reverse("login")
 
                          ]  # Include a list of authenticated views that don't require an approved profile
+        if not request.user.is_superuser:
+            if not _profile_is_approved(request.user) and request.path not in url_whitelist:
+                if request.user.is_anonymous:
+                    return HttpResponseRedirect(login_url)
+                else:
+                    messages.error(request, 'Your profile is not yet approved.')
+                    return HttpResponseRedirect(login_url)
 
-        if not _profile_is_approved(request.user) and request.path not in url_whitelist:
-            if request.user.is_anonymous:
-                return HttpResponseRedirect(login_url)
-            else:
-                messages.error(request, 'Your profile is not yet approved.')
-                return HttpResponseRedirect(login_url)
+            if request.path == reverse("register") and request.user.is_anonymous is not True:
+                return HttpResponseRedirect(register_profile_url)
 
-        if request.path == reverse("register") and request.user.is_anonymous is not True:
-            return HttpResponseRedirect(register_profile_url)
-
-        if request.path == reverse("register_profile") and request.user.is_anonymous is True:
-            return HttpResponseRedirect(register)
+            if request.path == reverse("register_profile") and request.user.is_anonymous is True:
+                return HttpResponseRedirect(register)
 
         response = self.get_response(request)
 
