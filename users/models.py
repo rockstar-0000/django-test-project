@@ -5,10 +5,23 @@ from PIL import Image
 from django.utils import timezone
 from django.apps import apps
 from django_site.settings import UPLOAD_DIR
+import time
+
+# TODO Create a util file
+def NOW_TIMESTAMP():
+    return int(round(time.time() * 1000))
+
+
+class BaseModel(models.Model):
+    timestamp = models.IntegerField(default=NOW_TIMESTAMP())
+    last_timestamp = models.DateTimeField(default=NOW_TIMESTAMP())
+
+    def save(self, *args, **kwargs):
+        self.last_update = NOW_TIMESTAMP()
+        super().save(*args, **kwargs)  # Call the "real" save() method.
 
 
 class User(AbstractUser):
-
     def get_friendship(self, other_user_id):
         Friendship_Model = apps.get_model('users', 'Friendship')
         other_user = User.objects.filter(pk=other_user_id).first()
@@ -41,30 +54,27 @@ class User(AbstractUser):
 
 
 # Each user is apart of two conversations one as the sender and one as the receiver
-class Conversation(models.Model):
+class Conversation(BaseModel):
     users = models.ManyToManyField(User)
-    timestamp = models.DateTimeField(auto_now_add=True,  null=True)
     message_count = models.IntegerField(default=0)
     last_message = models.ForeignKey('Message', null=True, on_delete=models.CASCADE)
 
 
-class Message(models.Model):
+class Message(BaseModel):
     convo = models.ForeignKey(Conversation, on_delete=models.CASCADE)
     from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="from_user")
     content = models.TextField(blank=False, null=True)
     has_read = models.BooleanField(default=False)
-    timestamp = models.DateTimeField(auto_now_add=True,  null=True)
 
 
-class Socket(models.Model):
+class Socket(BaseModel):
     # TODO add correct max_length of channel name
     channel_name = models.CharField(default="", max_length=128, unique=True)
-    last_timestamp = models.DateTimeField(auto_now_add=True,  null=True)
     is_connected = models.BooleanField(default=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
-class Verification(models.Model):
+class Verification(BaseModel):
     is_approved = models.BooleanField(default=False)
     verification_image = models.ImageField(
         default='default.jpg',
@@ -93,13 +103,14 @@ class Verification(models.Model):
     verification_image_tag.allow_tags = True
 
 
-class Address(models.Model):
+class Address(BaseModel):
     city = models.CharField(max_length=30, blank=True, null=True)
     state = models.CharField(max_length=2, blank=True, null=True)
     zip = models.CharField(max_length=5, blank=True, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
-class Profile(models.Model):
+class Profile(BaseModel):
     class AccountType(models.TextChoices):
         SINGLE_MALE = 'SM'
         SINGLE_FEMALE = 'SF'
@@ -119,7 +130,6 @@ class Profile(models.Model):
     kik = models.CharField(max_length=30, blank=True, null=True)
     account_type = models.CharField(max_length=3, blank=True, choices=AccountType.choices, default='')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    address = models.OneToOneField(Address, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f'{self.user.username} Profile'
@@ -137,14 +147,12 @@ class Profile(models.Model):
 
 
 class Friendship(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True,  null=True)
     users = models.ManyToManyField(User, through='Status')
 
 
-class Status(models.Model):
+class Status(BaseModel):
     friendship = models.ForeignKey(Friendship, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True,  null=True)
 
     class Relationship(models.TextChoices):
         FRIEND = 'friend'
@@ -170,22 +178,19 @@ class VerificationCode(models.Model):
         get_latest_by = "created_at"
 
 
-class ReviewContent(models.Model):
+class ReviewContent(BaseModel):
     content = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField(null=True)
 
 
-class Review(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True)
+class Review(BaseModel):
     by_user = models.ForeignKey(User, on_delete=models.CASCADE)
     to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to_user')
     review_content = models.ForeignKey(ReviewContent, on_delete=models.CASCADE, related_name='review_content')
     reply_content = models.ForeignKey(ReviewContent, on_delete=models.CASCADE)
 
 
-class Notification(models.Model):
+class Notification(BaseModel):
     content = models.CharField(max_length=256)
-    timestamp = models.DateTimeField(auto_now_add=True)
     has_read = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
