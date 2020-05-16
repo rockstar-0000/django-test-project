@@ -345,7 +345,7 @@ class UserRegisterProfileForm(forms.Form):
     city = forms.CharField(label='City', required=True,
                            widget=forms.TextInput(attrs={'placeholder': 'Enter your city'}))
 
-    state = forms.ChoiceField(label='City', required=True, choices=STATE_CHOICES)
+    state = forms.ChoiceField(label='State', required=True, choices=STATE_CHOICES)
 
     zip = forms.IntegerField(label='Zip Code', required=True)
 
