@@ -11,11 +11,13 @@ User = get_user_model()
 
 
 class UserRegisterForm(UserCreationForm):
+
     email = forms.EmailField()
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'email', 'first_name','last_name', 'password1', 'password2']
+        widgets = {'first_name': forms.HiddenInput(), 'last_name': forms.HiddenInput()}
 
 
 class UserRegisterProfileForm(forms.Form):

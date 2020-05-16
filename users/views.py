@@ -28,18 +28,13 @@ def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            user_object = form.save()
-            user_object.is_active = True
-            user_object.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            # user = authenticate(username=username, password=password)
             user = form.save()
+            print('done')
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             # messages.success(request, f'Your account has been created! You are now able to log in!')
             return redirect('register/profile')
     else:
-        form = UserRegisterForm()
+        form = UserRegisterForm(initial={'first_name': '', 'last_name': ''})
     return render(request, 'users/register.html', {'form': form})
 
 

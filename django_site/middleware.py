@@ -7,9 +7,8 @@ from users.models import Verification
 
 def _profile_is_approved(user):
     if user.is_anonymous is not True:
-        verification = Verification.objects.filter(user=user).first()
-        if user.is_authenticated and verification is not None:
-            return verification.is_approved
+        if user.is_authenticated:
+            return user.is_verified
     return False
 
 
@@ -20,6 +19,7 @@ class ProfileCheckMiddleware:
     def __call__(self, request):
         print(request.path)
         login_url = reverse("login")
+        register_profile_url = reverse("register_profile")
         url_whitelist = [
                             reverse("register_profile"),
                             reverse("phone_verification_step1"),
@@ -32,9 +32,11 @@ class ProfileCheckMiddleware:
                          ]  # Include a list of authenticated views that don't require an approved profile
 
         if not _profile_is_approved(request.user) and request.path not in url_whitelist:
-            logout(request)
             messages.error(request, 'Your profile is not yet approved.')
             return HttpResponseRedirect(login_url)
+
+        if request.path == reverse("register") and request.user.is_anonymous is not True:
+            return HttpResponseRedirect(register_profile_url)
 
         response = self.get_response(request)
 

@@ -8,6 +8,8 @@ from django_site.settings import UPLOAD_DIR
 import time
 
 # TODO Create a util file
+
+
 def NOW_TIMESTAMP():
     return int(round(time.time() * 1000))
 
@@ -55,10 +57,6 @@ class User(AbstractUser):
         return Profile_Model.objects.filter(user=self).first()
 
 
-    def save(self, *args, **kwargs):
-        super(User, self).save()
-        Profile.objects.get_or_create(user=self)
-
 
 # Each user is apart of two conversations one as the sender and one as the receiver
 class Conversation(BaseModel):
@@ -87,7 +85,7 @@ class Verification(BaseModel):
         NONE = ''
         APPROVED = 'approved'
         DECLINED = 'declined'
-    status = models.CharField(max_length=10, default='', choices=StatusType)
+    status = models.CharField(max_length=10, default='', choices=StatusType.choices)
     verification_image = models.ImageField(
         default='default.jpg',
         null=True,
