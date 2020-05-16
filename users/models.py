@@ -16,6 +16,10 @@ class BaseModel(models.Model):
     timestamp = models.IntegerField(default=NOW_TIMESTAMP())
     last_timestamp = models.DateTimeField(default=NOW_TIMESTAMP())
 
+    class Meta:
+        abstract = True
+        get_latest_by = "last_timestamp"
+
     def save(self, *args, **kwargs):
         self.last_update = NOW_TIMESTAMP()
         super().save(*args, **kwargs)  # Call the "real" save() method.
