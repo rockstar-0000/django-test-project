@@ -101,8 +101,7 @@ class Address(models.Model):
 
 class Profile(models.Model):
     class AccountType(models.TextChoices):
-        MALE = 'Single Male'
-        FEMALE = 'Single Female'
+        SINGLE = 'Single'
         COUPLE = 'Couple'
 
     class Gender(models.TextChoices):
