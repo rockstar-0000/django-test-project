@@ -1,6 +1,3 @@
 *
-!migrations/
-migrations/*
 !.gitignore
 !__init__.py
-!0001_initial.py
