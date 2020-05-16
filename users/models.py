@@ -101,13 +101,9 @@ class Address(models.Model):
 
 class Profile(models.Model):
     class AccountType(models.TextChoices):
-        SINGLE = 'Single'
-        COUPLE = 'Couple'
-
-    class Gender(models.TextChoices):
-        MALE = 'Male'
-        FEMALE = 'Female'
-
+        SINGLE_MALE = 'SM'
+        SINGLE_FEMALE = 'SF'
+        COUPLE = 'C'
     image = models.ImageField(
         default='default.jpg',
         verbose_name='Profile Image',
@@ -121,8 +117,7 @@ class Profile(models.Model):
     bio = models.TextField(blank=True, null=True)
     interests = models.TextField(blank=True, null=True)
     kik = models.CharField(max_length=30, blank=True, null=True)
-    account_type = models.CharField(max_length=13, blank=True, choices=AccountType.choices, default='')
-    gender = models.CharField = models.CharField(max_length=7, blank=True, choices=Gender.choices, default='')
+    account_type = models.CharField(max_length=3, blank=True, choices=AccountType.choices, default='')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.OneToOneField(Address, on_delete=models.CASCADE, null=True)
 
