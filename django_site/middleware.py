@@ -28,7 +28,8 @@ class ProfileCheckMiddleware:
                             reverse("profile-photo-verify"),
                             reverse("sign_in_photo_verify_success"),
                             reverse("login"),
-                            reverse("register")
+                            reverse("register"),
+                            reverse("logout"),
 
                          ]  # Include a list of authenticated views that don't require an approved profile
         if not request.user.is_superuser:
