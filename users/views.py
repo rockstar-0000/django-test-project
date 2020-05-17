@@ -32,7 +32,7 @@ def register(request):
             print('done')
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             # messages.success(request, f'Your account has been created! You are now able to log in!')
-            return redirect('register/profile/')
+            return redirect('users/register/profile/')
     else:
         form = UserRegisterForm(initial={'first_name': '', 'last_name': ''})
     return render(request, 'users/register.html', {'form': form})
