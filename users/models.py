@@ -96,7 +96,7 @@ class Verification(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
-        result = self.status == self.StatusType.APPROVED
+
         if self.status == self.StatusType.APPROVED:
             self.user.is_verified = True
             self.user.save()
