@@ -27,7 +27,8 @@ class ProfileCheckMiddleware:
                             reverse("phone_verification_step2"),
                             reverse("profile-photo-verify"),
                             reverse("sign_in_photo_verify_success"),
-                            reverse("login")
+                            reverse("login"),
+                            reverse("register")
 
                          ]  # Include a list of authenticated views that don't require an approved profile
         if not request.user.is_superuser:
