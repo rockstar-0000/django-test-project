@@ -215,7 +215,7 @@ class Notification(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 # order
-class Orders(models.Model):
+class Orders(BaseModel):
     order_id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -225,4 +225,4 @@ class Orders(models.Model):
     token = models.CharField(max_length=100 ,default="NotTokenPaypal")
     order_user = models.ForeignKey(User, on_delete=models.CASCADE)
     def __str__(self):
-        return self.FirstName
+        return self.first_name
