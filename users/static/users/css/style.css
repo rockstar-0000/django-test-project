@@ -106,8 +106,8 @@ color: var(--iq-dark-body-text); }
 .breadcrumb.bg-primary .breadcrumb-item+.breadcrumb-item::before { color: var(--iq-white); }
 
 /*---------------------------------------------------------------------
-                               Media Support
------------------------------------------------------------------------*/
+/*                               Media Support*/
+/*-----------------------------------------------------------------------*!*/
 .media-support { display: inline-block; width: 100%; }
 .media-support-user-img img { height: 60px; }
 .media-support-header { display: flex; align-items: flex-start; }

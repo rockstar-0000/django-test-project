@@ -132,8 +132,15 @@
                                                      src="{{ post.user.profile.image.url }}" alt="">
                                             </div>
                                             <div class="media-support-info mt-2">
-                                                <h5 class="mb-0 d-inline-block"><a href="javascript:void(0)"
-                                                                                   onclick="checkBlock({{ post.user.id }}, '{{ post.user.username }}')">{{ post.user.profile.first_name }} {{ post.user.profile.last_name }}</a>
+                                                <h5 class="mb-0 d-inline-block">
+                                                    <a href="javascript:void(0)"
+                                                       onclick="checkBlock({{ post.user.id }}, '{{ post.user.username }}')">
+                                                        {% if post.user.profile.account_type == 'sf' or post.user.profile.account_type == 'sm' %}
+                                                        {{ post.user.profile.first_name }} {{ post.user.profile.last_name }}
+                                                        {% else %}
+                                                        {{ post.user.profile.first_name }} & {{ post.user.profile.last_name }}
+                                                        {% endif %}
+                                                    </a>
                                                 </h5>
 
                                                 <p class="mb-0 text-muted">{{ post.timestamp|date:"F d, Y" }}</p>

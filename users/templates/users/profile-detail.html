@@ -28,12 +28,12 @@
                                         {% if selectedUser.profile.account_type == 'sf' or selectedUser.profile.account_type == 'sm' %}
                                         <h3 class="">{{ selectedUser.profile.first_name }}</h3>
                                     {% else %}
-                                        <h3 class="">{{ selectedUser.profile.first_name }} {{ selectedUser.profile.last_name }}</h3>
+                                        <h3 class="">{{ selectedUser.profile.first_name }} & {{ selectedUser.profile.last_name }}</h3>
                                     {% endif %}
                                         <h6 class="text-success">Verified!</h6>
                                         {% if selectedUser.profile.account_type == 'sf' %}
                                         <h6>Single Female</h6>
-                                            {% elif tedUser.profile.account_type == 'sm' %}
+                                            {% elif selectedUser.profile.account_type == 'sm' %}
                                             <h6>Single Male</h6>
                                             {% else %}
                                             <h6>Couple</h6>
