@@ -89,7 +89,7 @@ NOTE: This file contains the styling for responsive Template.
 		.display-6 { font-size: 1.5rem; font-weight: 300; }
 		.iq-top-navbar .navbar { position: relative; }
 		.iq-top-navbar .navbar-toggler { position: static; color: var(--iq-primary); background: var(--iq-light-primary); border: none; padding: 7px 10px; border-radius: 5px; font-size: 24px; }
-		.navbar-collapse {display: flex; position: absolute; top:100%; left: 0; width: 100%; background: var(--iq-white); -webkit-box-shadow: 0px 5px 12px 0px rgba(55, 73, 72, 0.15); -moz-box-shadow: 0px 5px 12px 0px rgba(55, 73, 72, 0.15); box-shadow: 0px 5px 12px 0px rgba(55, 73, 72, 0.15); }
+		.navbar-collapse {display: flex; position: absolute; top:100%; left: 0; width: 100%; background: #141a2d; -webkit-box-shadow: 0px 5px 12px 0px rgba(55, 73, 72, 0.15); -moz-box-shadow: 0px 5px 12px 0px rgba(55, 73, 72, 0.15); box-shadow: 0px 5px 12px 0px rgba(55, 73, 72, 0.15); }
 		.navbar-nav.navbar-list { float: right; display: inline-block; }
 		.iq-top-navbar .iq-navbar-custom .iq-menu-bt { right: 125px; top: 18px; }
 		.animation-card .an-img .bodymovin { margin-bottom: 0; margin-left: 0; width: 100%; }
