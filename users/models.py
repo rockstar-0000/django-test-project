@@ -95,6 +95,9 @@ class Verification(BaseModel):
         storage=FileSystemStorage(location=UPLOAD_DIR, base_url='/media/uploads/'))
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
     def save(self, *args, **kwargs):
 
         if self.status == self.StatusType.APPROVED:
