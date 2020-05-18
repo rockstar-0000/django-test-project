@@ -179,12 +179,14 @@ def check_block(request):
     data_response['response'] = 'no'
     return JsonResponse(data_response)
 
-
+# TODO - Not sure how to bring in the posts specific to the user for profile-detail.html
 def profile_detail(request, username):
     selected_id = User.objects.filter(username=username).first().id
 
     context = {
         'selectedUser': User.objects.filter(username=username).first(),
+        'posts': User.objects.filter(username=username).first().id
+
     }
     return render(request, 'users/profile-detail.html', context)
 

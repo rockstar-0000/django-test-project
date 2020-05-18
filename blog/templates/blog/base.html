@@ -361,7 +361,7 @@
                                     <div class="iq-card-body p-0 ">
                                         <div class="bg-primary p-3 line-height">
                                             <h5 class="mb-0 text-white line-height">
-                                                Hello {{ user.first_name }} {{ user.last_name }}</h5>
+                                                Hello {{ user.profile.first_name }} {{ user.profile.last_name }}</h5>
                                             <span class="text-white font-size-12">Available</span>
                                         </div>
                                         <a href="{% url 'profile-detail' user.username %}" class="iq-sub-card iq-bg-primary-hover">

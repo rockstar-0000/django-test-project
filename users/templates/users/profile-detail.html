@@ -25,9 +25,20 @@
                                              class="avatar-130 img-fluid"/>
                                     </div>
                                     <div class="profile-detail">
-                                        <h3 class="">{{ selectedUser.first_name }} {{ selectedUser.last_name }}</h3>
+                                        {% if selectedUser.profile.account_type == 'sf' or selectedUser.profile.account_type == 'sm' %}
+                                        <h3 class="">{{ selectedUser.profile.first_name }}</h3>
+                                    {% else %}
+                                        <h3 class="">{{ selectedUser.profile.first_name }} {{ selectedUser.profile.last_name }}</h3>
+                                    {% endif %}
                                         <h6 class="text-success">Verified!</h6>
-                                        <h6>{{ selectedUser.profile.account_type }}</h6>
+                                        {% if selectedUser.profile.account_type == 'sf' %}
+                                        <h6>Single Female</h6>
+                                            {% elif tedUser.profile.account_type == 'sm' %}
+                                            <h6>Single Male</h6>
+                                            {% else %}
+                                            <h6>Couple</h6>
+                                        {% endif %}
+
                                     </div>
                                 </div>
                                 <div class="profile-info p-4 d-flex align-items-center justify-content-between position-relative">
@@ -73,9 +84,10 @@
                             <div class="user-tabing">
                                 <ul class="nav nav-pills d-flex align-items-center justify-content-center profile-feed-items p-0 m-0">
                                     <div class="col-sm-2 p-0 mr-4">
+{#                                       # TODO - Friend Request, et al. is not showing up#}
                                         {% if already == '' and selectedUser.id != user.id %}
                                             <button class="btn btn-outline-primary btn-block" id="btn_friend_req"
-                                                    onclick="friend_request({{ selectedUser.id }}, '{{ selectedUser.first_name }}', '{{ selectedUser.last_name }}', '{{ selectedUser.profile.image.url }}',{{ user.id }}, '{{ user.first_name }}', '{{ user.last_name }}', '{{ user.profile.image.url }}')">
+                                                    onclick="friend_request({{ selectedUser.id }}, '{{ selectedUser.profile.first_name }}', '{{ selectedUser.profile.last_name }}', '{{ selectedUser.profile.image.url }}',{{ user.id }}, '{{ user.profile.first_name }}', '{{ user.profile.last_name }}', '{{ user.profile.image.url }}')">
                                                     Friend Request
                                             </button>
                                         {% endif %}
@@ -226,23 +238,23 @@
                                                 </div>
                                             </div>
                                         {% endif %}
+{#                                    # TODO - Posts are not showing up#}
                                         {% for post in posts %}
                                         <div class="iq-card">
                                             <div class="iq-card-body">
-
                                                     <div class="col-sm-12">
                                                         <div class="iq-card-body">
                                                             <div class="user-post-data">
                                                                 <div class="d-flex flex-wrap">
                                                                     <div class="media-support-user-img mr-3">
                                                                         <img class="rounded-circle img-fluid"
-                                                                             src="{{ post.author.profile.image.url }}"
+                                                                             src="{{ post.profile.image.url }}"
                                                                              alt="">
                                                                     </div>
                                                                     <div class="media-support-info mt-2">
                                                                         <h5 class="mb-0 d-inline-block"><a
                                                                                 href="javascript:void(0)"
-                                                                                onclick="checkBlock({{ post.author.id }}, '{{ post.author.username }}')">{{ post.author.profile.user.first_name }} {{ post.author.profile.user.last_name }}</a>
+                                                                                onclick="checkBlock({{ post.id }}, '{{ post.user.username }}')">{{ post.author.profile.user.first_name }} {{ post.author.profile.user.last_name }}</a>
                                                                         </h5>
                                                                         <p class="mb-0 text-muted">{{ post.date_posted|date:"F d, Y" }}</p>
                                                                     </div>
@@ -568,26 +580,26 @@
                                     <div class="col-md-9 pl-4">
                                     <div class="row">
                                         <div class="col-4">
-                                            {% if user.profile.account_type == "Single Male" %}
+                                            {% if selectedUser.profile.account_type == "sm" %}
                                                 <h4 class="mb-3">Age:</h4>
-                                                <p> {{ user.profile.his_age }}</p>
-                                            {% elif user.profile.account_type == "Single Female" %}
+                                                <p> {{ selectedUser.profile.his_age }}</p>
+                                            {% elif selectedUser.profile.account_type == "sf" %}
                                                 <h4 class="mb-3">Age:</h4>
-                                                <p> {{ user.profile.her_age }}</p>
+                                                <p> {{ selectedUser.profile.her_age }}</p>
                                             {% else %}
                                                 <h4 class="mb-3">Age:</h4>
-                                                <p class="mb-3">His Age: {{ user.profile.his_age }}</p>
-                                                <p class="mb-3">Her Age: {{ user.profile.her_age }}</p>
+                                                <p class="mb-3">His Age: {{ selectedUser.profile.his_age }}</p>
+                                                <p class="mb-3">Her Age: {{ selectedUser.profile.her_age }}</p>
                                             {% endif %}
                                         </div>
                                         <div class="col-4">
                                             <h4 class="mb-3">Kik: </h4>
-                                            <p>{{ user.profile.kik }}</p>
+                                            <p>{{ selectedUser.profile.kik }}</p>
                                         </div>
 
                                         <div class="col-4">
                                             <h4 class="mb-3">Location:</h4>
-                                            <p>{{ user.profile.city }}, {{ user.profile.state }}</p>
+                                            <p>{{ selectedUser.address.city }}, {{ selectedUser.address.state }}</p>
                                         </div>
                                     </div>
                                         <hr>
@@ -595,18 +607,18 @@
                                     <div class="row">
                                         <div class="col">
                                         <h4 class="mb-3">Interests</h4>
-                                            <p><span class="ml-3">{{ user.profile.interests }}</span></p>
+                                            <p><span class="ml-3">{{ selectedUser.profile.interests }}</span></p>
                                         </div>
                                     </div>
                                         <hr>
                                     <div class="row">
                                         <div class="col">
-                                            {% if user.profile.account_type == "Single Male" or user.profile.account_type == "Single Female" %}
+                                            {% if selectedUser.profile.account_type == "sm" or selectedUser.profile.account_type == "sf" %}
                                                 <h4 class="mb-3">About Me</h4>
                                             {% else %}
                                                 <h4 class="mb-3">About Us</h4>
                                             {% endif %}
-                                            <p><span class="ml-3">{{ user.profile.bio }}</span></p>
+                                            <p><span class="ml-3">{{ selectedUser.profile.bio }}</span></p>
                                         </div>
                                     </div>
                                         <hr>
