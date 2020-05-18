@@ -1,0 +1,243 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    {% load static %}
+    <style>
+
+        /**
+       * The CSS shown here will not be introduced in the Quickstart guide, but shows
+       * how you can use CSS to style your Element's container.
+       */
+        .StripeElement {
+            box-sizing: border-box;
+
+            height: 40px;
+            width: 100%;
+            padding: 10px 12px;
+
+            border: 1px solid transparent;
+            border-radius: 4px;
+            background-color: white;
+
+            box-shadow: 0 1px 3px 0 #e6ebf1;
+            -webkit-transition: box-shadow 150ms ease;
+            transition: box-shadow 150ms ease;
+        }
+
+        .StripeElement--focus {
+            box-shadow: 0 1px 3px 0 #cfd7df;
+        }
+
+        .StripeElement--invalid {
+            border-color: #fa755a;
+        }
+
+        .StripeElement--webkit-autofill {
+            background-color: #fefde5 !important;
+        }
+
+    </style>
+    <!-- Page Content  -->
+    <div id="content-page" class="content-page">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-sm-9">
+                    <div style="text-align: center;">
+                        <h1> {{ package }}</h1>
+                        <h3>{{ amount }}$</h3>
+                    </div>
+
+                    <div class=" justify-content-center">
+                        <form action="{% url 'payment_return' %} " method="POST" id="payment-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="userid" value="{{ user.id }}">
+                            <input type="hidden" name="amount" value="{{ amount }}">
+                            <input type="hidden" name="package" value="{{ package }}">
+                            {# a hidden payment intent object #}
+                            <input type="text" id="clientSecret" value="{{ secret_key }}" hidden>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName">First name</label>
+                                    <input type="text" name="fname" class="form-control" id="firstName" placeholder=""
+                                           value="{{ user.first_name }}" required>
+                                    <div class="invalid-feedback">
+                                        Valid first name is required.
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName">Last name</label>
+                                    <input type="text" name="lname" class="form-control" id="lastName" placeholder=""
+                                           value="{{ user.last_name }}" required>
+                                    <div class="invalid-feedback">
+                                        Valid last name is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email">Email <span class="text-muted">(Optional)</span></label>
+                                <input type="email" name="email" class="form-control" value="{{ user.email }}"
+                                       id="email" placeholder="you@example.com">
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address for shipping updates.
+                                </div>
+                            </div>
+                            <hr class="mb-4">
+                            <h4 class="mb-3">Payment</h4>
+                            <div id="stripebox">
+                                <div class="form-row">
+                                    <label for="card-element">
+                                        Credit or debit card
+                                    </label>
+                                    <div id="card-element">
+                                        <!-- A Stripe Element will be inserted here. -->
+                                    </div>
+
+                                    <!-- Used to display form errors. -->
+                                    <div id="card-errors" role="alert"></div>
+                                </div>
+                            </div>
+                            <hr class="mb-4">
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        $(document).ready(function () {
+
+// Create a Stripe client.
+            var stripe = Stripe('pk_test_PoYSMprTk1iqgCbpuadNOR6U00dFvL263j');
+            // saad's test key
+            // var stripe = Stripe('pk_test_77BEhkcvsYIiw8lAxi8vTQ0w005EDv7tJu');
+
+// Create an instance of Elements.
+            var elements = stripe.elements();
+
+// Custom styling can be passed to options when creating an Element.
+// (Note that this demo uses a wider set of styles than the guide below.)
+            var style = {
+
+
+                base: {
+
+                    color: '#32325d',
+                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                    fontSmoothing: 'antialiased',
+                    fontSize: '16px',
+                    '::placeholder': {
+                        color: '#aab7c4'
+                    }
+                },
+                invalid: {
+                    color: '#fa755a',
+                    iconColor: '#fa755a'
+                }
+            };
+// Create an instance of the card Element.
+            var card = elements.create('card',
+
+                {
+                    hidePostalCode: true,
+                    style: style
+                });
+
+// Add an instance of the card Element into the `card-element` <div>.
+            card.mount('#card-element');
+
+// Handle real-time validation errors from the card Element.
+            card.addEventListener('change', function (event) {
+                var displayError = document.getElementById('card-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                } else {
+                    displayError.textContent = '';
+                }
+            });
+
+// Handle form submission.
+            var form = document.getElementById('payment-form');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                let clientSecret = $('#clientSecret').val();
+                let name = $('#firstName').val() + ' ' + $('#lastName').val();
+                stripe.confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: card,
+                        billing_details: {
+                            name: name
+                        }
+                    }
+                }).then(function (result) {
+                    if (result.error) {
+                        // Show error to your customer (e.g., insufficient funds)
+                        alert(result.error.message);
+                    } else {
+                        // The payment has been processed!
+                        if (result.paymentIntent.status === 'succeeded') {
+                            $.ajax({
+                                type: 'POST',
+                                headers: { "X-CSRFToken": $('input[name="csrfmiddlewaretoken"]').val()},
+                                url: 'http://' + location.hostname + ':' + location.port + '/payment_return/',
+                                data: JSON.stringify({'first_name': $('#firstName').val(),
+                                    'last_name': $('#lastName').val(),
+                                    'email': $('#email').val(),
+                                    'amount': result.paymentIntent.amount,
+                                    'stripeToken': result.paymentIntent.id
+                                }) ,
+                                dataType: "json",
+                                contentType: 'application/json',
+                                success: function(data) {
+                                    if(data.success){
+                                        window.location.replace('http://' + location.hostname + ':' + location.port +
+                                            '/payment/confirm');
+                                    } else {
+                                        alert('Something went wrong');
+                                    }
+                                }
+                            });
+                            // Show a success message to your customer
+                            // There's a risk of the customer closing the window before callback
+                            // execution. Set up a webhook or plugin to listen for the
+                            // payment_intent.succeeded event that handles any business critical
+                            // post-payment actions.
+                        }
+                    }
+                });
+
+                //stripe.createToken(card).then(function(result) {
+                //  if (result.error) {
+                //    // Inform the user if there was an error.
+                //    var errorElement = document.getElementById('card-errors');
+                //    errorElement.textContent = result.error.message;
+                //  } else {
+                //    // Send the token to your server.
+                //    stripeTokenHandler(result.token);
+                //  }
+                //});
+            });
+
+// Submit the form with the token ID.
+            function stripeTokenHandler(token) {
+                // Insert the token ID into the form so it gets submitted to the server
+                var form = document.getElementById('payment-form');
+                var hiddenInput = document.createElement('input');
+                hiddenInput.setAttribute('type', 'hidden');
+                hiddenInput.setAttribute('name', 'stripeToken');
+                hiddenInput.setAttribute('value', token.id);
+                form.appendChild(hiddenInput);
+
+                // Submit the form
+                form.submit();
+            }
+        });
+
+    </script>
+
+{% endblock script %}

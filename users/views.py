@@ -6,15 +6,29 @@ from django.contrib.auth.models import User
 from django.core import serializers
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
+from rest_framework.decorators import api_view
 
 from blog.models import Post
 from users.forms import *
 from users.services import send_twilio_message
-from .models import VerificationCode, Message, Conversation, Verification, Friendship, Address
+from .models import VerificationCode, \
+    Message, \
+    Conversation, \
+    Verification, \
+    Friendship, \
+    Address, \
+    Orders
 
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
+import stripe
 
 data_response = {}
+
+# TODO - Place API key in settings.py
+stripe.api_key = "sk_test_oYvk6jzOXdDeBJkkdsLmysSA00A7ovejQO"
+# saad's test api key, API keys should be placed in settings.py or any other constant file, not in views.py
+# stripe.api_key = 'sk_test_zlMt0QFG8NQx5nNnbJRAkMs000UWrqwer0'
 
 
 # class
@@ -121,31 +135,6 @@ def sign_in_photo_verify(request):
             verification.save()
             return render(request, 'users/sign-in-photo-verify-confirmation.html')
     return render(request, 'users/sign-in-photo-verify.html', {'form': form})
-
-
-# @login_required()
-# def profile(request):
-#     if request.method == 'POST':
-#         u_form = UserUpdateForm(request.POST,
-#                                 instance=request.user)
-#         p_form = ProfileUpdateForm(request.POST,
-#                                    request.FILES,
-#                                    instance=request.user.profile)
-#         if u_form.is_valid() and p_form.is_valid():
-#             u_form.save()
-#             p_form.save()
-#             messages.success(request, f'Your account has been updated!')
-#             return redirect('profile')
-#     else:
-#         u_form = UserUpdateForm(instance=request.user)
-#         p_form = ProfileUpdateForm(instance=request.user.profile)
-#
-#     context = {
-#         'u_form': u_form,
-#         'p_form': p_form
-#     }
-#     return render(request, 'users/profile_old_delete.html', context)
-#     # return redirect('home')
 
 def friend_request(request):
     data_response['success'] = 'success'
@@ -273,7 +262,38 @@ def chat(request):
 
     return render(request, 'users/chat.html', context)
 
+# Stripe Checkout
+def check_out(request, packagename, price):
+    intent = stripe.PaymentIntent.create(
+        amount=1499,
+        currency='usd',
+        # Verify your integration in this guide by including this parameter
+        metadata={'integration_check': 'accept_a_payment'},
+    )
+    print(intent)
+    context = {
+        'secret_key': intent.client_secret,
+        'package': packagename,
+        'amount': price,
+    }
+    return render(request, 'users/pages-checkout.html', context)
 
+@api_view(["POST"])
+def payment_return(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            data = Orders(first_name=request.data['first_name'], last_name=request.data['last_name'],
+                          email=request.data['email'], payment_method="stripe", amount=request.data['amount'],
+                          token=request.data['stripeToken'], order_user=request.user)
+            data.save()
+            return JsonResponse({'success': True})
+        return JsonResponse({'success': False, 'error': 'User authentication failed'})
+    else:
+        return JsonResponse({'error': 'method ' + request.method + ' not allowed'})
+
+
+def payment_successful(request):
+    return render(request, 'users/pages-checkout-confirmation.html')
 # Different types of messages from import messages
 # messages.debug
 # messages.info

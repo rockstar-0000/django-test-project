@@ -37,6 +37,9 @@ urlpatterns = [
     path('', include('blog.urls')),
     path('users/', include('users.urls')),
     path('become_member/', user_views.become_full_member, name='become_full_member'),
+    path('checkout/<str:packagename>/<str:price>', user_views.check_out, name='check_out'),
+    path('payment_return/', user_views.payment_return, name='payment_return'),
+    path('payment/confirm', user_views.payment_successful, name='payment_successfull'),
 
 ]
 
