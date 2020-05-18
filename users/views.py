@@ -284,7 +284,7 @@ def payment_return(request):
         if request.user.is_authenticated:
             data = Orders(first_name=request.data['first_name'], last_name=request.data['last_name'],
                           email=request.data['email'], payment_method="stripe", amount=request.data['amount'],
-                          token=request.data['stripeToken'], order_user=request.user)
+                          token=request.data['stripeToken'], user=request.user)
             data.save()
             return JsonResponse({'success': True})
         return JsonResponse({'success': False, 'error': 'User authentication failed'})
