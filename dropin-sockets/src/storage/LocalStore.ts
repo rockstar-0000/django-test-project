@@ -2,20 +2,16 @@ import {BaseStorage} from "./BaseStorage";
 import {IDataPacket} from "../sockets/interfaces";
 import {throwError} from "rxjs";
 import {Tree} from "./tree";
+import {Algorithms} from "./Algorithms";
 
 export class LocalStore extends BaseStorage {
 
-    public tree: Tree = new Tree();
     constructor() {
         super("lastUpdate", 5000000);
-        this.tree.build();
     }
 
     _getAll(limit: number, lessThan: number, greaterThan: number): any[] {
         return [];
-    }
-    _getLatest(lane: string): number {
-        return 0;
     }
 
     _formatKey(dPacket: IDataPacket): string {
@@ -23,6 +19,38 @@ export class LocalStore extends BaseStorage {
             throwError('dPacket does not have property: id. Cannot format key for storage')
         }
         return dPacket.l + '.' + dPacket.v['id'];
+
+    }
+
+    _metaFormatKey(lane: string): string {
+        return 'm' +  lane;
+    }
+
+    _metaUpdate(dPacket: IDataPacket): undefined {
+            const key = this._metaFormatKey(dPacket.l);
+            const val = this._getByKey(key);
+            let arr: any[] = [[], []]; // first arr id second is last_update
+            if (val !== null) {
+                arr = JSON.parse(val)
+            }
+
+            const id = Algorithms.binaryInsert(arr[0], dPacket.v['id']);
+            arr[1][id] = dPacket.v[this.timeStampPropName];
+
+            const arrString = JSON.stringify(arr);
+
+            this._setByKeyVal(key, arrString);
+
+            return;
+    }
+    _metaGetAll(lane: string): [Array<Number>, Array<Number>] {
+        const val = this._getByKey(this._metaFormatKey(lane));
+        if (val === null) {
+            return [[], []]
+        }
+        return JSON.parse(val);
+    }
+    _getLatestTime(lane: string): number {
 
     }
 
@@ -46,8 +74,8 @@ export class LocalStore extends BaseStorage {
         return (key+val).length;
     }
 
-    _setByKeyVal(key: string, val: string): undefined {
-        localStorage.setItem(key, val);
+    _setByKeyVal(key: string, val: string | number): undefined {
+        localStorage.setItem(key, String(val));
         return;
     }
 
@@ -62,4 +90,7 @@ export class LocalStore extends BaseStorage {
     _has(dPacket: IDataPacket): boolean {
         return this._get(dPacket) != null;
     }
+
+
+
 }
