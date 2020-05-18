@@ -185,7 +185,7 @@ def profile_detail(request, username):
 
     context = {
         'selectedUser': User.objects.filter(username=username).first(),
-        'posts': User.objects.filter(username=username).first().id
+        # 'posts': User.objects.filter(username=username).first().id
 
     }
     return render(request, 'users/profile-detail.html', context)
