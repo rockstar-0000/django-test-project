@@ -8,7 +8,14 @@ export class LocalStore extends BaseStorage {
     public tree: Tree = new Tree();
     constructor() {
         super("lastUpdate", 5000000);
-        Tree.build();
+        this.tree.build();
+    }
+
+    _getAll(limit: number, lessThan: number, greaterThan: number): any[] {
+        return [];
+    }
+    _getLatest(lane: string): number {
+        return 0;
     }
 
     _formatKey(dPacket: IDataPacket): string {

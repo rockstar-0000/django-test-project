@@ -30,6 +30,14 @@ export abstract class BaseStorage {
 
 
 
+    abstract _getLatest(lane: string): number
+    abstract _getAll(limit: number, lessThan: number, greaterThan: number): any[]
+
+    public getAll(limit: number = Number.MAX_VALUE, lessThan: number = Number.MAX_VALUE, greaterThan: number = 0): any[] {
+        return this._getAll(limit, lessThan, greaterThan);
+    }
+
+
     private getSpaceUsage(): number {
         return Number(this._getByKey(BaseStorage.STORE_KEY));
     }
@@ -69,8 +77,6 @@ export abstract class BaseStorage {
     public get(dPacket: IDataPacket) {
         return this._get(dPacket)
     }
-
-    public getAll() {}
 
 
 
