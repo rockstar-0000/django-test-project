@@ -103,6 +103,7 @@ export abstract class BaseStorage {
     }
 
     public get(dPacket: IDataPacket) {
+        +
         return this._get(dPacket)
     }
 

@@ -43,7 +43,7 @@
     }
 
 
-     public static quickSort(items: any[], left: any, right: any): any[] {
+     public static quickSort(items: any[], left?: any, right?: any): any[] {
         var index;
         if (items.length > 1) {
             index = partition(items, left, right); //index returned from partition

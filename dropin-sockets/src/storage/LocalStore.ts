@@ -51,6 +51,11 @@ export class LocalStore extends BaseStorage {
         return JSON.parse(val);
     }
     _getLatestTime(lane: string): number {
+        const arr = Algorithms.quickSort(this._metaGetAll(lane)[1]);
+        if(arr.length > 0) {
+            return arr[0]
+        }
+        return 0;
 
     }
 

@@ -216,13 +216,12 @@ class Notification(BaseModel):
 
 # order
 class Orders(BaseModel):
-    order_id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
     payment_method = models.CharField(max_length=100)
     amount = models.CharField(max_length=100)
     token = models.CharField(max_length=100 ,default="NotTokenPaypal")
-    order_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     def __str__(self):
         return self.first_name
