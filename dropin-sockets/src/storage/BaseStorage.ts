@@ -1,113 +1,30 @@
-import {IDataPacket} from "../sockets/interfaces";
-import {throwError} from "rxjs";
 
+// M = meta, O = object
+import {from, Observable} from "rxjs";
 
-export abstract class BaseStorage {
+export abstract class BaseStorage<M, O> {
 
-    private static STORE_KEY = 'su';
-    public curSpaceUsageChars: number = 10;
-    public maxSpaceUsageChars: number;
-    public timeStampPropName: string;
+    public idPropName: string;
+    public lastUpdatePropName: string;
 
-    constructor(timeStampPropName: string, maxSpaceUsageChars: number) {
-        this.maxSpaceUsageChars = maxSpaceUsageChars;
-        this.timeStampPropName = timeStampPropName;
-
-        const curSU = this._getByKey(BaseStorage.STORE_KEY);
-        if (curSU !== null) {
-            this.curSpaceUsageChars += Number(curSU);
-        } else {
-            this._setByKeyVal(BaseStorage.STORE_KEY, '10');
-        }
-
+    constructor(idPropName: string, lastUpdatePropName: string) {
+        this.idPropName = idPropName;
+        this.lastUpdatePropName = lastUpdatePropName;
     }
 
+    abstract _get(metaItem: M): Promise<O>
+    abstract _set(item: O): never
+    abstract _getAll(metaItems: M[]): Promise<O[]>
 
-    abstract  _formatKey(dPacket: IDataPacket): string
-    abstract _set(dPacket: IDataPacket): number
-    abstract _setByKeyVal(key: string, val: string | number): undefined
-    abstract _getByKey(key: string): string | null;
-    abstract _get(dPacket: IDataPacket): object | null
-    abstract _del(dPacket: IDataPacket): number
-    abstract _has(dPacket: IDataPacket): boolean
+    public get(metaItem: M) {
+        this._get(metaItem).then((item)=>{
 
-    abstract _metaFormatKey(lane: string): string
-    abstract _metaGetAll(lane: string): [Array<Number>,Array<Number>]
-    abstract _metaUpdate(dPacket: IDataPacket): undefined
-
-    abstract _getLatestTime(lane: string): number
-    abstract _getAll(limit: number, lessThan: number, greaterThan: number): any[]
-
-
-    public getLatestTime(lane: string) {
-
+        })
     }
 
-
-
-    public getAll(limit: number = Number.MAX_VALUE, lessThan: number = Number.MAX_VALUE, greaterThan: number = 0): any[] {
-        return this._getAll(limit, lessThan, greaterThan);
+    // set last update to -1 if we need to get from db
+    public getAll(metaItems: M[]): Observable<O[]> {
+         return from(this._getAll(metaItems));
     }
-
-
-
-
-
-    private setLatestTime(dPacket: IDataPacket): undefined {
-        const val = this._getByKey(dPacket.l);
-        if (val === null) {
-            this._setByKeyVal(dPacket.l, dPacket.v[this.timeStampPropName])
-        } else {
-            if (dPacket.v[this.timeStampPropName] > val) {
-                this._setByKeyVal(dPacket.l, dPacket.v[this.timeStampPropName])
-            }
-        }
-        return
-    }
-
-    private getSpaceUsage(): number {
-        return Number(this._getByKey(BaseStorage.STORE_KEY));
-    }
-
-    private addSpaceUsage(keyVal: string, numChar = 0) {
-        const curSU = this.getSpaceUsage() + keyVal.length + numChar;
-        this._setByKeyVal(BaseStorage.STORE_KEY, String(curSU));
-
-        this.curSpaceUsageChars = curSU;
-    }
-
-    private removeSpaceUsage(keyVal: string, numChar = 0 ) {
-        const curSU = this.getSpaceUsage() - keyVal.length + numChar;
-        this._setByKeyVal(BaseStorage.STORE_KEY, String(curSU));
-        this.curSpaceUsageChars = curSU;
-    }
-
-
-
-
-    public has(dPacket: IDataPacket): Boolean {
-        return this._has(dPacket);
-    }
-    public del(dPacket: IDataPacket) {
-        if (this.has(dPacket)) {
-            const chars = this._del(dPacket);
-            this.removeSpaceUsage('', chars);
-        }
-    }
-
-    public set(dPacket: IDataPacket) {
-        const chars = this._set(dPacket);
-        this.setLatestTime(dPacket);
-        this.addSpaceUsage('', chars)
-
-    }
-
-    public get(dPacket: IDataPacket) {
-        +
-        return this._get(dPacket)
-    }
-
-
-
 
 }

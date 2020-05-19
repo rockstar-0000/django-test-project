@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
     // Enable sourcemaps for debugging webpack's output.
     devtool: "source-map",
-    entry: './src/storage/Algorithms.ts',
+    entry: './src/index.ts',
     module: {
         rules: [
             {
@@ -27,6 +27,6 @@ module.exports = {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
         libraryTarget: 'var',
-        library: 'EntryPoint'
+        library: 'DIS'
     },
 };

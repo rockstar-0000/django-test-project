@@ -13,6 +13,4 @@ export class Tree {
         const keys = key.split('.');
         this.t[keys[0]] = {[keys[1]]: val};
     }
-
-
 }

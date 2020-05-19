@@ -1,6 +1,6 @@
-import {Observable, Subject} from "rxjs";
-import {IDataPacket, TProtocols} from "./interfaces";
-import {filter} from "rxjs/operators";
+import {from, Observable, of, Subject} from "rxjs";
+import {DEFAULT_EVENTS, IDataPacket, IEventsOptions, TProtocols} from "./SocketsInterfaces";
+import {concatMap, filter} from "rxjs/operators";
 
 
 export class SocketDriver {
@@ -10,13 +10,14 @@ export class SocketDriver {
 
     // Data not sent due to error
     private unsentData: string[] = [];
-
+    private eventsOptions: IEventsOptions;
     private static formatDataPacket(lane: string, command: string, dataValue: any): string {
         const dataPacket: IDataPacket = {'l': lane, 'e': command, 'v': dataValue};
         return JSON.stringify(dataPacket);
     }
 
-    constructor(url: string, protocols: TProtocols) {
+    constructor(url: string, protocols: TProtocols, eventsOptions: IEventsOptions = DEFAULT_EVENTS) {
+        this.eventsOptions = eventsOptions;
         if (protocols === undefined) {
             this.webSocket = new WebSocket(url);
         } else {
@@ -26,11 +27,20 @@ export class SocketDriver {
         this.listeners();
     }
 
-    public getLaneObs$(lane: string): Observable<IDataPacket> {
+    public getLaneObs$(lane: string): Observable<any> {
         return this.incomingDataSubject$.pipe(
-            filter((dPacket => dPacket['l'] === lane))
+            filter((dPacket => dPacket['l'] === lane)),
+            concatMap(dPacket => {
+                if (dPacket.e === this.eventsOptions.incomingArr) {
+                    return from<any>(dPacket.v);
+                }
+                else {
+                    return of(dPacket.v);
+                }
+            })
         );
     }
+
 
     private listeners() {
         this.webSocket.onmessage = (event) => {

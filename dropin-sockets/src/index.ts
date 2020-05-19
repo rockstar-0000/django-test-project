@@ -1,6 +1,6 @@
 import {SocketDriver} from "./sockets/SocketDriver";
 import {DataController} from "./sockets/DataController";
-import {TProtocols} from "./sockets/interfaces";
+import {DEFAULT_EVENTS, TProtocols} from "./sockets/SocketsInterfaces";
 import {DataSocket} from "./sockets/DataSocket";
 
 export class DropInSockets
@@ -9,13 +9,13 @@ export class DropInSockets
     private protocol: TProtocols;
     public SocketDriver: SocketDriver;
     public DataController: DataController;
-
-    constructor(url: string, protocol: TProtocols){
+    // TODO make events more seamless
+    constructor(url: string, protocol: TProtocols, events = {'meta': 'm'}){
         this.url = url;
         this.protocol = protocol;
 
         this.SocketDriver = new SocketDriver(url, protocol);
-        this.DataController = new DataController(this.SocketDriver);
+        this.DataController = new DataController(this.SocketDriver,  DEFAULT_EVENTS);
     }
 
     public createDataSocket(lane: string): DataSocket{

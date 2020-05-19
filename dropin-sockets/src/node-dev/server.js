@@ -2,7 +2,7 @@
 const http = require('http');
 const WebSocketServer = require('websocket').server;
 const server = http.createServer();
-server.listen(8000);
+server.listen(8100);
 const wsServer = new WebSocketServer({
     httpServer: server
 });
@@ -12,8 +12,8 @@ wsServer.on('request', function(request) {
         console.log('Received Message:', message.utf8Data);
         connection.sendUTF(JSON.stringify( {
             'l': 'test',
-            'e': '',
-            'v': JSON.parse(message.utf8Data).v
+            'e': 'ia',
+            'v': [{'name': 'trevor'}, {'name': 'tucker'}, {'name': 'julia'}]
 
         }));
     });

@@ -15,11 +15,15 @@ export class DataSocket {
     }
 
     public newDataListener(func: Function, event?: string)  {
-        this.DataController.getReceiverObs$(this.lane, event).subscribe({
+        this.DataController.getReceiverObs$(this.lane).subscribe({
             next(val) {func(val)},
             error(err) { console.error('something wrong occurred: ' + err); },
             complete() { console.log('done'); }
         })
+    }
+
+    public requestData(start: number, end: number){
+        this.DataController.send(this.lane, 'r', {'start': start, 'end': end})
     }
 
 
