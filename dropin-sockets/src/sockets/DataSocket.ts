@@ -22,8 +22,9 @@ export class DataSocket {
         })
     }
 
+    // TODO block new messages until old data has loaded
     public requestData(start: number, end: number){
-        this.DataController.send(this.lane, 'r', {'start': start, 'end': end})
+        this.DataController.send(this.lane, 'gr', {'start': start, 'end': end})
     }
 
 
