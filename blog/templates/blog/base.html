@@ -75,6 +75,18 @@
                     <li>
                         <a href="{% url 'chat' %}" class="iq-waves-effect"><i class="ri-mail-line"></i><span>Messages</span></a>
                     </li>
+                    {% if user.is_superuser %}
+                        <hr>
+                        <li>
+                            <a href="/admin/users/orders" class="iq-waves-effect"><span>Orders</span></a>
+                        </li>
+                        <li>
+                            <a href="/admin/users/verification" class="iq-waves-effect"><span>Verification</span></a>
+                        </li>
+                        <li>
+                            <a href="/admin/users/profile" class="iq-waves-effect"><span>Profiles</span></a>
+                        </li>
+                    {% endif %}
 
                     {#                          <li>#}
                     {#                              <a href="chat.html" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Chat</span></a>#}
