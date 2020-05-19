@@ -17,22 +17,16 @@ export interface ILaneObj {
 }
 
 
-export interface IEventsOptions {
-    'meta': string
-    'getAll': string
+export interface IEventMap {
     'get': string
     'getRecent': string
-
     'incomingItem': string
     'incomingArr': string
 }
 
-export const DEFAULT_EVENTS: IEventsOptions = {
-    'meta': 'm',
-    'getAll': 'ga',
+export const DEFAULT_EVENT_MAP: IEventMap = {
     'getRecent': 'gr',
     'get': 'g',
-
     'incomingItem': 'ii',
     'incomingArr': 'ia',
 };
