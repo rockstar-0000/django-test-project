@@ -212,7 +212,8 @@ def profile_create_review(request):
 
     return render(request, 'users/friend-create-review.html')
 
-
+# TODO - populate the fields from the database so the user
+# doesn't have to re-input all fields.
 def profile_edit(request, username):
     form = ProfileUpdateForm(request.POST, request.FILES)
     if request.method == 'POST':
