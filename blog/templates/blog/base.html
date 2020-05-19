@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <!doctype html>
 <html lang="en">
 <head>
@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
     <!-- Responsive CSS -->
     <link rel="stylesheet" href="{% static 'users/css/responsive.css' %}">
+    <!-- Cropper CSS -->
+    <link rel="stylesheet" href="{% static 'users/css/cropper.min.css' %}">
 
 
 </head>
@@ -454,6 +456,10 @@
     <script src="{% static 'users/js/jquery.min.js' %}"></script>
     <script src="{% static 'users/js/popper.min.js' %}"></script>
     {#<script src="{% static 'users/js/bootstrap.min.js' %}"></script>#}
+    <!-- JQuery 3.1.1.min -->
+    <script src="{% static 'users/js/jquery-3.1.1.min.js' %}"></script>
+    <!-- Cropper -->
+    <script src="{% static 'users/js/cropper.min.js' %}"></script>
     <!-- Appear JavaScript -->
     <script src="{% static 'users/js/jquery.appear.js' %}"></script>
     <!-- Countdown JavaScript -->
