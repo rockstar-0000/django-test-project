@@ -22,7 +22,7 @@
                                 <div class="user-detail text-center mb-0">
                                     <div class="profile-img">
                                         <img src="{{ selectedUser.profile.image.url }}" alt="profile-img"
-                                             class="avatar-130 img-fluid"/>
+                                             class="avatar-100 img-fluid"/>
                                     </div>
                                     <div class="profile-detail">
                                         {% if selectedUser.profile.account_type == 'sf' or selectedUser.profile.account_type == 'sm' %}
@@ -150,7 +150,7 @@
                                                 <div class="iq-card-body" data-toggle="modal" data-target="#post-modal">
                                                     <div class="d-flex align-items-center">
                                                         <div class="user-img">
-                                                            <img src="{{ user.profile.image.url }}" alt="userimg" class="avatar-60 rounded-circle img-fluid">
+                                                            <img src="{{ user.profile.image.url }}" alt="userimg" class="avatar-60 rounded-circle img-fluid cover">
                                                         </div>
 
                                                         <input type="text" class="form-control rounded ml-3" placeholder="Tell Us Something Good!">
@@ -169,7 +169,7 @@
                                                             <div class="modal-body">
                                                                 <div class="d-flex align-items-center">
                                                                     <div class="user-img">
-                                                                        <img src="{{ user.profile.image.url }}" alt="userimg" class="avatar-60 rounded-circle img-fluid">
+                                                                        <img src="{{ user.profile.image.url }}" alt="userimg" class="avatar-60 rounded-circle img-fluid cover">
                                                                     </div>
                                                                     <form class="post-text ml-3 w-100" action="javascript:void(0);">
                                                                         <input type="text" class="form-control rounded" placeholder="Tell Us Something Good!" id="input_post_content">

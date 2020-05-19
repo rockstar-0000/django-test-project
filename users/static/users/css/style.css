@@ -985,7 +985,9 @@ div.sidebar-toggle { display: none; }
 /*---------------------------------------------------------------------
 Profile Page
 -----------------------------------------------------------------------*/
-.profile-img img { border-radius: 50%; -webkit-border-radius: 50%; border: 1px solid var(--iq-border-dark); height: auto; }
+.user-img { clip-path: circle(); }
+.user-img .cover { object-fit: cover; }
+.profile-img img { clip-path:circle(); border-radius: 50%; -webkit-border-radius: 50%; border: 1px solid var(--iq-border-dark); height: auto; }
 .cover-container { position: relative; }
 ul.header-nav { position: absolute; left: auto; right: 0; top: auto; bottom: 20px; }
 ul.header-nav li { list-style: none; }

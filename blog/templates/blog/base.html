@@ -121,8 +121,8 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto navbar-list">
                         <li>
-                            <a href="{% url 'profile-detail' user.username %}" class="iq-waves-effect d-flex align-items-center">
-                                <img src="{{ user.profile.image.url }}" class="img-fluid rounded-circle mr-3"
+                            <a href="{% url 'profile-detail' user.username %}" class="user-img iq-waves-effect d-flex align-items-center">
+                                <img src="{{ user.profile.image.url }}" class="cover img-fluid rounded-circle mr-3"
                                      alt="user">
                                 <div class="caption">
                                     <h6 class="mb-0 line-height">{{ user.first_name }} {{ user.last_name }}</h6>
