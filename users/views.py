@@ -213,8 +213,40 @@ def profile_create_review(request):
     return render(request, 'users/friend-create-review.html')
 
 
-def profile_edit(request):
-    return render(request, 'users/profile-edit.html')
+def profile_edit(request, username):
+    form = ProfileUpdateForm(request.POST, request.FILES)
+    if request.method == 'POST':
+        if form.is_valid():
+            user = request.user
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            image = form.cleaned_data['image']
+            his_age = form.cleaned_data['his_age']
+            her_age = form.cleaned_data['her_age']
+            bio = form.cleaned_data['bio']
+            city = form.cleaned_data['city']
+            state = form.cleaned_data['state']
+            zip = form.cleaned_data['zip']
+            country = form.cleaned_data['country']
+            interests = form.cleaned_data['interests']
+            kik = form.cleaned_data['kik']
+            account_type = form.cleaned_data['account_type']
+
+            profile = Profile(user=user, first_name=first_name, last_name=last_name, image=image, his_age=his_age,
+                              her_age=her_age, bio=bio, interests=interests, kik=kik, account_type=account_type)
+            address = Address(user=user, city=city, state=state, zip=zip, country=country)
+
+            profile.save()
+            address.save()
+
+            context = {
+                'form': form,
+            }
+            return redirect('profile-detail', context)
+    context = {
+        'form': form,
+    }
+    return render(request, 'users/profile-edit.html', context)
 
 def photo_verify_success(request):
     return render(request, 'users/sign-in-photo-verify-confirmation.html')

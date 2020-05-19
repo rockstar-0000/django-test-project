@@ -18,7 +18,7 @@ urlpatterns = [
     path('profile/user_review/<str:username>/', views.profile_friend_review, name='profile-friend-review'),
     path('profile/friend_create_review/', views.profile_create_review, name='profile-friend-create-review'),
     path('profile/user_images/', views.profile_images, name='profile-user-images'),
-    path('profile/user_edit/', views.profile_edit, name='profile-user-edit'),
+    path('profile/user_edit/<str:username>', views.profile_edit, name='profile-user-edit'),
 
     path('check_block/', views.check_block, name='check_block'),
     path('notifications/', views.notifications, name='notifications'),
