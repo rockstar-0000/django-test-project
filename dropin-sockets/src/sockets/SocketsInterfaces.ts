@@ -24,6 +24,7 @@ export interface IEventMap {
     'incomingArr': string
 }
 
+// TODO make this system more seamless
 export const DEFAULT_EVENT_MAP: IEventMap = {
     'getRecent': 'gr',
     'get': 'g',

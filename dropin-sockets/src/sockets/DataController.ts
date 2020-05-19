@@ -1,25 +1,25 @@
 import {Observable, of} from "rxjs";
 import {SocketDriver} from "./SocketDriver";
-import {IDataPacket, IEventsOptions, ILaneObj} from "./SocketsInterfaces";
+import {IDataPacket, IEventMap, ILaneObj} from "./SocketsInterfaces";
 import {concatMap, filter, flatMap, map, tap} from "rxjs/operators";
 import {BaseStorage} from "../storage/BaseStorage";
+import {Handshake} from "./Handshake";
 
 export class DataController {
 
     private lanes: ILaneObj = {};
     private SocketDriver: SocketDriver;
-    private eventsOptions: IEventsOptions;
+    private eventMap: IEventMap;
 
-
-    constructor(SocketDriver: SocketDriver, eventsOptions: IEventsOptions) {
+    constructor(SocketDriver: SocketDriver) {
         this.SocketDriver = SocketDriver;
-        this.eventsOptions = eventsOptions;
+        this.eventMap = this.SocketDriver.getHandshake().getEventMap();
     }
 
 
-
+/*
     private metaHandler(lane: string) {
-        const metaObs = this.lanes[lane].pipe(filter(dPacket => dPacket.e === this.eventsOptions.meta));
+        const metaObs = this.lanes[lane].pipe(filter(dPacket => dPacket.e === this.eventMap.meta));
 
         metaObs.pipe(
             concatMap(dPacket => {
@@ -40,6 +40,7 @@ export class DataController {
         )
 
     }
+*/
 
     public registerLane(lane: string)  {
         // @ts-ignore

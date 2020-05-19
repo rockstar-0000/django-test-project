@@ -32,6 +32,9 @@ export class SocketDriver {
         this.listeners();
     }
 
+    public getHandshake() {
+        return this.handshake;
+    }
     public getLaneObs$(lane: string): Observable<any> {
         return this.incomingDataSubject$.pipe(
             filter((dPacket => dPacket['l'] === lane)),

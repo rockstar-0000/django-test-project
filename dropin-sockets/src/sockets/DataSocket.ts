@@ -23,11 +23,23 @@ export class DataSocket {
     }
 
     // TODO block new messages until old data has loaded
-    public requestData(start: number, end: number){
-        this.DataController.send(this.lane, 'gr', {'start': start, 'end': end})
+    /**
+     *
+     * @param {number} start - (ordered by latest) which item to start at.
+     * @param {number} limit - (ordered by latest) max amount of items
+     *  @description Sends a message to the websocket server requesting data
+     */
+    public requestData(start: number, limit: number) {
+        this.DataController.send(this.lane, 'gr', {'start': start, 'limit': limit})
     }
 
 
+    /**
+     *
+     * @param dataValue - The object to send to server
+     * @param event - the event name to send to server
+     *  @description Sends message to the server as a IDataPacket
+     */
     public sendData(dataValue: any, event: string = '') {
         this.DataController.send(this.lane, event, dataValue);
     }
