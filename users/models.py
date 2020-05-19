@@ -131,9 +131,9 @@ class Address(BaseModel):
 
 class Profile(BaseModel):
     class AccountType(models.TextChoices):
-        SINGLE_MALE = 'SM'
-        SINGLE_FEMALE = 'SF'
-        COUPLE = 'C'
+        SINGLE_MALE = 'sm'
+        SINGLE_FEMALE = 'sf'
+        COUPLE = 'c'
     image = models.ImageField(
         default='default.jpg',
         verbose_name='Profile Image',
